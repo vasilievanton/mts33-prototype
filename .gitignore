@@ -3,3 +3,5 @@ MTS33_kontekst_proekta.md
 .DS_Store
 # Описание проекта собирается локально (node build_md.js), в репозиторий не кладём
 MTS33_opisanie_proekta.md
+# Итоги встреч — имена и внутренние договорённости, не публикуем
+MTS33_itogi_vstrechi_*.md
