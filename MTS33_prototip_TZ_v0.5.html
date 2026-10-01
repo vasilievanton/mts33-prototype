@@ -151,6 +151,21 @@ h1,h2,h3{line-height:1.15;margin:0}
 .pcard .num{font-size:28px;font-weight:800}
 .bar{height:8px;background:var(--ph2);border-radius:5px;overflow:hidden;margin:8px 0}
 .bar i{display:block;height:100%;background:var(--red);border-radius:5px}
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.phase{display:flex;gap:10px;border:1px solid var(--line2);border-radius:12px;padding:10px 12px;background:#fff}
+.phase .pn{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.phase .pt{font-weight:700}.phase .pd{font-size:12px;color:var(--muted)}.phase .px{font-size:12.5px;color:var(--muted);margin-top:4px}
+.phase.on{border-color:var(--red);background:var(--red-soft)}.phase.on .pn{background:var(--red);border-color:var(--red);color:#fff}
+.phase.past .pn{background:var(--ink);border-color:var(--ink);color:#fff}
+.btiles{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.btile{border:1px solid var(--line2);border-radius:12px;padding:10px 12px;cursor:pointer;min-width:0}
+.btile:hover{border-color:var(--ink2)}.btile.extra{border-style:dashed}
+.btile .t{font-weight:700;font-size:14px}.btile .s{font-size:12px;color:var(--muted)}
+.sech{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.rtable tr.grp td{font-weight:700;background:var(--ph);font-size:13px}
+.cake.prep .seg path{stroke-dasharray:6 4}
+.cake .ckc{fill:#fff;stroke:#b9b9c3;stroke-width:1.2}
+.cake .ckf{fill:var(--red)}
 .common-strip{display:flex;align-items:center;gap:12px;justify-content:space-between;border:1px dashed var(--line);border-radius:12px;padding:10px 14px;margin-top:12px;cursor:pointer}
 .common-strip:hover{border-color:var(--ink2)}
 
@@ -309,6 +324,9 @@ h1,h2,h3{line-height:1.15;margin:0}
 
 /* ---------- mobile (container) ---------- */
 @container (max-width:760px){
+  .phases{grid-template-columns:1fr;gap:6px}
+  .phase{padding:8px 12px}.phase .px{display:none}
+  .btiles{grid-template-columns:repeat(2,1fr)}
   .wrap{padding:0 16px}
   .nav,.sh .right .pchip .t{display:none}
   .burger{display:block}
@@ -416,7 +434,7 @@ h1,h2,h3{line-height:1.15;margin:0}
 </head>
 <body>
 <header class="chrome">
-  <div class="brand"><span class="mtsbox">МТС</span><span>33 удовольствия</span><span class="ver">Прототип и ТЗ · v0.2 · 01.10.2026</span></div>
+  <div class="brand"><span class="mtsbox">МТС</span><span>33 удовольствия</span><span class="ver"></span></div>
   <nav class="tabs"><button data-tab="proto" class="on">Прототип</button><button data-tab="tz">Техническое задание</button></nav>
 </header>
 
@@ -461,7 +479,7 @@ h1,h2,h3{line-height:1.15;margin:0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.4',
+  version: '0.5',
   updated: '01.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
@@ -499,8 +517,8 @@ const BLOCKS = [
     desc: 'Получить и подарить признательность, почувствовать себя частью большой команды.', cake: true },
   { id: 'team',  name: 'Работаем вместе',   section: 'Сборка',           lines: ['Работаем', 'вместе'],   tagline: 'Удовольствие от совместного времяпрепровождения',
     desc: 'Командная активность, реализованная с помощью ИИ.', cake: true },
-  { id: 'common', name: 'Общее и сюрпризы', section: null, lines: [], tagline: 'Удовольствия вне блоков',
-    desc: 'Регистрация и задания-сюрпризы. В ЛК — отдельный, шестой раздел прогресса.', cake: false },
+  { id: 'common', name: 'Задания-сюрпризы', section: null, lines: ['Сюрпризы'], tagline: 'Удовольствия вне торта',
+    desc: 'Регистрация, спрятанная свечка и другие неанонсированные задания — появляются неожиданно. Шестой блок: не часть торта, но удовольствия идут в общие 33.', cake: false },
   { id: 'stream', name: 'Онлайн-эфир',      section: null, lines: [], tagline: '34-е удовольствие',
     desc: 'Эфир 28.10 — «тридцать четвёртое удовольствие, которое нельзя получить на платформе». Баллы за участие есть, удовольствий нет.', cake: false },
 ];
@@ -514,7 +532,7 @@ const BLOCKS = [
    to  — дата «до» (необязательно; по умолчанию — до конца кампании)
    --------------------------------------------------------------------- */
 const ACTS = [
-  // ---------- Общее и сюрпризы ----------
+  // ---------- Задания-сюрпризы (шестой блок) ----------
   { id: 'reg', block: 'common', title: 'Регистрация', type: 'system', from: '2026-10-21', max: 1, pl: 1, pts: { kind: 'fixed', v: 0 }, status: 'client',
     desc: 'Удовольствие начисляется автоматически после регистрации.',
     notes: ['Можно ли называть «удовольствием» нецелевое действие — вопрос копирайта к клиенту. Если нельзя, это удовольствие переносим в другую активность.'] },
@@ -629,6 +647,15 @@ const DEMO_DATES = [
   { v: '2026-10-28', l: '28.10 — день эфира' },
   { v: '2026-11-04', l: '04.11 — вторая неделя' },
   { v: '2026-11-12', l: '12.11 — платформа завершена' },
+];
+
+/* ---------------------------------------------------------------------
+   ЭТАПЫ ПРАЗДНИКА (сюжет торта). Задания, открывшиеся в день эфира и позже, относятся к «Едим торт».
+   --------------------------------------------------------------------- */
+const PHASES = [
+  { id: 'prep', title: 'Готовим торт',   from: '2026-10-21', to: '2026-10-27', desc: 'Неделя до эфира: открываются базовые активности, торт «допекается».' },
+  { id: 'blow', title: 'Задуваем свечу', from: '2026-10-28', to: '2026-10-28', desc: 'День эфира — кульминация праздника. Нельзя есть торт, пока не задули свечу.' },
+  { id: 'eat',  title: 'Едим торт',      from: '2026-10-29', to: '2026-11-11', desc: 'Две недели после эфира: основные активности, обновления контента, сюрпризы, розыгрыши.' },
 ];
 
 /* ---------------------------------------------------------------------
@@ -760,7 +787,7 @@ const MECH = {
 const SCREENS = [
   { id: 'landing', route: 'landing', title: 'Лендинг (гость)',
     purpose: 'Первое, что видит сотрудник по ссылке: суть праздника и вход в регистрацию.',
-    elements: ['Шапка: логотип МТС, «О проекте», «Призы», «Правила», «FAQ», кнопки «Войти» и «Регистрация».', 'Первый экран: «33 года — все 33 удовольствия!», даты, торт из 5 частей, кнопки «Зарегистрироваться» и «Войти».', '«Как это работает» — 3 шага.', 'Пять блоков: название, раздел торта, описание.', 'Анонс эфира 28.10 и призов.', 'Подвал: правила, FAQ, техподдержка, политика обработки персональных данных.'],
+    elements: ['Шапка: логотип МТС, «О проекте», «Призы», «Правила», «FAQ», кнопки «Войти» и «Регистрация».', 'Первый экран: «33 года — все 33 удовольствия!», даты, торт из 5 частей (вид — по текущему этапу), кнопки «Зарегистрироваться» и «Войти».', '«Как это работает» — 3 шага.', '«Как устроен праздник» — 3 этапа: «Готовим торт», «Задуваем свечу», «Едим торт», с датами; текущий выделен.', 'Шесть блоков: 5 частей торта + «Задания-сюрпризы» — название, раздел торта, описание.', 'Анонс эфира 28.10 и призов.', 'Подвал: правила, FAQ, техподдержка, политика обработки персональных данных.'],
     states: ['Кампания идёт — регистрация открыта.', 'Кампания завершена — регистрация закрыта, плашка «Праздник завершён».'] },
   { id: 'register', route: 'register', title: 'Регистрация',
     purpose: 'Создание аккаунта по корпоративной почте.',
@@ -776,24 +803,24 @@ const SCREENS = [
     states: ['Почта не найдена — показываем тот же экран «Если аккаунт существует, мы отправили письмо».'] },
   { id: 'home', route: 'home', title: 'Главная (участник)',
     purpose: 'Торт прогресса и быстрый вход в доступные задания.',
-    elements: ['Баннер счастливого часа с обратным отсчётом (если активен).', 'Баннер эфира: до эфира — отсчёт, в день эфира — «Смотреть эфир».', 'Прогресс: «N из 33 удовольствий», шкала, баллы, место в рейтинге, ссылка «Мой прогресс».', 'Торт из 5 частей: в каждой точки-удовольствия (закрашены собранные) и счётчик. Клик по части → страница блока.', 'Раздел «Общее и сюрпризы» — отдельная плашка под тортом.', '«Доступно сейчас» и «Скоро откроется» — карточки активностей.'],
+    elements: ['Баннер счастливого часа с обратным отсчётом (если активен).', 'Баннер эфира: до эфира — отсчёт, в день эфира — «Смотреть эфир».', 'Прогресс: «N из 33 удовольствий», шкала, баллы, место в рейтинге, ссылка «Мой прогресс».', 'Шкала этапов: «Готовим торт» (21–27.10) → «Задуваем свечу» (28.10) → «Едим торт» (29.10–11.11). Текущий этап выделен, прошедшие отмечены.', 'Торт из 5 частей: в каждой точки-удовольствия (закрашены собранные) и счётчик. Клик по части → страница блока. Вид торта зависит от этапа: до эфира — «готовится» (пунктир), в день эфира — горят свечи, после — свечи задуты и вынут кусок.', 'Шесть блоков — плитки с прогрессом: 5 частей торта + «Задания-сюрпризы». Клик → страница блока.', '«Доступно сейчас» и «Скоро откроется» — карточки активностей.', 'Мини-рейтинг: топ-5, строка «Ты» с местом, ссылка на полный рейтинг.'],
     states: ['Новичок (0 из 33).', 'Частичный прогресс.', 'Все 33 собраны — поздравление и участие в розыгрыше.', 'Платформа завершена — см. «Финальное состояние».'] },
   { id: 'block', route: 'block/work', title: 'Страница блока',
     purpose: 'Все активности одного блока торта.',
     elements: ['Хлебные крошки, название блока и раздела торта, подзаголовок, прогресс блока.', 'Карточки активностей: название, описание, удовольствия, баллы, даты, статус, кнопка.'],
-    states: ['Статусы карточек — см. «Доступность и начисления».', 'Раздел «Общее и сюрпризы»: скрытые задания показываются как «???», пока не выполнены.'] },
+    states: ['Статусы карточек — см. «Доступность и начисления».', 'Блок «Задания-сюрпризы»: скрытые задания показываются как «???», пока не выполнены.'] },
   { id: 'activity', route: 'act/recipe', title: 'Страница активности (общий каркас)',
     purpose: 'Единая обёртка для всех механик.',
     elements: ['Хлебные крошки, название, подзаголовок, чипы: удовольствия, баллы, даты, статус.', 'Плашка счастливого часа, если на активность действует бустер.', 'Тело — по типу механики (см. «Механики»).'],
     states: ['«Скоро» — плашка «Откроется ДД.ММ» и описание.', '«Закрыто» — «Сначала пройди «…»» со ссылкой.', '«Завершено» или «Платформа завершена» — только просмотр.'] },
   { id: 'progress', route: 'progress', title: 'Мой прогресс',
     purpose: 'Табель удовольствий: что собрано и куда идти за остальным.',
-    elements: ['Итог: «N из 33», баллы, место в рейтинге.', 'Шесть колонок: 5 блоков + «Общее и сюрпризы». В каждой — точки-удовольствия и список активностей с названием, статусом и ссылкой «Перейти».', 'Скрытые сюрпризы — «???», пока не найдены.'],
+    elements: ['Итог: «N из 33», баллы, место в рейтинге.', 'Шесть колонок: 5 частей торта + «Задания-сюрпризы». В каждой — точки-удовольствия и список активностей с названием, статусом и ссылкой «Перейти».', 'Скрытые сюрпризы — «???», пока не найдены.'],
     states: [],
     notes: ['В референсе из презентации только кружочки без подписей — так неудобно: непонятно, что осталось пройти. Нужны названия и переход сразу к непройденному.'] },
   { id: 'rating', route: 'rating', title: 'Рейтинг',
     purpose: 'Турнирная таблица по баллам.',
-    elements: ['Топ участников: место, имя, регион или компания, баллы, удовольствия.', 'Строка «Ты» с местом, даже если вне топа.'],
+    elements: ['Топ участников: место, имя, регион или компания, баллы, удовольствия.', 'Строка «Ты» с местом, даже если вне топа.', 'Таблица «За что начисляются баллы»: по блокам — активность, баллы, сколько раз можно выполнить. Строится из реестра; скрытые сюрпризы — «???», пока не найдены.'],
     states: ['Пустой рейтинг на старте.'] },
   { id: 'prizes', route: 'prizes', title: 'Призы',
     purpose: 'Что и как разыгрывается.',
@@ -821,7 +848,8 @@ const SCREENS = [
    ОТКРЫТЫЕ ВОПРОСЫ
    --------------------------------------------------------------------- */
 const QUESTIONS = [
-  { to: 'client', text: 'Подтвердить структуру из 5 блоков: «Работу» и «Обучение» объединили, добавили «Работаем вместе». Это отличается от первой версии.', ref: 'summary' },
+  { to: 'client', text: 'Подтвердить структуру: 5 частей торта + шестой блок «Задания-сюрпризы» вне торта. «Работу» и «Обучение» объединили, добавили «Работаем вместе» — это отличается от первой версии.', ref: 'summary' },
+  { to: 'client', text: 'Раздел видео-поздравлений топ-менеджмента (был в тендере): нужен ли на платформе. Сейчас в концепции и ТЗ его нет.', ref: 'summary' },
   { to: 'client', text: 'Период работы платформы: 21.10–11.11 (неделя до эфира и две после) вместо 14–28.10 из презентации. Запуск ~21.10 с регистрацией, 2–3 активностями и плеером.', ref: 'timeline' },
   { to: 'client', text: 'Полный актуальный список доменов корпоративной почты МТС и дочерних компаний — сразу весь.', ref: 'auth' },
   { to: 'client', text: 'Справочники для регистрации: регионы, компании.', ref: 'auth' },
@@ -850,6 +878,13 @@ const QUESTIONS = [
 ];
 
 const CHANGELOG = [
+  { v: '0.5', date: '01.10.2026', items: [
+    'Шестой блок «Задания-сюрпризы» (бывш. «Общее и сюрпризы»): карточка наравне с частями торта на главной и лендинге, тексты ТЗ — под 6 блоков.',
+    'Этапы праздника «Готовим торт → Задуваем свечу → Едим торт»: шкала на главной и лендинге, состояние торта по этапу, этап в карточке активности. Данные — в PHASES.',
+    'Рейтинг: мини-рейтинг (топ-5 + «Ты») на главной; на экране «Рейтинг» — таблица «За что начисляются баллы» из реестра.',
+    'Вопрос клиенту: нужен ли раздел видео-поздравлений топ-менеджмента из тендера.',
+    'Шапка прототипа показывает актуальную версию из PROJECT.',
+  ] },
   { v: '0.4', date: '01.10.2026', items: ['ТЗ: убран раздел «Источники».'] },
   { v: '0.3', date: '01.10.2026', items: ['ТЗ: убраны упоминания сторонних проектов и имён команды.'] },
   { v: '0.2', date: '01.10.2026', items: ['Прототип: техническая кнопка «Демо: пропустить регистрацию» на экранах гостя (лендинг, регистрация, вход, восстановление пароля) — сразу входит участником. Это не функционал сайта, в разработку не идёт.'] },
@@ -997,11 +1032,13 @@ function arcPath(cx, cy, r0, r1, a0, a1) {
 }
 function cakeSVG(withProgress) {
   const bl = BLOCKS.filter(b => b.cake); const n = bl.length; const cx = 200, cy = 200;
-  let s = `<svg class="cake" viewBox="0 0 400 400" role="img" aria-label="Торт из ${n} частей">`;
+  const ph = ended() ? 'eat' : phaseOf(S.date).id;
+  let s = `<svg class="cake ${ph}" viewBox="0 0 400 400" role="img" aria-label="Торт из ${n} частей">`;
   bl.forEach((b, i) => {
     const a0 = -90 + i * 360 / n + 1.2, a1 = -90 + (i + 1) * 360 / n - 1.2;
     const st = blockStats(b.id); const got = withProgress ? st.got : 0;
-    s += `<g class="seg" data-go="${S.auth ? 'block/' + b.id : 'register'}"><path d="${arcPath(cx, cy, 48, 192, a0, a1)}"/>`;
+    const [tx, ty] = pol(0, 0, ph === 'eat' && i === 0 ? 12 : 0, (a0 + a1) / 2);
+    s += `<g class="seg" transform="translate(${tx.toFixed(1)} ${ty.toFixed(1)})" data-go="${S.auth ? 'block/' + b.id : 'register'}"><path d="${arcPath(cx, cy, 48, 192, a0, a1)}"/>`;
     let placed = 0, k = 0;
     for (const rad of [70, 94, 118, 142]) {
       if (placed >= st.max) break;
@@ -1016,8 +1053,9 @@ function cakeSVG(withProgress) {
     b.lines.forEach((ln, li) => { s += `<text class="segl" x="${lx.toFixed(1)}" y="${(ly - 8 + li * 14 - (b.lines.length - 1) * 7).toFixed(1)}" text-anchor="middle">${esc(ln)}</text>`; });
     s += `<text class="segn" x="${lx.toFixed(1)}" y="${(ly + 10 + (b.lines.length - 1) * 7).toFixed(1)}" text-anchor="middle">${withProgress ? got + ' из ' : ''}${st.max}</text></g>`;
   });
-  s += `<circle class="core" cx="${cx}" cy="${cy}" r="42"/><text class="core33" x="${cx}" y="${cy + 11}" text-anchor="middle">33</text></svg>`;
-  return s;
+  s += `<circle class="core" cx="${cx}" cy="${cy}" r="42"/><text class="core33" x="${cx}" y="${cy + 15}" text-anchor="middle">33</text>`;
+  if (ph !== 'prep') [188, 200, 212].forEach(x => { s += `<rect class="ckc" x="${x - 2.5}" y="${cy - 26}" width="5" height="16" rx="1.5"/>`; if (ph === 'blow') s += `<ellipse class="ckf" cx="${x}" cy="${cy - 31}" rx="3" ry="4.5"/>`; });
+  return s + '</svg>';
 }
 
 /* ---------- каркас сайта ---------- */
@@ -1061,8 +1099,41 @@ function arow(a) {
   const st = actState(a); const secret = a.hidden && st !== 'done';
   if (secret) return `<div class="arow" style="border-style:dashed;cursor:default"><div class="ph ico">?</div><div class="grow"><div class="t">??? Секретное задание</div><div class="d">Появится неожиданно. Следи за платформой.</div><div class="meta">${plChip(a)}</div></div></div>`;
   return `<div class="arow" data-go="act/${a.id}"><div class="ph ico">${ICO[a.type] || ''}</div><div class="grow"><div class="t">${esc(a.title)}</div><div class="d">${esc(a.desc)}</div>
-    <div class="meta">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span>${stateChip(a)}</div></div>
+    <div class="meta">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span><span class="chip">${esc(actPhase(a).title)}</span>${stateChip(a)}</div></div>
     <div class="side">${['open', 'partial'].includes(st) ? '<span class="btn sm red">Выполнить</span>' : '<span class="btn sm ghost">Открыть</span>'}</div></div>`;
+}
+
+/* ---------- этапы, блоки, рейтинг ---------- */
+const phaseOf = d => PHASES.find(p => d >= p.from && d <= p.to) || (d < PHASES[0].from ? PHASES[0] : PHASES[PHASES.length - 1]);
+const actPhase = a => a.from < PROJECT.stream ? PHASES[0] : PHASES[2];
+function phaseStrip() {
+  const cur = phaseOf(S.date); const ci = PHASES.indexOf(cur); const off = ended();
+  return `<div class="phases">${PHASES.map((p, i) => `<div class="phase ${!off && i === ci ? 'on' : ''} ${off || i < ci ? 'past' : ''}"><div class="pn">${off || i < ci ? '✓' : i + 1}</div><div><div class="pt">${esc(p.title)}</div><div class="pd">${p.from === p.to ? dm(p.from) : dm(p.from) + '–' + dm(p.to)}</div><div class="px">${esc(p.desc)}</div></div></div>`).join('')}</div>`;
+}
+function cakeCaption() {
+  const t = { prep: 'Готовим торт: собирай удовольствия — торт допекается', blow: 'Сегодня на эфире задуваем свечу', eat: 'Едим торт! Свеча задута — основные задания открыты' }[phaseOf(S.date).id];
+  return `<div class="small muted" style="text-align:center">${t}. Нажми на часть торта, чтобы открыть задания</div>`;
+}
+function blockTiles() {
+  return `<div class="btiles">${BLOCKS.filter(b => b.id !== 'stream').map(b => { const st = blockStats(b.id);
+    return `<div class="btile ${b.cake ? '' : 'extra'}" data-go="block/${b.id}"><div class="t">${esc(b.name)}</div><div class="s">${b.section ? '«' + esc(b.section) + '»' : 'Вне торта'}</div><div class="bar"><i style="width:${st.max ? Math.round(st.got / st.max * 100) : 0}%"></i></div><div class="s">${st.got} из ${st.max}</div></div>`; }).join('')}</div>`;
+}
+const ratingTop = n => PEOPLE.slice(0, n).map((p, i) => ({ p, pts: 640 - i * 23, pl: Math.max(18, 33 - i) }));
+function ratingTable(n) {
+  return `<table class="rtable"><thead><tr><th>#</th><th>Участник</th><th class="hm">Удовольствия</th><th>Баллы</th></tr></thead><tbody>
+    ${ratingTop(n).map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.p)}</td><td class="hm">${r.pl} / ${PL_MAX}</td><td>${r.pts}</td></tr>`).join('')}
+    <tr><td colspan="4" class="muted" style="text-align:center">…</td></tr>
+    <tr class="me"><td>${totalPts() ? myPlace() : '—'}</td><td>Ты</td><td class="hm">${totalPl()} / ${PL_MAX}</td><td>${totalPts()}</td></tr></tbody></table>`;
+}
+function miniRating() {
+  return `<section class="sec"><div class="sech"><h2>Рейтинг</h2><span class="link small" data-go="rating">Весь рейтинг →</span></div>${ratingTable(5)}</section>`;
+}
+function pointsTable() {
+  const rows = BLOCKS.flatMap(b => { const acts = ACTS.filter(a => a.block === b.id && (a.pts.v || a.pts.live)); if (!acts.length) return [];
+    return [`<tr class="grp"><td colspan="3">${esc(b.name)}</td></tr>`, ...acts.map(a => { const secret = a.hidden && !isComplete(a);
+      return `<tr><td>${secret ? '??? Секретное задание' : `<span class="link" data-go="${a.block === 'stream' ? 'stream' : 'act/' + a.id}">${esc(a.title)}</span>`}</td><td>${secret ? '?' : esc(ptsLabel(a))}</td><td class="hm">${a.max > 1 ? 'до ' + a.max + ' раз' : '1 раз'}</td></tr>`; })]; });
+  return `<h2 style="margin-top:28px">За что начисляются баллы</h2><div class="muted small">В счастливый час баллы за активность умножаются. Удовольствия и баллы считаются отдельно: удовольствия — за выполнение, баллы — для рейтинга.</div>
+    <table class="rtable"><thead><tr><th>Активность</th><th>Баллы</th><th class="hm">Сколько раз</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
 }
 
 function vLanding() {
@@ -1077,11 +1148,12 @@ function vLanding() {
     ${skipBtn('margin-top:12px')}
   </div><div class="cakeside">${cakeSVG(false)}</div></section>
   <section class="sec"><h2>Как это работает</h2><div class="agrid">
-    ${[['1', 'Зарегистрируйся', 'По корпоративной почте МТС или дочерней компании.'], ['2', 'Собирай удовольствия', 'Выполняй задания в пяти частях торта. Новые открываются постепенно, пропущенные остаются доступными.'], ['3', 'Смотри эфир и участвуй в розыгрыше', `${dm(PROJECT.stream)} — ток-шоу «Без галстука». Баллы идут в рейтинг, а собравшие все 33 участвуют в розыгрыше.`]]
+    ${[['1', 'Зарегистрируйся', 'По корпоративной почте МТС или дочерней компании.'], ['2', 'Собирай удовольствия', 'Выполняй задания в пяти частях торта и лови задания-сюрпризы. Новые открываются постепенно, пропущенные остаются доступными.'], ['3', 'Смотри эфир и участвуй в розыгрыше', `${dm(PROJECT.stream)} — ток-шоу «Без галстука». Баллы идут в рейтинг, а собравшие все 33 участвуют в розыгрыше.`]]
       .map(([n, t, d]) => `<div class="acard" style="cursor:default"><div class="top"><div class="ph ico round">${n}</div><div><div class="t">${t}</div></div></div><div class="d">${d}</div></div>`).join('')}
   </div></section>
-  <section class="sec"><h2>Пять частей торта</h2><div class="agrid">
-    ${BLOCKS.filter(b => b.cake).map(b => `<div class="acard" data-go="register"><div class="top"><div class="ph ico">${esc(b.lines[0])}</div><div><div class="t">${esc(b.name)}</div><div class="s">Раздел «${esc(b.section)}» · ${blockStats(b.id).max} ${wPl(blockStats(b.id).max)}</div></div></div><div class="d">${esc(b.tagline)}. ${esc(b.desc)}</div></div>`).join('')}
+  <section class="sec"><h2>Как устроен праздник</h2>${phaseStrip()}</section>
+  <section class="sec"><h2>Шесть блоков</h2><div class="agrid">
+    ${BLOCKS.filter(b => b.id !== 'stream').map(b => `<div class="acard" data-go="register"><div class="top"><div class="ph ico">${esc(b.lines[0])}</div><div><div class="t">${esc(b.name)}</div><div class="s">${b.section ? 'Раздел «' + esc(b.section) + '»' : 'Вне торта'} · ${blockStats(b.id).max} ${wPl(blockStats(b.id).max)}</div></div></div><div class="d">${esc(b.tagline)}. ${esc(b.desc)}</div></div>`).join('')}
   </div></section>
   <section class="sec"><div class="agrid">
     <div class="acard" data-go="login"><div class="t">Онлайн-эфир ${dm(PROJECT.stream)}</div><div class="d">Ток-шоу «Без галстука» — то самое 34-е удовольствие, которое нельзя получить на платформе.</div><div class="ph" style="height:120px">KV эфира</div></div>
@@ -1092,10 +1164,9 @@ function vLanding() {
 function vHome() {
   if (ended()) return vFinal();
   const got = totalPl(); const pct = Math.round(got / PL_MAX * 100);
-  const cs = blockStats('common');
   const now = ACTS.filter(a => listable(a) && ['open', 'partial', 'pending'].includes(actState(a)));
   const soon = ACTS.filter(a => listable(a) && actState(a) === 'soon').sort((x, y) => x.from.localeCompare(y.from));
-  return `<div class="wrap">${hhBanner()}${streamBanner()}
+  return `<div class="wrap">${hhBanner()}${streamBanner()}${phaseStrip()}
   <section class="hero"><div>
     <div class="kicker"><span class="chip">${dm(PROJECT.start)}–${dm(PROJECT.end)}</span><span>Сегодня ${dm(S.date)}</span></div>
     <h1>Собери свой торт</h1>
@@ -1104,10 +1175,11 @@ function vHome() {
       <div class="num">${got} <span class="muted" style="font-size:18px;font-weight:600">/ ${PL_MAX} удовольствий</span></div>
       <div class="bar"><i style="width:${pct}%"></i></div>
       <div class="small muted">Баллы: <b style="color:var(--ink)">${totalPts()}</b> · место в рейтинге: <b style="color:var(--ink)">${totalPts() ? myPlace() : '—'}</b> · <span class="link" data-go="rating">Рейтинг</span></div></div>
-    <div class="common-strip" data-go="block/common"><span><b>Общее и сюрпризы</b> <span class="muted small">— регистрация и секретные задания</span></span><span class="chip">${cs.got} из ${cs.max}</span></div>
-  </div><div class="cakeside">${cakeSVG(true)}<div class="small muted" style="text-align:center">Нажми на часть торта, чтобы открыть задания</div></div></section>
+  </div><div class="cakeside">${cakeSVG(true)}${cakeCaption()}</div></section>
+  <section class="sec"><h2>Шесть блоков</h2>${blockTiles()}</section>
   <section class="sec"><h2>Доступно сейчас</h2>${now.length ? `<div class="agrid">${now.map(acard).join('')}</div>` : '<div class="panel center muted">Всё доступное выполнено. Новые задания скоро откроются.</div>'}</section>
   ${soon.length ? `<section class="sec"><h2>Скоро откроется</h2><div class="agrid">${soon.slice(0, 6).map(acard).join('')}</div></section>` : ''}
+  ${miniRating()}
   </div>`;
 }
 function vFinal() {
@@ -1139,7 +1211,7 @@ function vAct(id) {
   const b = B[a.block]; const st = actState(a);
   const head = `<div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / ${a.block === 'stream' ? '<a data-go="stream">Эфир</a>' : `<a data-go="block/${b.id}">${esc(b.name)}</a>`}</div>
     <h1>${esc(a.title)}</h1><div class="muted">${a.sub ? esc(a.sub) + ' · ' : ''}${esc(b.name)} ${sBadge(a)}</div>
-    <div class="chips">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span>${stateChip(a)}</div></div>`;
+    <div class="chips">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span>${a.block === 'stream' ? '' : `<span class="chip">${esc(actPhase(a).title)}</span>`}${stateChip(a)}</div></div>`;
   let body;
   if (a.hidden && st !== 'done' && a.type !== 'find') body = `<div class="panel center"><h3>??? Секретное задание</h3><p class="muted">Механика в работе. Задание появится неожиданно.</p></div>`;
   else if (st === 'soon') body = `<div class="panel center"><h3>Откроется ${dm(a.from)}</h3><p class="muted">${esc(a.desc)}</p>${demoBtn('setDate', 'перейти на ' + dm(a.from), `data-v="${a.from}"`)}</div>`;
@@ -1358,12 +1430,8 @@ function vProgress() {
   <div class="banner info"><b>Эфир ${dm(PROJECT.stream)}</b><span class="grow">34-е удовольствие — его нельзя получить на платформе. Баллы за участие в эфире идут в рейтинг.</span><button class="btn sm ghost" data-go="stream">К эфиру</button></div></div>`;
 }
 function vRating() {
-  const top = PEOPLE.slice(0, 10).map((p, i) => ({ p, pts: 640 - i * 23, pl: Math.max(18, 33 - i) }));
   return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / Рейтинг</div><h1>Рейтинг</h1><div class="muted">По сумме баллов. При равенстве выше тот, кто набрал раньше.</div></div>
-    <table class="rtable"><thead><tr><th>#</th><th>Участник</th><th class="hm">Удовольствия</th><th>Баллы</th></tr></thead><tbody>
-    ${top.map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.p)}</td><td class="hm">${r.pl} / ${PL_MAX}</td><td>${r.pts}</td></tr>`).join('')}
-    <tr><td colspan="4" class="muted" style="text-align:center">…</td></tr>
-    <tr class="me"><td>${totalPts() ? myPlace() : '—'}</td><td>Ты</td><td class="hm">${totalPl()} / ${PL_MAX}</td><td>${totalPts()}</td></tr></tbody></table></div>`;
+    ${ratingTable(10)}${pointsTable()}</div>`;
 }
 function vPrizes() {
   return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="${S.auth ? 'home' : 'landing'}">Главная</a> / Призы</div><h1>Призы</h1><div class="muted">Список призов и правила розыгрышей — на согласовании с МТС.</div></div>
@@ -1688,21 +1756,22 @@ const TZ = [
   { id: 'summary', title: 'Проект коротко', html: () => `
     ${ul([
       '<b>Что делаем:</b> онлайн-платформу с заданиями для сотрудников к 33-летию МТС и страницу онлайн-эфира 28.10.',
-      '<b>Концепция:</b> «33 года — все 33 удовольствия». Сотрудник собирает 33 «удовольствия» — отметки о выполнении заданий. Визуально это торт из пяти частей, который «допекается» по ходу кампании. Эфир — «34-е удовольствие», которое нельзя получить на платформе.',
+      '<b>Концепция:</b> «33 года — все 33 удовольствия». Сотрудник собирает 33 «удовольствия» — отметки о выполнении заданий. Визуально это торт из пяти частей, который «допекается» по ходу кампании, плюс шестой блок «Задания-сюрпризы» вне торта. Эфир — «34-е удовольствие», которое нельзя получить на платформе.',
       '<b>Аудитория:</b> сотрудники МТС и дочерних компаний. По тендеру — до 20 000 уникальных участников.',
       '<b>Устройства:</b> ПК и мобильный браузер, адаптивная вёрстка.',
       '<b>Не делаем:</b> SSO и корпоративную авторизацию (регистрация по корпоративной почте), CMS (только админ-панель), магазин призов, офлайн-часть.',
     ])}
-    <h3>Структура торта</h3>
+    <h3>Структура: 5 частей торта + «Задания-сюрпризы»</h3>
     ${tbl(['Блок', 'Раздел торта', 'Смысл', 'Удовольствий'], BLOCKS.map(b => [esc(b.name), b.section ? '«' + esc(b.section) + '»' : '— (вне торта)', esc(b.tagline), String(blockStats(b.id).max)]))}
     <p class="small muted">В первой версии было 6 блоков; «Работа» и «Обучение» объединены, добавлен «Работаем вместе». Структура — на подтверждении у клиента.</p>` },
 
   { id: 'timeline', title: 'Сроки и таймлайн', html: () => `
     <div class="callout"><b>Рабочий период: ${dm(PROJECT.start)} – ${dm(PROJECT.end)}</b>, эфир — ${dm(PROJECT.stream)}. В презентации было 14–28.10; новый период на согласовании у клиента.</div>
+    <h3>Этапы праздника</h3>
+    ${tbl(['Этап', 'Даты', 'Что происходит'], PHASES.map(p => ['<b>' + esc(p.title) + '</b>', p.from === p.to ? dm(p.from) : dm(p.from) + '–' + dm(p.to), esc(p.desc)]))}
     ${ul([
-      '<b>Неделя до эфира — «готовим торт».</b> Открываются базовые активности.',
-      '<b>28.10 — «задуваем свечу».</b> Эфир — кульминация; после него открываются основные активности.',
-      '<b>Две недели после — «едим торт».</b> Обновления контента, сюрпризы, розыгрыши.',
+      'В интерфейсе: шкала этапов на главной и лендинге (текущий выделен), вид торта по этапу, этап в карточке активности. Этап считается по текущей дате (МСК).',
+      'Задания, открывшиеся в день эфира и позже, относятся к этапу «Едим торт».',
       '<b>Минимум к запуску:</b> регистрация, 2–3 активности, встроенный плеер эфира.',
     ])}
     ${gantt()}` },
@@ -1724,7 +1793,7 @@ const TZ = [
     <p>Основные сущности. Поля — минимально необходимые, разработка может расширять.</p>
     ${tbl(['Сущность', 'Ключевые поля', 'Комментарий'], [
       ['Пользователь', 'имя, фамилия, email (уникальный), хэш пароля, регион, компания, роль (участник / модератор / админ), дата регистрации, блокировка', 'Регион и компания — из справочников.'],
-      ['Блок', 'название, раздел торта, подзаголовок, порядок, показывать на торте', '5 блоков торта + «Общее и сюрпризы» + «Эфир».'],
+      ['Блок', 'название, раздел торта, подзаголовок, порядок, показывать на торте', '5 частей торта + «Задания-сюрпризы» + «Эфир».'],
       ['Активность', 'блок, тип механики, режим, название, описание, дата «от», дата «до» (необяз.), зависимость (id), лимит выполнений, удовольствий за выполнение, правило баллов + значение, скрытая, порядок, настройки механики (JSON)', 'Ядро. Настройки механики: вопросы квиза, видео, заготовки АПОЖ, главы истории и т.п.'],
       ['Выполнение', 'пользователь, активность, № попытки, статус (в процессе / на модерации / засчитано / отклонено), результат (счёт, ответы), даты', 'Засчитанные выполнения ≤ лимита.'],
       ['Журнал начислений', 'пользователь, активность, выполнение, удовольствия ±, баллы ±, множитель, источник (авто / модератор / админ), дата', 'Баланс и рейтинг — сумма журнала. Ручные корректировки — тоже записи.'],
@@ -1819,7 +1888,7 @@ const TZ = [
     <h3>Шкала баллов (из презентации)</h3>
     ${tbl(['Баллы', 'Уровень', 'Примеры'], [['10', 'простые', 'благодарность, просмотр видео-разминки'], ['20', 'средние', 'выпуск квиза, рубеж в сайдскроллере, роль в АПОЖ'], ['30', 'сложные и творческие', 'талант-шоу, «Секретный рецепт»']])}
     <p>Конкретные значения по активностям — в <a data-tz="registry">реестре</a>. Серийный множитель «несколько дней подряд» из презентации не делаем.</p>
-    <h3>Рейтинг</h3>${ul(['Сумма баллов из журнала начислений. При равенстве выше тот, кто набрал раньше (рабочий вариант).', 'Экран: топ участников + строка «Ты» с местом.', 'Рейтинг кэшируем (пересчёт раз в N минут), чтобы не считать на каждый запрос при 20 000 пользователей (рабочий вариант).'])}
+    <h3>Рейтинг</h3>${ul(['Сумма баллов из журнала начислений. При равенстве выше тот, кто набрал раньше (рабочий вариант).', 'Экран: топ участников + строка «Ты» с местом + таблица «За что начисляются баллы» (из реестра). На главной — мини-рейтинг: топ-5 и строка «Ты».', 'Рейтинг кэшируем (пересчёт раз в N минут), чтобы не считать на каждый запрос при 20 000 пользователей (рабочий вариант).'])}
     <h3>Призы и розыгрыши</h3>${ul(['Два розыгрыша: по баллам (топ или случайно среди топ-N) и среди собравших все 33 удовольствия. Условия — на согласовании.', 'Магазина призов нет.', 'В админке — выгрузки для розыгрышей: топ по баллам, список собравших 33.'])}` },
 
   { id: 'notify', title: 'Уведомления и рассылки', html: () => `
@@ -2010,6 +2079,7 @@ document.addEventListener('DOMContentLoaded', () => {
   else { render(); showTab('proto'); }
 });
 
+document.querySelector('.chrome .ver').textContent = `Прототип и ТЗ · v${PROJECT.version} · ${PROJECT.updated}`;
 </script>
 </body>
 </html>
