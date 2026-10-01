@@ -6,10 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>МТС · 33 удовольствия — прототип и ТЗ</title>
 <!--
-  Кликабельный прототип + ТЗ в одном файле. Версия 0.2 от 01.10.2026.
+  Кликабельный прототип + ТЗ в одном файле. Версия — в PROJECT.version.
   Как вносить правки: данные (блоки, активности, механики, экраны, вопросы) — в объектах
   PROJECT / BLOCKS / ACTS / MECH / SCREENS / QUESTIONS; обе вкладки строятся из них.
-  Любая правка прототипа = правка данных/текста ТЗ + запись в CHANGELOG.
+  Любая правка прототипа = правка данных/текста ТЗ + запись в CHANGELOG
+  (она видна на вкладке «История изменений»). Правила работы — в README.md.
 -->
 <style>
 :root{
@@ -35,7 +36,9 @@ a{color:inherit}
 .tabs{margin-left:auto;display:flex;gap:4px;background:#26262e;padding:4px;border-radius:10px}
 .tabs button{border:0;background:transparent;color:#c9c9d1;padding:6px 14px;border-radius:7px;cursor:pointer;font-weight:500;white-space:nowrap}
 .tabs button.on{background:#fff;color:var(--chrome)}
+.tabs .sm{display:none}
 @media (max-width:720px){.chrome .brand .ver{display:none}.tabs button{padding:6px 10px}}
+@media (max-width:900px){.tabs .lg{display:none}.tabs .sm{display:inline}}
 @media (max-width:520px){.chrome .brand span:not(.mtsbox){display:none}.chrome{gap:8px;padding:0 10px}}
 
 /* ---------- Prototype tab ---------- */
@@ -352,7 +355,12 @@ h1,h2,h3{line-height:1.15;margin:0}
 @container (max-width:420px){ .gal{grid-template-columns:1fr} }
 
 /* ---------- TZ tab ---------- */
-#tab-tz{flex:1;min-height:0;display:flex;background:#fff}
+#tab-tz,#tab-log{flex:1;min-height:0;display:flex;background:#fff}
+.logv{border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:14px 0}
+.tzin .logv h3{margin:0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.logv h3 .d{color:var(--muted);font-weight:400;font-size:14px}
+.logv.cur{border-color:var(--ink)}
+.logv ul{margin:8px 0 0}
 .tznav{flex:none;width:290px;border-right:1px solid var(--line);overflow:auto;padding:14px 10px 40px;background:#fafafb;font-size:13.5px}
 .tznav .search{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin:0 0 10px;background:#fff}
 .tznav a{display:block;text-decoration:none;color:var(--ink2);padding:5px 10px;border-radius:7px;cursor:pointer;line-height:1.3}
@@ -436,7 +444,7 @@ h1,h2,h3{line-height:1.15;margin:0}
 <body>
 <header class="chrome">
   <div class="brand"><span class="mtsbox">МТС</span><span>33 удовольствия</span><span class="ver"></span></div>
-  <nav class="tabs"><button data-tab="proto" class="on">Прототип</button><button data-tab="tz">Техническое задание</button></nav>
+  <nav class="tabs"><button data-tab="proto" class="on">Прототип</button><button data-tab="tz"><span class="lg">Техническое задание</span><span class="sm">ТЗ</span></button><button data-tab="log"><span class="lg">История изменений</span><span class="sm">История</span></button></nav>
 </header>
 
 <section id="tab-proto">
@@ -462,6 +470,10 @@ h1,h2,h3{line-height:1.15;margin:0}
   </div>
 </section>
 
+<section id="tab-log" hidden>
+  <main class="tzdoc" id="logdoc"></main>
+</section>
+
 <section id="tab-tz" hidden>
   <aside class="tznav" id="tznav"></aside>
   <main class="tzdoc" id="tzdoc"></main>
@@ -480,7 +492,7 @@ h1,h2,h3{line-height:1.15;margin:0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.9',
+  version: '0.10',
   updated: '01.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
@@ -857,6 +869,10 @@ const QUESTIONS = [
 ];
 
 const CHANGELOG = [
+  { v: '0.10', date: '01.10.2026', items: [
+    'Новая вкладка «История изменений» рядом с «Прототипом» и «Техническим заданием» (адрес …/#log). Раньше история была последним разделом ТЗ.',
+    'В репозитории появился README: что это за проект, как устроены файлы и правила работы для людей и нейросетей (сначала pull, проверка страницы, запись сюда, deploy и push).',
+  ] },
   { v: '0.9', date: '01.10.2026', items: ['«Настоящие сладости»: кому — свободный ввод имени коллеги, без выбора из списка участников. Благодарность не привязана к аккаунту получателя — он видит её на общей стене.'] },
   { v: '0.8', date: '01.10.2026', items: ['Регистрация: подтверждение почты кодом из письма — решено. В прототипе после формы — шаг ввода кода (неверный код, «Отправить код ещё раз»).'] },
   { v: '0.7', date: '01.10.2026', items: ['Восстановление пароля: без ссылок и кодов — участник вводит почту, мы отправляем новый пароль на почту. Сменить его можно в профиле.'] },
@@ -1882,10 +1898,12 @@ const TZ = [
       <h3>Внутри команды</h3><ol class="qlist">${QUESTIONS.filter(q => q.to === 'team').map(li).join('')}</ol>
       <p class="small muted">Открытые моменты по конкретным заданиям — в заметках к ним в разделе <a data-tz="acts">«Задания подробно»</a>.</p>`; } },
 
-  { id: 'changelog', title: 'История изменений', html: () => tbl(['Версия', 'Дата', 'Что изменилось'], CHANGELOG.map(c => [c.v, c.date, ul(c.items.map(esc))])) },
 ];
 
 /* ---------- рендер ТЗ ---------- */
+function renderLog() {
+  document.getElementById('logdoc').innerHTML = `<div class="tzin"><h1>История изменений</h1><p class="muted">Что менялось в прототипе и ТЗ — сверху самое новое. Сайт всегда показывает последнюю версию.</p>${CHANGELOG.map((c, i) => `<div class="logv${i ? '' : ' cur'}"><h3>v${esc(c.v)}<span class="d">${esc(c.date)}${i ? '' : ' · текущая'}</span></h3>${ul(c.items.map(esc))}</div>`).join('')}</div>`;
+}
 function renderTZ() {
   const doc = document.getElementById('tzdoc');
   doc.innerHTML = `<div class="tzin"><h1>ТЗ: ${esc(PROJECT.doc)}</h1>${TZ.map((s, i) => `<section id="${s.id}"><h2><span class="n">${i + 1}</span>${esc(s.title)}</h2>${s.html()}</section>`).join('')}</div>`;
@@ -1922,8 +1940,9 @@ function setHash(h) { try { history.replaceState(null, '', '#' + h); } catch (e)
 function showTab(t) {
   document.getElementById('tab-proto').hidden = t !== 'proto';
   document.getElementById('tab-tz').hidden = t !== 'tz';
+  document.getElementById('tab-log').hidden = t !== 'log';
   document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
-  if (t === 'tz') { setHash('tz'); tzSpy(); } else setHash('proto/' + S.route);
+  if (t === 'tz') { setHash('tz'); tzSpy(); } else if (t === 'log') setHash('log'); else setHash('proto/' + S.route);
 }
 function tzAnchor() {
   const [b, p] = S.route.split('/');
@@ -1967,7 +1986,7 @@ function buildScreenSelect() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  buildScreenSelect(); renderTZ();
+  buildScreenSelect(); renderTZ(); renderLog();
   // вкладки
   document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
   // демо-панель
@@ -2009,7 +2028,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('navtoggle').addEventListener('click', () => document.getElementById('tznav').classList.toggle('on'));
   // старт по адресу
   const h = decodeURIComponent(location.hash.slice(1));
-  if (h.startsWith('tz')) { render(); showTab('tz'); const id = h.split('/')[1]; if (id) setTimeout(() => tzGo(id), 50); }
+  if (h === 'log') { render(); showTab('log'); }
+  else if (h.startsWith('tz')) { render(); showTab('tz'); const id = h.split('/')[1]; if (id) setTimeout(() => tzGo(id), 50); }
   else if (h.startsWith('proto/')) { openInProto(h.slice(6)); }
   else { render(); showTab('proto'); }
 });
