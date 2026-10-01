@@ -12,4 +12,5 @@ for v in 0.2 0.3 0.4 $(ls MTS33_prototip_TZ_v*.html | sed -E 's/.*_v([0-9.]+)\.h
 <script>location.replace('./' + location.hash);</script></head><body><a href="./">Открыть прототип и ТЗ</a></body></html>
 HTML
 done
+node build_md.js "$latest" MTS33_opisanie_proekta.md
 echo "docs/index.html <- $latest"
