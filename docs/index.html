@@ -140,36 +140,23 @@ h1,h2,h3{line-height:1.15;margin:0}
 .hero h1{font-size:44px;letter-spacing:-.01em;margin:10px 0 12px}
 .hero p{color:var(--ink2);margin:0 0 18px;max-width:520px}
 .hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
-.cake{width:100%;max-width:440px;display:block;margin:0 auto}
-.cake .seg path{fill:#f6f6f8;stroke:#c7c7cf;stroke-width:1.5;cursor:pointer;transition:fill .15s}
-.cake .seg:hover path{fill:#fff0f3}
-.cake .dot{fill:#fff;stroke:#b9b9c3;stroke-width:1.5;pointer-events:none}
-.cake .dot.on{fill:var(--red);stroke:var(--red)}
-.cake text{pointer-events:none;font-family:var(--font)}
-.cake .segl{font-size:12.5px;font-weight:600;fill:var(--ink)}
-.cake .segn{font-size:11.5px;fill:var(--muted)}
-.cake .core{fill:#fff;stroke:#c7c7cf;stroke-width:1.5}
-.cake .core33{font-size:30px;font-weight:800;fill:var(--red)}
+.ph.kv{height:320px;border-radius:18px}
+/* активность: вкладки заданий */
+.gtabs{display:flex;gap:6px;overflow-x:auto;margin:14px 0 6px;padding-bottom:4px}
+.gtabs a{flex:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;color:var(--ink2);text-decoration:none;background:#fff}
+.gtabs a:hover{border-color:var(--ink2)}
+.gtabs a.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.gtabs a.dim{opacity:.55}
+.gtabs a .m{margin-left:6px;font-weight:400}
+.task-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:16px}
+.task-h h2{margin:0;font-size:20px}
 .pcard{border:1px solid var(--line);border-radius:14px;padding:14px 16px;max-width:520px;margin-top:6px}
 .pcard .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .pcard .num{font-size:28px;font-weight:800}
 .bar{height:8px;background:var(--ph2);border-radius:5px;overflow:hidden;margin:8px 0}
 .bar i{display:block;height:100%;background:var(--red);border-radius:5px}
-.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.phase{display:flex;gap:10px;border:1px solid var(--line2);border-radius:12px;padding:10px 12px;background:#fff}
-.phase .pn{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
-.phase .pt{font-weight:700}.phase .pd{font-size:12px;color:var(--muted)}.phase .px{font-size:12.5px;color:var(--muted);margin-top:4px}
-.phase.on{border-color:var(--red);background:var(--red-soft)}.phase.on .pn{background:var(--red);border-color:var(--red);color:#fff}
-.phase.past .pn{background:var(--ink);border-color:var(--ink);color:#fff}
-.btiles{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-.btile{border:1px solid var(--line2);border-radius:12px;padding:10px 12px;cursor:pointer;min-width:0}
-.btile:hover{border-color:var(--ink2)}.btile.extra{border-style:dashed}
-.btile .t{font-weight:700;font-size:14px}.btile .s{font-size:12px;color:var(--muted)}
 .sech{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .rtable tr.grp td{font-weight:700;background:var(--ph);font-size:13px}
-.cake.prep .seg path{stroke-dasharray:6 4}
-.cake .ckc{fill:#fff;stroke:#b9b9c3;stroke-width:1.2}
-.cake .ckf{fill:var(--red)}
 .common-strip{display:flex;align-items:center;gap:12px;justify-content:space-between;border:1px dashed var(--line);border-radius:12px;padding:10px 14px;margin-top:12px;cursor:pointer}
 .common-strip:hover{border-color:var(--ink2)}
 
@@ -328,9 +315,6 @@ h1,h2,h3{line-height:1.15;margin:0}
 
 /* ---------- mobile (container) ---------- */
 @container (max-width:760px){
-  .phases{grid-template-columns:1fr;gap:6px}
-  .phase{padding:8px 12px}.phase .px{display:none}
-  .btiles{grid-template-columns:repeat(2,1fr)}
   .wrap{padding:0 16px}
   .nav,.sh .right .pchip .t{display:none}
   .burger{display:block}
@@ -338,8 +322,7 @@ h1,h2,h3{line-height:1.15;margin:0}
   .mmenu a{padding:10px 0;border-bottom:1px solid var(--line2);cursor:pointer}
   .hero{grid-template-columns:1fr;gap:12px;padding-top:18px}
   .hero h1{font-size:30px}
-  .hero .cakeside{order:-1}
-  .cake{max-width:320px}
+  .hero .heroside{order:-1}
   .pg-h h1{font-size:24px}
   .pgrid{grid-template-columns:1fr}
   .row2{grid-template-columns:1fr}
@@ -395,6 +378,7 @@ h1,h2,h3{line-height:1.15;margin:0}
 .tbl th{background:#f6f6f8;font-weight:600;font-size:12px}
 .tbl td.num,.tbl th.num{text-align:center;white-space:nowrap}
 .tbl tr.blk td{background:#fafafb;font-weight:700}
+.tbl tr.gsub td{font-weight:600;color:var(--ink2);font-size:12px}
 .tbl tr.tot td{background:var(--ink);color:#fff;font-weight:700}
 .tbl a{color:var(--ink);cursor:pointer}
 .tblwrap{overflow-x:auto}
@@ -492,12 +476,13 @@ h1,h2,h3{line-height:1.15;margin:0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.11',
+  version: '0.12',
   updated: '01.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
   stream: '2026-10-28',
   pleasuresTotal: 33,
+  email: '[почта для вопросов — согласуется]',
 };
 
 /* Статусы проработки (для ТЗ и бейджей в прототипе) */
@@ -520,20 +505,41 @@ const STATES = {
 };
 
 const BLOCKS = [
-  { id: 'work',  name: 'Работа и обучение', section: 'Начинка',          lines: ['Работа', 'и обучение'], tagline: 'Удовольствие от новых открытий',
-    desc: 'Поделиться опытом, узнавать компанию в нестандартных форматах, получать заряд от забавных игр.', cake: true },
-  { id: 'sport', name: 'Спорт',             section: 'Форма',            lines: ['Спорт'],                tagline: 'Удовольствие от движения',
-    desc: 'Лёгкость после разминки, заряд от игровой активности, ментальный отдых.', cake: true },
-  { id: 'art',   name: 'Творчество',        section: 'Изюминка',         lines: ['Творчество'],           tagline: 'Удовольствие от самовыражения',
-    desc: 'Поделиться талантами, получить поддержку коллег, почерпнуть новое.', cake: true },
-  { id: 'good',  name: 'Добро',             section: 'Вишенка на торте', lines: ['Добро'],                tagline: 'Удовольствие от добрых дел',
-    desc: 'Получить и подарить признательность, почувствовать себя частью большой команды.', cake: true },
-  { id: 'team',  name: 'Работаем вместе',   section: 'Сборка',           lines: ['Работаем', 'вместе'],   tagline: 'Удовольствие от совместного времяпрепровождения',
-    desc: 'Командная активность, реализованная с помощью ИИ.', cake: true },
-  { id: 'common', name: 'Задания-сюрпризы', section: null, lines: ['Сюрпризы'], tagline: 'Удовольствия вне торта',
-    desc: 'Регистрация, спрятанная свечка и другие неанонсированные задания — появляются неожиданно. Шестой блок: не часть торта, но удовольствия идут в общие 33.', cake: false },
-  { id: 'stream', name: 'Онлайн-эфир',      section: null, lines: [], tagline: '34-е удовольствие',
-    desc: 'Эфир 28.10 — «тридцать четвёртое удовольствие, которое нельзя получить на платформе». Баллы за просмотр есть, удовольствий нет.', cake: false },
+  { id: 'work',   name: 'Работа и обучение', tagline: 'Удовольствие от новых открытий',
+    desc: 'Поделиться опытом, узнавать компанию в нестандартных форматах, получать заряд от забавных игр.' },
+  { id: 'sport',  name: 'Спорт',             tagline: 'Удовольствие от движения',
+    desc: 'Лёгкость после разминки, заряд от игровой активности, ментальный отдых.' },
+  { id: 'art',    name: 'Творчество',        tagline: 'Удовольствие от самовыражения',
+    desc: 'Поделиться талантами, получить поддержку коллег, почерпнуть новое.' },
+  { id: 'good',   name: 'Добро',             tagline: 'Удовольствие от добрых дел',
+    desc: 'Получить и подарить признательность, почувствовать себя частью большой команды.' },
+  { id: 'team',   name: 'Работаем вместе',   tagline: 'Удовольствие от совместного времяпрепровождения',
+    desc: 'Общая история, которую пишут все участники, — с помощью ИИ.' },
+  { id: 'common', name: 'Задания-сюрпризы',  tagline: 'Удовольствие от неожиданностей',
+    desc: 'Регистрация, спрятанная свечка и другие неанонсированные задания — появляются неожиданно. Удовольствия идут в общие 33.' },
+  { id: 'stream', name: 'Онлайн-эфир',       tagline: '34-е удовольствие',
+    desc: 'Эфир 28.10 — «тридцать четвёртое удовольствие, которое нельзя получить на платформе». Баллы за просмотр есть, удовольствий нет.' },
+];
+
+/* ---------------------------------------------------------------------
+   АКТИВНОСТИ — то, что участник выбирает внутри раздела.
+   Внутри активности — её задания (id из ACTS), они идут вкладками по порядку.
+   --------------------------------------------------------------------- */
+const GROUPS = [
+  { id: 'recipe', block: 'work',  title: 'Секретный рецепт',          desc: 'Расскажи историю о своей работе в МТС — истории коллег собираются в общую ленту.', acts: ['recipe'] },
+  { id: 'quiz',   block: 'work',  title: 'Дегустация фактов',         desc: 'Квиз о МТС с объяснением после каждого ответа. Два выпуска.', acts: ['quiz1', 'quiz2'] },
+  { id: 'apozh',  block: 'work',  title: 'Какой праздник без песен',  desc: 'Повтори песню задом наперёд и угадай, что это было. Можно записать свою.', acts: ['apozh1', 'apozh2', 'apozh3'] },
+  { id: 'shine',  block: 'sport', title: 'Сиять',                     desc: 'Видео-разминки с тренером: пять коротких роликов по порядку.', acts: ['shine1', 'shine2', 'shine3', 'shine4', 'shine5'] },
+  { id: 'run',    block: 'sport', title: 'Праздничный забег',         desc: 'Мини-игра: беги, собирай и перепрыгивай препятствия. Две версии.', acts: ['run1', 'run2'] },
+  { id: 'talent', block: 'art',   title: 'Талант-шоу',                desc: 'Покажи своё хобби, поддержи номера коллег, посмотри мастер-класс.', acts: ['talent', 'talent_like', 'talent_mc'] },
+  { id: 'thanks', block: 'good',  title: 'Настоящие сладости',        desc: 'Поблагодари коллег — благодарности появляются на общей стене.', acts: ['thanks'] },
+  { id: 'vol',    block: 'good',  title: 'Угостить добром',           desc: 'Запишись в волонтёрский проект, позови коллегу, поучаствуй лично.', acts: ['vol1', 'vol2', 'vol3'] },
+  { id: 'ai',     block: 'team',  title: 'Тайна пропавшего торта',    desc: 'Общая история: голосуй, что будет дальше, и угадай виновника.', acts: ['ai1', 'ai2', 'ai3', 'ai4', 'aiguess', 'ai_read'] },
+  { id: 'reg',    block: 'common', title: 'Регистрация',              desc: 'Удовольствие за регистрацию на платформе.', acts: ['reg'] },
+  { id: 'candle', block: 'common', title: 'Пропавшая свечка',         desc: 'Спрятанная иконка свечи.', acts: ['candle'] },
+  { id: 'surprise3', block: 'common', title: 'Сюрприз №3',            desc: 'Механика не выбрана.', acts: ['surprise3'] },
+  { id: 'visit',  block: 'common', title: 'Бонус недели',             desc: 'Баллы за первый заход в неделю.', acts: ['visit'] },
+  { id: 'stream', block: 'stream', title: 'Онлайн-эфир',              desc: 'Баллы за просмотр эфира.', acts: ['st_watch'] },
 ];
 
 /* ---------------------------------------------------------------------
@@ -562,7 +568,7 @@ const ACTS = [
   // ---------- Работа и обучение («Начинка») ----------
   { id: 'recipe', block: 'work', title: 'Секретный рецепт', sub: 'Кадр в истории', type: 'ugc_photo', from: '2026-10-21', max: 2, pl: 1, pts: { kind: 'fixed', v: 30 }, status: 'ok',
     desc: 'Загрузить фото и короткую историю о своей работе в МТС. Истории собираются в общую ленту-киноплёнку.',
-    notes: ['До двух историй за кампанию — до двух удовольствий (из презентации).', 'Без обновлений контента; открывается до эфира — «готовим торт».', 'МТС активность нравится (встреча 01.10). Визуал ленты — открытый вопрос: киноплёнка или «рецепт», который собирается из историй коллег.'] },
+    notes: ['До двух историй за кампанию — до двух удовольствий (из презентации).', 'Без обновлений контента; открывается до эфира.', 'МТС активность нравится (встреча 01.10). Визуал ленты — открытый вопрос: киноплёнка или «рецепт», который собирается из историй коллег.'] },
   { id: 'quiz1', block: 'work', title: 'Дегустация фактов. Выпуск 1', sub: 'Квиз с эксплейнерами', type: 'quiz', from: '2026-10-28', max: 1, pl: 3, pts: { kind: 'score', v: 20 }, status: 'draft',
     desc: 'Квиз: после каждого ответа — объяснение или факт из истории компании, а не просто «верно/неверно».',
     notes: ['В презентации — 5 выпусков по 1 удовольствию. После эфира — 2 выпуска, по одному в неделю (подтверждено на встрече 01.10). 5 удовольствий делим 3 + 2 (допущение).', 'Вопросы — про МТС и 33 года компании, можно и шуточные.'] },
@@ -660,15 +666,6 @@ const DEMO_DATES = [
   { v: '2026-10-28', l: '28.10 — день эфира' },
   { v: '2026-11-04', l: '04.11 — вторая неделя' },
   { v: '2026-11-12', l: '12.11 — платформа завершена' },
-];
-
-/* ---------------------------------------------------------------------
-   ЭТАПЫ ПРАЗДНИКА (сюжет торта). Задания, открывшиеся в день эфира и позже, относятся к «Едим торт».
-   --------------------------------------------------------------------- */
-const PHASES = [
-  { id: 'prep', title: 'Готовим торт',   from: '2026-10-21', to: '2026-10-27', desc: 'Неделя до эфира: открываются базовые активности, торт «допекается».' },
-  { id: 'blow', title: 'Задуваем свечу', from: '2026-10-28', to: '2026-10-28', desc: 'День эфира — кульминация праздника. Нельзя есть торт, пока не задули свечу.' },
-  { id: 'eat',  title: 'Едим торт',      from: '2026-10-29', to: '2026-11-11', desc: 'Две недели после эфира: основные активности, обновления контента, сюрпризы, розыгрыши.' },
 ];
 
 /* ---------------------------------------------------------------------
@@ -775,7 +772,7 @@ const MECH = {
 const SCREENS = [
   { id: 'landing', route: 'landing', title: 'Лендинг (гость)',
     purpose: 'Первое, что видит сотрудник по ссылке: суть праздника и вход в регистрацию.',
-    elements: ['Шапка: логотип МТС, «О проекте», «Призы», «Правила», «FAQ», кнопки «Войти» и «Регистрация».', 'Первый экран: «33 года — все 33 удовольствия!», даты, торт из 5 частей (вид — по текущему этапу), кнопки «Зарегистрироваться» и «Войти».', '«Как это работает» — 3 шага.', '«Как устроен праздник» — 3 этапа: «Готовим торт», «Задуваем свечу», «Едим торт», с датами; текущий выделен.', 'Шесть блоков: 5 частей торта + «Задания-сюрпризы» — название, раздел торта, описание.', 'Анонс эфира 28.10 и призов.', 'Подвал: правила, FAQ, техподдержка, политика обработки персональных данных.'],
+    elements: ['Шапка: логотип МТС, «О проекте», «Призы», «Правила акции», кнопки «Войти» и «Регистрация».', 'Первый экран: «33 года — все 33 удовольствия!», даты, KV праздника (в работе), кнопки «Зарегистрироваться» и «Войти».', '«Как это работает» — 3 шага.', 'Разделы — название, смысл, описание.', 'Анонс эфира 28.10 и призов.', 'Подвал: «Правила акции», полные правила (PDF), почта для вопросов, политика обработки персональных данных.'],
     states: ['Кампания идёт — регистрация открыта.', 'Кампания завершена — регистрация закрыта, плашка «Праздник завершён».'] },
   { id: 'register', route: 'register', title: 'Регистрация',
     purpose: 'Создание аккаунта по корпоративной почте.',
@@ -790,26 +787,26 @@ const SCREENS = [
     elements: ['Поле почты → «Прислать новый пароль» → экран «Письмо отправлено» → вход с новым паролем. Сменить его на свой можно в профиле.'],
     states: ['Почта не найдена — показываем тот же экран «Если аккаунт с такой почтой существует, мы отправили новый пароль».'] },
   { id: 'home', route: 'home', title: 'Главная (участник)',
-    purpose: 'Торт прогресса и быстрый вход в доступные задания.',
-    elements: ['Баннер счастливого часа с обратным отсчётом (если активен).', 'Баннер эфира: до эфира — отсчёт, в день эфира — «Смотреть эфир».', 'Прогресс: «N из 33 удовольствий», шкала, баллы, место в рейтинге, ссылка «Мой прогресс».', 'Шкала этапов: «Готовим торт» (21–27.10) → «Задуваем свечу» (28.10) → «Едим торт» (29.10–11.11). Текущий этап выделен, прошедшие отмечены. На мобайле — компактно, без описаний этапов.', 'Торт из 5 частей: в каждой точки-удовольствия (закрашены собранные) и счётчик. Клик по части → страница блока. Вид торта зависит от этапа: до эфира — «готовится» (пунктир), в день эфира — горят свечи, после — свечи задуты и вынут кусок.', 'Шесть блоков — плитки с прогрессом: 5 частей торта + «Задания-сюрпризы». Клик → страница блока.', '«Доступно сейчас» и «Скоро откроется» — карточки активностей.', 'Мини-рейтинг: топ-5, строка «Ты» с местом, ссылка на полный рейтинг.'],
-    states: ['Новичок (0 из 33).', 'Частичный прогресс.', 'Все 33 собраны — поздравление.', 'Платформа завершена — см. «Финальное состояние».'] },
-  { id: 'block', route: 'block/work', title: 'Страница блока',
-    purpose: 'Все активности одного блока торта.',
-    elements: ['Хлебные крошки, название блока и раздела торта, подзаголовок, прогресс блока.', 'Карточки активностей: название, описание, удовольствия, баллы, даты, этап («Готовим торт» / «Едим торт»), статус, кнопка.'],
-    states: ['Статусы карточек — см. «Доступность и начисления».', 'Блок «Задания-сюрпризы»: скрытые задания показываются как «???», пока не выполнены.'] },
-  { id: 'activity', route: 'act/recipe', title: 'Страница активности (общий каркас)',
-    purpose: 'Единая обёртка для всех механик.',
-    elements: ['Хлебные крошки, название, подзаголовок, чипы: удовольствия, баллы, даты, этап (кроме активностей эфира), статус.', 'Плашка счастливого часа, если на активность действует бустер.', 'Тело — по типу механики (см. «Механики»).'],
+    purpose: 'Выбор раздела и турнирная таблица.',
+    elements: ['Шапка: меню «Главная», «Эфир», «Турнирная таблица», «Призы», «Правила акции». Справа, возле аватара, — прогресс «N / 33 · баллы» (ведёт в «Мой прогресс»). Больше прогресс нигде на главной не показываем.', 'Баннер счастливого часа с обратным отсчётом (если активен).', 'Баннер эфира: до эфира — отсчёт, в день эфира — «Смотреть эфир».', 'Разделы — шесть карточек: название, смысл, число активностей. Клик → страница раздела.', 'Турнирная таблица: топ-10, строка «Ты» с местом, ссылка на полную таблицу.'],
+    states: ['Новичок (0 из 33).', 'Все 33 собраны — поздравление.', 'Платформа завершена — см. «Финальное состояние».'] },
+  { id: 'block', route: 'block/sport', title: 'Страница раздела',
+    purpose: 'Выбор активности внутри раздела.',
+    elements: ['Хлебные крошки, название раздела, смысл.', 'Карточки активностей — одна на активность, а не на каждое задание: название, описание, число заданий, удовольствия, статус («Доступно · 2 из 5», «Откроется ДД.ММ», «Выполнено»). Клик → страница активности.'],
+    states: ['Раздел «Задания-сюрпризы»: скрытые задания показываются как «???», пока не выполнены.'] },
+  { id: 'activity', route: 'act/shine1', title: 'Страница активности',
+    purpose: 'Активность и её задания. Например, «Сиять» — пять разминок.',
+    elements: ['Хлебные крошки: Главная / раздел / активность.', 'Название и описание активности.', 'Вкладки заданий — если в активности их несколько: «Разминка 1», «Разминка 2»… У каждой — отметка: выполнено ✓, откроется ДД.ММ, закрыто. Открывается первое доступное невыполненное задание.', 'Заголовок задания и чипы: удовольствия, баллы, даты, статус.', 'Плашка счастливого часа, если на задание действует бустер.', 'Тело — по типу механики (см. «Как устроены задания»).'],
     states: ['«Скоро» — плашка «Откроется ДД.ММ» и описание.', '«Закрыто» — «Сначала пройди «…»» со ссылкой.', '«Завершено» или «Платформа завершена» — только просмотр.'] },
   { id: 'progress', route: 'progress', title: 'Мой прогресс',
-    purpose: 'Табель удовольствий: что собрано и куда идти за остальным.',
-    elements: ['Итог: «N из 33», баллы, место в рейтинге.', 'Шесть колонок: 5 частей торта + «Задания-сюрпризы». В каждой — точки-удовольствия и список активностей с названием, статусом и ссылкой «Перейти».', 'Скрытые сюрпризы — «???», пока не найдены.'],
+    purpose: 'Табель удовольствий: что собрано и куда идти за остальным. Открывается из прогресса в шапке.',
+    elements: ['Итог: «N из 33», баллы, место в турнирной таблице.', 'Шесть колонок — по разделам. В каждой — точки-удовольствия и список заданий с названием, статусом и ссылкой «Перейти».', 'Скрытые сюрпризы — «???», пока не найдены.'],
     states: [],
     notes: ['В референсе из презентации только кружочки без подписей — так неудобно: непонятно, что осталось пройти. Нужны названия и переход сразу к непройденному.'] },
-  { id: 'rating', route: 'rating', title: 'Рейтинг',
-    purpose: 'Турнирная таблица по баллам.',
-    elements: ['Топ участников: место, имя, регион или компания, баллы, удовольствия.', 'Строка «Ты» с местом, даже если вне топа.', 'Таблица «За что начисляются баллы»: по блокам — активность, баллы, сколько раз можно выполнить. Строится из реестра; скрытые сюрпризы — «???», пока не найдены.'],
-    states: ['Пустой рейтинг на старте.'] },
+  { id: 'rating', route: 'rating', title: 'Турнирная таблица',
+    purpose: 'Рейтинг участников по баллам.',
+    elements: ['Топ участников: место, имя, регион или компания, удовольствия, баллы.', 'Строка «Ты» с местом, даже если вне топа.', 'Таблица «За что начисляются баллы»: по разделам — задание, баллы, сколько раз можно выполнить. Строится из реестра; скрытые сюрпризы — «???», пока не найдены.'],
+    states: ['Пустая таблица на старте.'] },
   { id: 'prizes', route: 'prizes', title: 'Призы',
     purpose: 'Что и как разыгрывается.',
     elements: ['Список призов и их количество (от МТС, в том числе корпоративный мерч).', 'Две категории победителей — карточки с описанием: лидеры рейтинга и розыгрыш среди активных участников.', 'Итоги после завершения.'],
@@ -818,9 +815,10 @@ const SCREENS = [
     purpose: 'Ток-шоу «Без галстука» 28.10: плеер и баллы за просмотр.',
     elements: ['До эфира: отсчёт, анонс, «Добавить в календарь».', 'В эфир: встроенный плеер провайдера, чат (если есть у провайдера). Квизы и опросы — внутри плеера провайдера.', 'После: запись.', 'План Б: если платформа не успеет запуститься, эфир идёт по прямой ссылке провайдера.'],
     states: ['До / во время / после эфира.'] },
-  { id: 'rules', route: 'rules', title: 'Правила', purpose: 'Текст правил (от клиента), структура разделов.', elements: ['Сроки, участники, удовольствия, баллы, розыгрыши, модерация.'], states: [] },
-  { id: 'faq', route: 'faq', title: 'FAQ и техподдержка', purpose: 'Частые вопросы и связь с поддержкой (требование тендера).',
-    elements: ['Аккордеон вопросов.', 'Форма обращения: тема, сообщение → «Обращение отправлено». Почта для ответа берётся из профиля.'], states: [] },
+  { id: 'rules', route: 'rules', title: 'Правила акции',
+    purpose: 'Коротко о правилах, частые вопросы и связь с организаторами. Отдельного раздела FAQ и формы обращения нет.',
+    elements: ['«Как участвовать» — коротко: сроки, кто участвует, разделы и их активности, удовольствия и баллы, эфир.', '«Как разыгрываются призы» — лидеры турнирной таблицы и розыгрыш среди активных; ссылка на страницу «Призы».', '«Частые вопросы» — аккордеон.', 'Ссылка «Полные правила акции (PDF)» — открывает PDF с юридическими правилами. Документ готовит МТС по своему шаблону.', '«Если остались вопросы — напиши нам на почту …» со ссылкой на почту. Почту даёт МТС.'],
+    states: [] },
   { id: 'profile', route: 'profile', title: 'Профиль',
     purpose: 'Данные участника и настройки.',
     elements: ['Имя, фамилия, регион, компания — редактируются.', 'Почта — только просмотр.', 'Смена пароля, выход.', '«Мои материалы»: истории, номера и благодарности со статусом — на модерации, опубликовано, отклонено. Отклонённый можно заменить новым: лимит он не занимает. Уведомлений нет — результат модерации участник видит здесь и на странице задания.'],
@@ -835,9 +833,9 @@ const SCREENS = [
    ОТКРЫТЫЕ ВОПРОСЫ
    --------------------------------------------------------------------- */
 const QUESTIONS = [
-  { to: 'client', text: 'Визуальный образ вместо торта как главного элемента (встреча 01.10): «33 удовольствия» остаются, торт — часть праздника или финальный аккорд. Новый KV готовят дизайнеры ивент-агентства с дизайнером МТС; от него зависят вид прогресса, названия разделов и этапов.', ref: 'summary' },
+  { to: 'client', text: 'Визуальный образ вместо торта как главного элемента (встреча 01.10): «33 удовольствия» остаются, торт — часть праздника или финальный аккорд. Новый KV готовят дизайнеры ивент-агентства с дизайнером МТС; от него зависят оформление и названия разделов.', ref: 'summary' },
   { to: 'client', text: 'Названия блоков: «Работа и обучение» звучит непразднично — нужны более праздничные названия. Насколько играем «сладкими» названиями — решаем вместе с новым KV.', ref: 'summary' },
-  { to: 'client', text: 'Подтвердить структуру: 5 частей торта + шестой блок «Задания-сюрпризы» вне торта. «Работу» и «Обучение» объединили, добавили «Работаем вместе» — это отличается от первой версии.', ref: 'summary' },
+  { to: 'client', text: 'Подтвердить структуру: шесть разделов, в разделе — активности, в активности — задания. «Работу» и «Обучение» объединили, добавили «Работаем вместе» — это отличается от первой версии.', ref: 'summary' },
   { to: 'client', text: 'Что ещё МТС хочет показать на платформе или в эфире: достижения волонтёров, награды лучшим сотрудникам, новое по спорту. МТС вернётся с идеями через несколько дней — распределим по блокам.', ref: 'summary' },
   { to: 'client', text: 'Раздел видео-поздравлений топ-менеджмента (был в тендере): нужен ли на платформе. Сейчас топ-менеджеры есть в эфире и в АПОЖ.', ref: 'summary' },
   { to: 'client', text: 'Встреча со специалистами МТС по безопасности: дата и формат проверки — полный пентест или проверка верхнего уровня; когда и в каком виде отдаём платформу.', ref: 'launch' },
@@ -854,7 +852,8 @@ const QUESTIONS = [
   { to: 'client', text: 'Эфир: чей плеер, есть ли чат; список интерактивных возможностей провайдера трансляции; как привести в эфир сотрудников с платформы, если до эфира всего неделя.', ref: 'stream' },
   { to: 'client', text: 'Разминки «Сиять»: тренер; участие амбассадоров спорта из регионов.', ref: 'act-shine1' },
   { to: 'client', text: 'Контент квиза (вопросы, факты, эксплейнеры) — от клиента или готовим мы.', ref: 'act-quiz1' },
-  { to: 'client', text: 'Шаблон правил участия МТС: заполняем, когда утверждены задания, баллы и призы.', ref: 'rating' },
+  { to: 'client', text: 'Шаблон правил участия МТС: заполняем, когда утверждены задания, баллы и призы. Итог — PDF с полными правилами, ссылка на него — на странице «Правила акции».', ref: 'scr-rules' },
+  { to: 'client', text: 'Почта для вопросов участников — её указываем на странице «Правила акции» и в подвале. Кто отвечает на письма.', ref: 'scr-rules' },
   { to: 'team', text: 'Повторное прохождение: на встрече 01.10 сказали «как правило, засчитываем первую попытку». Для игры сейчас в рейтинг идёт лучший результат — решить.', ref: 'play' },
   { to: 'team', text: 'Часовые пояса: в какое время запускать счастливые часы и сюрпризы, чтобы застали и Калининград, и Дальний Восток.', ref: 'surprises' },
   { to: 'team', text: 'Тексты на платформе — по редполитике МТС: на «ты», «ё», «ёлочки», длинное тире, числа до десяти словами. Пройти все тексты прототипа.', ref: 'design' },
@@ -874,6 +873,14 @@ const QUESTIONS = [
 ];
 
 const CHANGELOG = [
+  { v: '0.12', date: '01.10.2026', items: [
+    'Убраны этапы «Готовим торт → Задуваем свечу → Едим торт» и торт: на лендинге вместо торта — место под KV, на главной торта нет.',
+    'Прогресс на главной больше не показываем — только в шапке, возле аватара («N / 33 · баллы», ведёт в «Мой прогресс»). Пункт «Мой прогресс» убран из меню.',
+    '«Шесть блоков» переименованы в «Разделы». В разделе — карточки активностей, а не все задания подряд: например, в «Спорте» — «Сиять» и «Праздничный забег».',
+    'Новая страница активности: задания внутри — вкладками. В «Сиять» — пять разминок, в «Дегустации фактов» — два выпуска, в «Тайне пропавшего торта» — главы. Активности по аналогии сделаны во всех разделах. Данные — в GROUPS.',
+    'Турнирная таблица — на главной (топ-10 и строка «Ты») и отдельной страницей; «Рейтинг» переименован в «Турнирную таблицу».',
+    'Отдельного раздела FAQ нет: частые вопросы — на странице «Правила акции». Там же — коротко, в каких активностях участвовать и как разыгрываются призы, ссылка на полные правила (PDF) и почта для вопросов. Форма обращения в поддержку убрана.',
+  ] },
   { v: '0.11', date: '01.10.2026', items: [
     'Внесены итоги встречи с МТС 01.10. Период подтверждён: неделя до эфира и две после. Торт больше не главный визуальный образ — новый KV в работе, торт может остаться частью праздника.',
     'АПОЖ по модели со встречи: сначала угадываем песни топ-менеджеров, потом коллег; 10 вариантов ответа, две попытки, удовольствие — в любом случае. Записать свою песню — по желанию, а капелла, с проверкой и ограничением числа записей.',
@@ -919,6 +926,10 @@ const CHANGELOG = [
    ===================================================================== */
 const A = Object.fromEntries(ACTS.map(a => [a.id, a]));
 const B = Object.fromEntries(BLOCKS.map(b => [b.id, b]));
+const G = Object.fromEntries(GROUPS.map(g => [g.id, g]));
+const groupOf = a => GROUPS.find(g => g.acts.includes(a.id));
+const gActs = g => g.acts.map(id => A[id]);
+const tabT = a => { const g = groupOf(a); let t = a.title; if (g && g.acts.length > 1 && t.startsWith(g.title)) t = t.slice(g.title.length).replace(/^[.:]\s*/, ''); return t ? t[0].toUpperCase() + t.slice(1) : a.title; };
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const dm = iso => iso.slice(8, 10) + '.' + iso.slice(5, 7);
 const dayDiff = (a, b) => Math.round((new Date(b + 'T12:00:00') - new Date(a + 'T12:00:00')) / 864e5);
@@ -996,7 +1007,7 @@ function award(id, pts, opt = {}) {
   if (p) parts.push(`+${p} ${wPts(p)}`);
   if (mult > 1) parts.push('×2 счастливый час');
   if (parts.length) toast(`<b>${parts.join(' · ')}</b> — ${esc(a.title)}`);
-  if (before < PL_MAX && totalPl() === PL_MAX) setTimeout(() => modal(`<div class="ph round" style="width:70px;height:70px;margin:0 auto">торт</div><h3>Все ${PL_MAX} удовольствия собраны!</h3><p>Ты участвуешь в розыгрыше среди собравших весь торт.</p><button class="btn red" data-act="closeModal">Ура!</button>`), 500);
+  if (before < PL_MAX && totalPl() === PL_MAX) setTimeout(() => modal(`<div class="ph round" style="width:70px;height:70px;margin:0 auto">33</div><h3>Все ${PL_MAX} удовольствия собраны!</h3><p>Поздравляем! Баллы продолжают идти в турнирную таблицу.</p><button class="btn red" data-act="closeModal">Ура!</button>`), 500);
 }
 function checkVisit() {
   if (!S.auth || ended() || S.date < PROJECT.start) return;
@@ -1045,48 +1056,13 @@ function closeModal() { const o = document.getElementById('overlay'); o.classLis
 const demoBtn = (act, label, extra = '') => `<button class="demoact" data-act="${act}" ${extra}>Демо: ${esc(label)}</button>`;
 const skipBtn = (style = 'margin:0 0 14px') => `<div style="${style}">${demoBtn('skipReg', 'пропустить регистрацию →', 'title="Техническая кнопка прототипа: сразу войти участником"')}</div>`;
 
-/* ---------- торт ---------- */
-function pol(cx, cy, r, deg) { const t = deg * Math.PI / 180; return [cx + r * Math.cos(t), cy + r * Math.sin(t)]; }
-function arcPath(cx, cy, r0, r1, a0, a1) {
-  const [x0, y0] = pol(cx, cy, r1, a0), [x1, y1] = pol(cx, cy, r1, a1), [x2, y2] = pol(cx, cy, r0, a1), [x3, y3] = pol(cx, cy, r0, a0);
-  const f = n => n.toFixed(1);
-  return `M${f(x0)} ${f(y0)} A${r1} ${r1} 0 0 1 ${f(x1)} ${f(y1)} L${f(x2)} ${f(y2)} A${r0} ${r0} 0 0 0 ${f(x3)} ${f(y3)}Z`;
-}
-function cakeSVG(withProgress) {
-  const bl = BLOCKS.filter(b => b.cake); const n = bl.length; const cx = 200, cy = 200;
-  const ph = ended() ? 'eat' : phaseOf(S.date).id;
-  let s = `<svg class="cake ${ph}" viewBox="0 0 400 400" role="img" aria-label="Торт из ${n} частей">`;
-  bl.forEach((b, i) => {
-    const a0 = -90 + i * 360 / n + 1.2, a1 = -90 + (i + 1) * 360 / n - 1.2;
-    const st = blockStats(b.id); const got = withProgress ? st.got : 0;
-    const [tx, ty] = pol(0, 0, ph === 'eat' && i === 0 ? 12 : 0, (a0 + a1) / 2);
-    s += `<g class="seg" transform="translate(${tx.toFixed(1)} ${ty.toFixed(1)})" data-go="${S.auth ? 'block/' + b.id : 'register'}"><path d="${arcPath(cx, cy, 48, 192, a0, a1)}"/>`;
-    let placed = 0, k = 0;
-    for (const rad of [70, 94, 118, 142]) {
-      if (placed >= st.max) break;
-      const cap = Math.max(1, Math.floor(((a1 - a0 - 10) * Math.PI / 180 * rad) / 21)); const c = Math.min(cap, st.max - placed);
-      for (let j = 0; j < c; j++) {
-        const ang = a0 + 5 + (j + .5) / c * (a1 - a0 - 10); const [x, y] = pol(cx, cy, rad, ang);
-        s += `<circle class="dot ${k < got ? 'on' : ''}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7"/>`; k++;
-      }
-      placed += c;
-    }
-    const mid = (a0 + a1) / 2; const [lx, ly] = pol(cx, cy, 166, mid);
-    b.lines.forEach((ln, li) => { s += `<text class="segl" x="${lx.toFixed(1)}" y="${(ly - 8 + li * 14 - (b.lines.length - 1) * 7).toFixed(1)}" text-anchor="middle">${esc(ln)}</text>`; });
-    s += `<text class="segn" x="${lx.toFixed(1)}" y="${(ly + 10 + (b.lines.length - 1) * 7).toFixed(1)}" text-anchor="middle">${withProgress ? got + ' из ' : ''}${st.max}</text></g>`;
-  });
-  s += `<circle class="core" cx="${cx}" cy="${cy}" r="42"/><text class="core33" x="${cx}" y="${cy + 15}" text-anchor="middle">33</text>`;
-  if (ph !== 'prep') [188, 200, 212].forEach(x => { s += `<rect class="ckc" x="${x - 2.5}" y="${cy - 26}" width="5" height="16" rx="1.5"/>`; if (ph === 'blow') s += `<ellipse class="ckf" cx="${x}" cy="${cy - 31}" rx="3" ry="4.5"/>`; });
-  return s + '</svg>';
-}
-
 /* ---------- каркас сайта ---------- */
-const PUBLIC = ['landing', 'register', 'login', 'recover', 'prizes', 'rules', 'faq'];
+const PUBLIC = ['landing', 'register', 'login', 'recover', 'prizes', 'rules'];
 function header() {
   const base = S.route.split('/')[0];
   const nav = S.auth
-    ? [['home', 'Главная'], ['progress', 'Мой прогресс'], ['stream', 'Эфир'], ['rating', 'Рейтинг'], ['prizes', 'Призы'], ['faq', 'FAQ']]
-    : [['landing', 'О проекте'], ['prizes', 'Призы'], ['rules', 'Правила'], ['faq', 'FAQ']];
+    ? [['home', 'Главная'], ['stream', 'Эфир'], ['rating', 'Турнирная таблица'], ['prizes', 'Призы'], ['rules', 'Правила акции']]
+    : [['landing', 'О проекте'], ['prizes', 'Призы'], ['rules', 'Правила акции']];
   const on = r => base === r || (r === 'home' && ['block', 'act'].includes(base));
   const links = nav.map(([r, t]) => `<a data-go="${r}" class="${on(r) ? 'on' : ''}">${t}</a>`).join('');
   const pct = Math.round(totalPl() / PL_MAX * 100);
@@ -1096,7 +1072,7 @@ function header() {
   return `<header class="sh"><div class="wrap"><div class="logo" data-go="${S.auth ? 'home' : 'landing'}"><span class="mtsbox">МТС</span><span class="lt">33 удовольствия</span></div><nav class="nav">${links}</nav><div class="right">${right}<button class="burger" data-act="menu" aria-label="Меню">☰</button></div></div>
   <div class="mmenu ${S.menu ? 'on' : ''}">${nav.map(([r, t]) => `<a data-go="${r}">${t}</a>`).join('')}${S.auth ? '<a data-go="profile">Профиль</a>' : ''}</div></header>`;
 }
-const footer = () => `<footer class="sf"><div class="wrap"><span>© МТС, 2026</span><a data-go="rules">Правила</a><a data-go="faq">FAQ</a><a data-go="faq">Техподдержка</a><a data-act="toast" data-v="Политика обработки персональных данных — документ клиента">Политика обработки ПДн</a></div></footer>`;
+const footer = () => `<footer class="sf"><div class="wrap"><span>© МТС, 2026</span><a data-go="rules">Правила акции</a><a data-act="toast" data-v="Откроется PDF с полными правилами акции — документ от МТС">Полные правила (PDF)</a><a data-act="toast" data-v="Откроется почтовая программа: ${esc(PROJECT.email)}">Вопросы — на почту</a><a data-act="toast" data-v="Политика обработки персональных данных — документ клиента">Политика обработки ПДн</a></div></footer>`;
 
 /* ---------- экраны ---------- */
 function hhBanner(onlyAct) {
@@ -1117,28 +1093,33 @@ function acard(a) {
     <div class="d">${esc(a.desc)}</div>
     <div class="bot"><div class="chips">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span></div>${stateChip(a)}</div></div>`;
 }
-function arow(a) {
-  const st = actState(a); const secret = a.hidden && st !== 'done';
-  if (secret) return `<div class="arow" style="border-style:dashed;cursor:default"><div class="ph ico">?</div><div class="grow"><div class="t">??? Секретное задание</div><div class="d">Появится неожиданно. Следи за платформой.</div><div class="meta">${plChip(a)}</div></div></div>`;
-  return `<div class="arow" data-go="act/${a.id}"><div class="ph ico">${ICO[a.type] || ''}</div><div class="grow"><div class="t">${esc(a.title)}</div><div class="d">${esc(a.desc)}</div>
-    <div class="meta">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span><span class="chip">${esc(actPhase(a).title)}</span>${stateChip(a)}</div></div>
-    <div class="side">${['open', 'partial'].includes(st) ? '<span class="btn sm red">Выполнить</span>' : '<span class="btn sm ghost">Открыть</span>'}</div></div>`;
+function gEntry(g) {
+  const acts = gActs(g);
+  return (acts.find(a => ['open', 'partial', 'pending'].includes(actState(a))) || acts.find(a => !isComplete(a) && !a.hidden) || acts[0]).id;
+}
+function gChip(g) {
+  const acts = gActs(g); const sts = acts.map(actState); const done = acts.filter(isComplete).length;
+  if (acts.length === 1) return stateChip(acts[0]);
+  if (sts.every(x => x === 'done')) return `<span class="chip st-done">Выполнено</span>`;
+  if (ended()) return `<span class="chip st-ended">${STATES.ended.label}</span>`;
+  if (sts.some(x => ['open', 'partial', 'pending'].includes(x))) return `<span class="chip st-open">Доступно · ${done} из ${acts.length}</span>`;
+  if (sts.every(x => x === 'soon')) return `<span class="chip st-soon">Откроется ${dm(acts.map(a => a.from).sort()[0])}</span>`;
+  return `<span class="chip st-${sts.find(x => x !== 'done')}">${done} из ${acts.length}</span>`;
+}
+function grow(g) {
+  const acts = gActs(g); const a0 = acts[0]; const secret = acts.length === 1 && a0.hidden && !isComplete(a0);
+  if (secret) return `<div class="arow" style="border-style:dashed;cursor:default"><div class="ph ico">?</div><div class="grow"><div class="t">??? Секретное задание</div><div class="d">Появится неожиданно. Следи за платформой.</div><div class="meta">${plChip(a0)}</div></div></div>`;
+  const pl = acts.reduce((n, a) => n + plMax(a), 0); const open = acts.some(a => ['open', 'partial'].includes(actState(a)));
+  const meta = [acts.length > 1 ? `<span class="chip">${acts.length} ${plural(acts.length, 'задание', 'задания', 'заданий')}</span>` : `<span class="chip">${esc(ptsLabel(a0))}</span>`, pl ? `<span class="chip pl">${pl} ${wPl(pl)}</span>` : '', acts.length === 1 ? `<span class="chip">${dateLabel(a0)}</span>` : '', gChip(g)].join('');
+  return `<div class="arow" data-go="act/${gEntry(g)}"><div class="ph ico">${ICO[a0.type] || ''}</div><div class="grow"><div class="t">${esc(g.title)}</div><div class="d">${esc(g.desc)}</div><div class="meta">${meta}</div></div>
+    <div class="side">${open ? '<span class="btn sm red">Открыть</span>' : '<span class="btn sm ghost">Открыть</span>'}</div></div>`;
 }
 
-/* ---------- этапы, блоки, рейтинг ---------- */
-const phaseOf = d => PHASES.find(p => d >= p.from && d <= p.to) || (d < PHASES[0].from ? PHASES[0] : PHASES[PHASES.length - 1]);
-const actPhase = a => a.from < PROJECT.stream ? PHASES[0] : PHASES[2];
-function phaseStrip() {
-  const cur = phaseOf(S.date); const ci = PHASES.indexOf(cur); const off = ended();
-  return `<div class="phases">${PHASES.map((p, i) => `<div class="phase ${!off && i === ci ? 'on' : ''} ${off || i < ci ? 'past' : ''}"><div class="pn">${off || i < ci ? '✓' : i + 1}</div><div><div class="pt">${esc(p.title)}</div><div class="pd">${p.from === p.to ? dm(p.from) : dm(p.from) + '–' + dm(p.to)}</div><div class="px">${esc(p.desc)}</div></div></div>`).join('')}</div>`;
-}
-function cakeCaption() {
-  const t = { prep: 'Готовим торт: собирай удовольствия — торт допекается', blow: 'Сегодня на эфире задуваем свечу', eat: 'Едим торт! Свеча задута — основные задания открыты' }[phaseOf(S.date).id];
-  return `<div class="small muted" style="text-align:center">${t}. Нажми на часть торта, чтобы открыть задания</div>`;
-}
+/* ---------- разделы, турнирная таблица ---------- */
+const blockGroups = id => GROUPS.filter(g => g.block === id && !(id === 'common' && g.id === 'visit'));
 function blockTiles() {
-  return `<div class="btiles">${BLOCKS.filter(b => b.id !== 'stream').map(b => { const st = blockStats(b.id);
-    return `<div class="btile ${b.cake ? '' : 'extra'}" data-go="block/${b.id}"><div class="t">${esc(b.name)}</div><div class="s">${b.section ? '«' + esc(b.section) + '»' : 'Вне торта'}</div><div class="bar"><i style="width:${st.max ? Math.round(st.got / st.max * 100) : 0}%"></i></div><div class="s">${st.got} из ${st.max}</div></div>`; }).join('')}</div>`;
+  return `<div class="agrid">${BLOCKS.filter(b => b.id !== 'stream').map(b => { const n = blockGroups(b.id).length;
+    return `<div class="acard" data-go="block/${b.id}"><div class="top"><div class="ph ico">${esc(b.name[0])}</div><div><div class="t">${esc(b.name)}</div><div class="s">${esc(b.tagline)}</div></div></div><div class="d">${esc(b.desc)}</div><div class="bot"><span class="chip">${b.id === 'common' ? 'появляются неожиданно' : n + ' ' + plural(n, 'активность', 'активности', 'активностей')}</span></div></div>`; }).join('')}</div>`;
 }
 const ratingTop = n => PEOPLE.slice(0, n).map((p, i) => ({ p, pts: 640 - i * 23, pl: Math.max(18, 33 - i) }));
 function ratingTable(n) {
@@ -1146,9 +1127,6 @@ function ratingTable(n) {
     ${ratingTop(n).map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.p)}</td><td class="hm">${r.pl} / ${PL_MAX}</td><td>${r.pts}</td></tr>`).join('')}
     <tr><td colspan="4" class="muted" style="text-align:center">…</td></tr>
     <tr class="me"><td>${totalPts() ? myPlace() : '—'}</td><td>Ты</td><td class="hm">${totalPl()} / ${PL_MAX}</td><td>${totalPts()}</td></tr></tbody></table>`;
-}
-function miniRating() {
-  return `<section class="sec"><div class="sech"><h2>Рейтинг</h2><span class="link small" data-go="rating">Весь рейтинг →</span></div>${ratingTable(5)}</section>`;
 }
 function pointsTable() {
   const rows = BLOCKS.flatMap(b => { const acts = ACTS.filter(a => a.block === b.id && (a.pts.v || a.pts.live)); if (!acts.length) return [];
@@ -1165,18 +1143,15 @@ function vLanding() {
   <section class="hero"><div>
     <div class="kicker"><span class="chip">${dm(PROJECT.start)}–${dm(PROJECT.end)}</span><span class="chip">Онлайн-праздник для сотрудников</span></div>
     <h1>33 года — все 33 удовольствия!</h1>
-    <p>С ${dm(PROJECT.start)} по ${dm(PROJECT.end)} — задания, чтобы собрать свой торт удовольствий и отметить день рождения МТС. Работа, спорт, творчество, добро и общая история, а ${dm(PROJECT.stream)} — большой онлайн-эфир.</p>
+    <p>С ${dm(PROJECT.start)} по ${dm(PROJECT.end)} — задания, чтобы собрать все 33 удовольствия и отметить день рождения МТС. Работа, спорт, творчество, добро и общая история, а ${dm(PROJECT.stream)} — большой онлайн-эфир.</p>
     <div class="ctas"><button class="btn red" data-go="register" ${off ? 'disabled' : ''}>Зарегистрироваться</button><button class="btn" data-go="login">Войти</button></div>
     ${skipBtn('margin-top:12px')}
-  </div><div class="cakeside">${cakeSVG(false)}</div></section>
+  </div><div class="heroside"><div class="ph kv">KV праздника — в работе</div></div></section>
   <section class="sec"><h2>Как это работает</h2><div class="agrid">
-    ${[['1', 'Зарегистрируйся', 'По корпоративной почте МТС или дочерней компании.'], ['2', 'Собирай удовольствия', 'Выполняй задания в пяти частях торта и лови задания-сюрпризы. Новые открываются постепенно, пропущенные остаются доступными.'], ['3', 'Смотри эфир и участвуй в розыгрыше', `${dm(PROJECT.stream)} — ток-шоу «Без галстука». Баллы идут в рейтинг, а собравшие все 33 участвуют в розыгрыше.`]]
+    ${[['1', 'Зарегистрируйся', 'По корпоративной почте МТС или дочерней компании.'], ['2', 'Собирай удовольствия', 'Выбирай раздел и активность, выполняй задания и лови сюрпризы. Новые открываются постепенно, пропущенные остаются доступными.'], ['3', 'Смотри эфир и участвуй в розыгрыше', `${dm(PROJECT.stream)} — ток-шоу «Без галстука». Баллы идут в турнирную таблицу — лидеры и самые активные получат призы.`]]
       .map(([n, t, d]) => `<div class="acard" style="cursor:default"><div class="top"><div class="ph ico round">${n}</div><div><div class="t">${t}</div></div></div><div class="d">${d}</div></div>`).join('')}
   </div></section>
-  <section class="sec"><h2>Как устроен праздник</h2>${phaseStrip()}</section>
-  <section class="sec"><h2>Шесть блоков</h2><div class="agrid">
-    ${BLOCKS.filter(b => b.id !== 'stream').map(b => `<div class="acard" data-go="register"><div class="top"><div class="ph ico">${esc(b.lines[0])}</div><div><div class="t">${esc(b.name)}</div><div class="s">${b.section ? 'Раздел «' + esc(b.section) + '»' : 'Вне торта'} · ${blockStats(b.id).max} ${wPl(blockStats(b.id).max)}</div></div></div><div class="d">${esc(b.tagline)}. ${esc(b.desc)}</div></div>`).join('')}
-  </div></section>
+  <section class="sec"><h2>Разделы</h2>${blockTiles().replace(/data-go="block\/[a-z]+"/g, 'data-go="register"')}</section>
   <section class="sec"><div class="agrid">
     <div class="acard" data-go="login"><div class="t">Онлайн-эфир ${dm(PROJECT.stream)}</div><div class="d">Ток-шоу «Без галстука» — то самое 34-е удовольствие, которое нельзя получить на платформе.</div><div class="ph" style="height:120px">KV эфира</div></div>
     <div class="acard" data-go="prizes"><div class="t">Призы</div><div class="d">Призы лидерам рейтинга и розыгрыш среди всех активных участников.</div><div class="ph" style="height:120px">Призы — на согласовании</div></div>
@@ -1185,44 +1160,28 @@ function vLanding() {
 
 function vHome() {
   if (ended()) return vFinal();
-  const got = totalPl(); const pct = Math.round(got / PL_MAX * 100);
-  const now = ACTS.filter(a => listable(a) && ['open', 'partial', 'pending'].includes(actState(a)));
-  const soon = ACTS.filter(a => listable(a) && actState(a) === 'soon').sort((x, y) => x.from.localeCompare(y.from));
-  return `<div class="wrap">${hhBanner()}${streamBanner()}${phaseStrip()}
-  <section class="hero"><div>
-    <div class="kicker"><span class="chip">${dm(PROJECT.start)}–${dm(PROJECT.end)}</span><span>Сегодня ${dm(S.date)}</span></div>
-    <h1>Собери свой торт</h1>
-    <p>Каждое задание закрывает удовольствия в своей части торта. Новые задания открываются постепенно, пропущенные остаются доступными.</p>
-    <div class="pcard"><div class="top"><span>Твой прогресс</span><span class="link small" data-go="progress">Мой прогресс →</span></div>
-      <div class="num">${got} <span class="muted" style="font-size:18px;font-weight:600">/ ${PL_MAX} удовольствий</span></div>
-      <div class="bar"><i style="width:${pct}%"></i></div>
-      <div class="small muted">Баллы: <b style="color:var(--ink)">${totalPts()}</b> · место в рейтинге: <b style="color:var(--ink)">${totalPts() ? myPlace() : '—'}</b> · <span class="link" data-go="rating">Рейтинг</span></div></div>
-  </div><div class="cakeside">${cakeSVG(true)}${cakeCaption()}</div></section>
-  <section class="sec"><h2>Шесть блоков</h2>${blockTiles()}</section>
-  <section class="sec"><h2>Доступно сейчас</h2>${now.length ? `<div class="agrid">${now.map(acard).join('')}</div>` : '<div class="panel center muted">Всё доступное выполнено. Новые задания скоро откроются.</div>'}</section>
-  ${soon.length ? `<section class="sec"><h2>Скоро откроется</h2><div class="agrid">${soon.slice(0, 6).map(acard).join('')}</div></section>` : ''}
-  ${miniRating()}
+  return `<div class="wrap">${hhBanner()}${streamBanner()}
+  <div class="pg-h"><h1>33 года — все 33 удовольствия</h1><div class="muted">${dm(PROJECT.start)}–${dm(PROJECT.end)} · выбирай раздел и собирай удовольствия. Новые задания открываются постепенно, пропущенные остаются доступными.</div></div>
+  <section class="sec"><h2>Разделы</h2>${blockTiles()}</section>
+  <section class="sec"><div class="sech"><h2>Турнирная таблица</h2><span class="link small" data-go="rating">Вся таблица →</span></div>${ratingTable(10)}</section>
   </div>`;
 }
 function vFinal() {
-  return `<div class="wrap"><section class="hero"><div>
+  return `<div class="wrap"><div class="pg-h">
     <div class="kicker"><span class="chip st-ended">Платформа завершена</span></div>
     <h1>Праздник завершён!</h1><p>Спасибо, что собирал удовольствия вместе с МТС. Все материалы доступны для просмотра.</p>
     <div class="pcard"><div class="top"><span>Твой итог</span></div><div class="num">${totalPl()} <span class="muted" style="font-size:18px">/ ${PL_MAX} удовольствий</span></div>
       <div class="small muted">Баллы: <b style="color:var(--ink)">${totalPts()}</b> · итоговое место: <b style="color:var(--ink)">${totalPts() ? myPlace() : '—'}</b></div></div>
-    <div class="ctas" style="margin-top:14px"><button class="btn red" data-go="prizes">Итоги розыгрышей</button><button class="btn" data-go="stream">Запись эфира</button><button class="btn ghost" data-go="progress">Мой прогресс</button></div>
-  </div><div class="cakeside">${cakeSVG(true)}</div></section></div>`;
+    <div class="ctas" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn red" data-go="prizes">Итоги розыгрышей</button><button class="btn" data-go="rating">Турнирная таблица</button><button class="btn" data-go="stream">Запись эфира</button><button class="btn ghost" data-go="progress">Мой прогресс</button></div>
+  </div></div>`;
 }
 
 function vBlock(id) {
   const b = B[id]; if (!b) return v404();
-  const st = blockStats(id);
-  const acts = ACTS.filter(a => a.block === id && (listable(a) || a.hidden || (id === 'common' && a.type !== 'visit')));
   return `<div class="wrap"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / ${esc(b.name)}</div>
-    <h1>${esc(b.name)}</h1><div class="muted">${b.section ? `Раздел «${esc(b.section)}» · ` : ''}${esc(b.tagline)}</div>
-    <div class="chips" style="margin-top:10px"><span class="chip pl">${st.got} из ${st.max} ${wPl(st.max)}</span></div></div>
+    <h1>${esc(b.name)}</h1><div class="muted">${esc(b.tagline)}. ${esc(b.desc)}</div></div>
     ${hhBanner()}
-    <div class="alist" style="margin-top:16px">${acts.map(arow).join('')}</div>
+    <div class="alist" style="margin-top:16px">${blockGroups(id).map(grow).join('')}</div>
     ${id === 'common' ? `<div class="note warn">Бонус недели: +${A.visit.pts.v} баллов за первый заход в каждую неделю (на согласовании). Эфир — «34-е удовольствие», удовольствий на платформе не даёт.</div>` : ''}
   </div>`;
 }
@@ -1231,9 +1190,14 @@ function vBlock(id) {
 function vAct(id) {
   const a = A[id]; if (!a) return v404();
   const b = B[a.block]; const st = actState(a);
-  const head = `<div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / ${a.block === 'stream' ? '<a data-go="stream">Эфир</a>' : `<a data-go="block/${b.id}">${esc(b.name)}</a>`}</div>
-    <h1>${esc(a.title)}</h1><div class="muted">${a.sub ? esc(a.sub) + ' · ' : ''}${esc(b.name)} ${sBadge(a)}</div>
-    <div class="chips">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span>${a.block === 'stream' ? '' : `<span class="chip">${esc(actPhase(a).title)}</span>`}${stateChip(a)}</div></div>`;
+  const g = groupOf(a); const multi = g && g.acts.length > 1;
+  const chips = `<div class="chips">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span>${stateChip(a)}</div>`;
+  const crumbs = `<div class="crumbs"><a data-go="home">Главная</a> / ${a.block === 'stream' ? '<a data-go="stream">Эфир</a>' : `<a data-go="block/${b.id}">${esc(b.name)}</a>`}${multi ? ' / ' + esc(g.title) : ''}</div>`;
+  const tabs = multi ? `<div class="gtabs">${gActs(g).map(x => { const s = actState(x); const m = s === 'done' ? '✓' : s === 'soon' ? dm(x.from) : s === 'locked' ? '🔒' : s === 'closed' ? 'закрыто' : s === 'partial' ? cnt(x) + '/' + x.max : '';
+    return `<a data-go="act/${x.id}" class="${x.id === a.id ? 'on' : ''} ${['soon', 'locked', 'closed'].includes(s) && x.id !== a.id ? 'dim' : ''}">${esc(tabT(x))}${m ? `<span class="m">${m}</span>` : ''}</a>`; }).join('')}</div>` : '';
+  const head = multi
+    ? `<div class="pg-h">${crumbs}<h1>${esc(g.title)}</h1><div class="muted">${esc(g.desc)} ${sBadge(a)}</div>${tabs}<div class="task-h"><h2>${esc(tabT(a))}</h2></div>${chips}</div>`
+    : `<div class="pg-h">${crumbs}<h1>${esc(a.title)}</h1><div class="muted">${a.sub ? esc(a.sub) + ' · ' : ''}${esc(b.name)} ${sBadge(a)}</div>${chips}</div>`;
   let body;
   if (a.hidden && st !== 'done' && a.type !== 'find') body = `<div class="panel center"><h3>??? Секретное задание</h3><p class="muted">Механика в работе. Задание появится неожиданно.</p></div>`;
   else if (st === 'soon') body = `<div class="panel center"><h3>Откроется ${dm(a.from)}</h3><p class="muted">${esc(a.desc)}</p>${demoBtn('setDate', 'перейти на ' + dm(a.from), `data-v="${a.from}"`)}</div>`;
@@ -1323,7 +1287,7 @@ const BODY = {
   },
 
   video_view(a, st) {
-    const v = S.vid[a.id] || {}; const series = ACTS.filter(x => x.type === 'video_view' && x.block === a.block && x.id !== a.id && x.sub === a.sub);
+    const v = S.vid[a.id] || {};
     const btnText = a.block === 'art' ? 'Я поучаствовал!' : 'Я тоже размялся!';
     let ctl;
     if (isComplete(a)) ctl = `<div class="banner info"><b>Выполнено ✓</b><span class="grow">Ролик можно пересмотреть.</span></div>`;
@@ -1331,8 +1295,7 @@ const BODY = {
     else if (v.ready) ctl = `<div style="margin-top:12px"><button class="btn red" data-act="vidDone" data-id="${a.id}">${btnText}</button></div>`;
     else if (v.started) ctl = `<p class="muted small" style="margin-top:10px">Кнопка появится через <b class="timer" id="vt">${v.left}</b> с. <span class="sbadge draft">демо: 5 с вместо длительности ролика</span></p>`;
     else ctl = `<p class="muted small" style="margin-top:10px">Нажми «Play». Таймер стартует после первого запуска, пауза его не сбрасывает.</p>`;
-    return `<div class="panel"><div class="ph video"><span>${a.block === 'art' ? 'Видео мастер-класса' : 'Видео-разминка'}</span><button class="play" data-act="vidPlay" data-id="${a.id}" aria-label="Play">▶</button></div>${ctl}</div>
-      ${series.length ? `<section class="sec"><h2>Вся серия</h2><div class="alist">${[a, ...series].sort((x, y) => x.id.localeCompare(y.id)).map(arow).join('')}</div></section>` : ''}`;
+    return `<div class="panel"><div class="ph video"><span>${a.block === 'art' ? 'Видео мастер-класса' : 'Видео-разминка'}</span><button class="play" data-act="vidPlay" data-id="${a.id}" aria-label="Play">▶</button></div>${ctl}</div>`;
   },
 
   game(a, st) {
@@ -1357,7 +1320,7 @@ const BODY = {
 
   volunteer(a, st) {
     if (a.mode === 'signup') {
-      if (S.vol) { const p = PROJECTS.find(x => x.id === S.vol); return `<div class="panel"><h3>Ты записан в «${esc(p.t)}» ✓</h3><p class="muted">Организаторы свяжутся по корпоративной почте. Что ещё можно сделать:</p><div class="alist">${[A.vol2, A.vol3].map(arow).join('')}</div></div>`; }
+      if (S.vol) { const p = PROJECTS.find(x => x.id === S.vol); return `<div class="panel"><h3>Ты записан в «${esc(p.t)}» ✓</h3><p class="muted">Организаторы свяжутся по корпоративной почте. Что ещё можно сделать:</p><div class="ctas" style="display:flex;gap:8px;flex-wrap:wrap">${[A.vol2, A.vol3].map(x => `<button class="btn ${isComplete(x) ? 'ghost' : 'red'}" data-go="act/${x.id}">${esc(tabT(x))}${isComplete(x) ? ' ✓' : ''}</button>`).join('')}</div></div>`; }
       if (ro(st)) return bodyStub(a);
       return `<div class="note warn">Список проектов и фондов — от клиента.</div><div class="alist" style="margin-top:12px">${PROJECTS.map(p => `<div class="arow" style="cursor:default"><div class="ph ico">фото</div><div class="grow"><div class="t">${esc(p.t)}</div><div class="d">${esc(p.d)}</div></div><button class="btn sm red" data-act="volSignup" data-v="${p.id}">Записаться</button></div>`).join('')}</div>`;
     }
@@ -1449,20 +1412,20 @@ function vStream() {
 
 /* ---------- прочие экраны ---------- */
 function vProgress() {
-  const cols = BLOCKS.filter(b => b.cake || b.id === 'common');
+  const cols = BLOCKS.filter(b => b.id !== 'stream');
   return `<div class="wrap"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / Мой прогресс</div><h1>Мой прогресс</h1>
     <div class="chips" style="margin-top:8px"><span class="chip pl">${totalPl()} из ${PL_MAX} ${wPl(PL_MAX)}</span><span class="chip">${totalPts()} ${wPts(totalPts())}</span><span class="chip">место: ${totalPts() ? myPlace() : '—'}</span></div></div>
   <div class="pgrid" style="margin-top:14px">${cols.map(b => {
     const acts = ACTS.filter(a => a.block === b.id && plMax(a) > 0); const st = blockStats(b.id);
     const slots = acts.flatMap(a => Array.from({ length: plMax(a) }, (_, i) => `<i class="${i < plGot(a) ? 'on' : ''} ${a.hidden && !isComplete(a) ? 'q' : ''}" title="${a.hidden && !isComplete(a) ? '???' : esc(a.title)}"></i>`)).join('');
-    return `<div class="pcol"><h3>${esc(b.name)}</h3><div class="sub">${b.section ? 'Раздел «' + esc(b.section) + '» · ' : ''}${st.got} из ${st.max}</div><div class="slots">${slots}</div>
+    return `<div class="pcol"><h3>${esc(b.name)}</h3><div class="sub">${st.got} из ${st.max}</div><div class="slots">${slots}</div>
       <div class="plist">${acts.map(a => { const secret = a.hidden && !isComplete(a); const s = actState(a);
         return `<div class="pitem"><div>${secret ? '??? Секретное задание' : esc(shortT(a))} <span class="muted">· ${plGot(a)}/${plMax(a)}</span></div>${secret ? '' : `<div class="pa">${stateChip(a)}${['done', 'soon'].includes(s) ? '' : `<span class="go" data-go="act/${a.id}">Перейти →</span>`}</div>`}</div>`; }).join('')}</div></div>`;
   }).join('')}</div>
-  <div class="banner info"><b>Эфир ${dm(PROJECT.stream)}</b><span class="grow">34-е удовольствие — его нельзя получить на платформе. Баллы за участие в эфире идут в рейтинг.</span><button class="btn sm ghost" data-go="stream">К эфиру</button></div></div>`;
+  <div class="banner info"><b>Эфир ${dm(PROJECT.stream)}</b><span class="grow">34-е удовольствие — его нельзя получить на платформе. Баллы за участие в эфире идут в турнирную таблицу.</span><button class="btn sm ghost" data-go="stream">К эфиру</button></div></div>`;
 }
 function vRating() {
-  return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / Рейтинг</div><h1>Рейтинг</h1><div class="muted">По сумме баллов. При равенстве выше тот, кто набрал раньше.</div></div>
+  return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / Турнирная таблица</div><h1>Турнирная таблица</h1><div class="muted">По сумме баллов. При равенстве выше тот, кто набрал раньше.</div></div>
     ${ratingTable(10)}${pointsTable()}</div>`;
 }
 function vPrizes() {
@@ -1474,13 +1437,15 @@ function vPrizes() {
   </div></div>`;
 }
 function vRules() {
-  const sec = [['Сроки', `Платформа работает с ${dm(PROJECT.start)} по ${dm(PROJECT.end)}. Онлайн-эфир — ${dm(PROJECT.stream)}.`], ['Кто участвует', 'Сотрудники МТС и дочерних компаний с корпоративной почтой.'], ['Удовольствия', `Всего ${PL_MAX}. Начисляются за выполнение заданий, не зависят от результата.`], ['Баллы и рейтинг', 'Начисляются за задания в зависимости от вложенных усилий и результата. Рейтинг — по сумме баллов.'], ['Розыгрыши', 'Условия — на согласовании.'], ['Модерация', 'Фото, видео и тексты проходят модерацию перед публикацией.']];
-  return `<div class="wrap apage"><div class="pg-h"><h1>Правила</h1><div class="muted">Структура разделов. Финальный текст — от клиента.</div></div>${sec.map(([t, d]) => `<div class="panel"><h3>${t}</h3><p class="muted" style="margin:0">${d}</p></div>`).join('')}</div>`;
-}
-function vFaq() {
-  const qa = [['Что такое удовольствия?', `Отметки о выполнении заданий. Всего ${PL_MAX}, они закрашивают части торта. Собравшие все участвуют в отдельном розыгрыше.`], ['Чем баллы отличаются от удовольствий?', 'Баллы — для рейтинга: их количество зависит от сложности задания и результата. Удовольствия — просто факт выполнения.'], ['Я пришёл позже. Успею?', 'Да. Пропущенные задания остаются доступными, их можно пройти по порядку. Исключение — голосования по главам истории: у них есть срок.'], ['Когда эфир?', `${dm(PROJECT.stream)}. Если не успеешь в прямом эфире, будет запись.`], ['Почему мою историю не видно?', 'Материалы проходят модерацию. Удовольствие и баллы начислим после одобрения.']];
-  return `<div class="wrap apage"><div class="pg-h"><h1>FAQ и техподдержка</h1></div>${qa.map(([q, a]) => `<details class="acc"><summary>${q}</summary><div>${a}</div></details>`).join('')}
-  <div class="panel"><h3>Написать в поддержку</h3><div class="field"><label>Тема</label><select><option>Не могу войти</option><option>Не начислились баллы</option><option>Другое</option></select></div><div class="field"><label>Сообщение</label><textarea></textarea></div><button class="btn red" data-act="toast" data-v="Обращение отправлено. Ответим на почту из профиля">Отправить</button></div></div>`;
+  const acts = BLOCKS.filter(b => !['stream', 'common'].includes(b.id)).map(b => `<li><b>${esc(b.name)}</b> — ${GROUPS.filter(g => g.block === b.id).map(g => '«' + esc(g.title) + '»').join(', ')}.</li>`).join('');
+  const qa = [['Что такое удовольствия?', `Отметки о выполнении заданий. Всего ${PL_MAX} — собрать их может каждый. Прогресс виден в шапке, возле аватара.`], ['Чем баллы отличаются от удовольствий?', 'Баллы — для турнирной таблицы: их количество зависит от сложности задания и результата. Удовольствия — просто факт выполнения.'], ['Я пришёл позже. Успею?', 'Да. Пропущенные задания остаются доступными, их можно пройти по порядку. Исключение — голосования по главам истории: у них есть срок.'], ['Когда эфир?', `${dm(PROJECT.stream)}. Если не успеешь в прямом эфире, будет запись.`], ['Почему мою историю не видно?', 'Материалы проходят проверку. Удовольствие и баллы начислим после одобрения.']];
+  return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="${S.auth ? 'home' : 'landing'}">Главная</a> / Правила акции</div><h1>Правила акции</h1><div class="muted">Коротко о главном. Финальные тексты — от МТС.</div></div>
+  <div class="panel"><h3>Как участвовать</h3><p>С ${dm(PROJECT.start)} по ${dm(PROJECT.end)} сотрудники МТС и дочерних компаний регистрируются по корпоративной почте и выполняют задания в разделах:</p><ul>${acts}</ul>
+    <p>Плюс задания-сюрпризы — они появляются неожиданно. За задания начисляются удовольствия (всего ${PL_MAX}) и баллы — они идут в турнирную таблицу. ${dm(PROJECT.stream)} — онлайн-эфир.</p></div>
+  <div class="panel"><h3>Как разыгрываются призы</h3><ul><li><b>Лидеры турнирной таблицы</b> — те, кто набрал больше всего баллов.</li><li><b>Розыгрыш среди активных</b> — случайный выбор среди всех, кто набрал пороговое число баллов.</li></ul><p class="muted" style="margin:0">Список призов — на странице <span class="link" data-go="prizes">«Призы»</span>. Итоги — после ${dm(PROJECT.end)}.</p></div>
+  <h2 style="margin-top:24px">Частые вопросы</h2>${qa.map(([q, a]) => `<details class="acc"><summary>${q}</summary><div>${a}</div></details>`).join('')}
+  <div class="panel" style="margin-top:16px"><h3>Полные правила акции</h3><p class="muted">Юридический текст правил — в PDF.</p><button class="btn" data-act="toast" data-v="Откроется PDF с полными правилами акции — документ от МТС">Открыть полные правила (PDF)</button></div>
+  <p style="margin-top:16px">Если у тебя остались вопросы, напиши нам на почту <span class="link" data-act="toast" data-v="Откроется почтовая программа: ${esc(PROJECT.email)}">${esc(PROJECT.email)}</span>.</p></div>`;
 }
 function myMaterials() {
   const lab = { pending: ['st-pending', 'На модерации'], ok: ['st-done', 'Опубликовано ✓'], no: ['st-closed', 'Отклонено — можно отправить новый'] };
@@ -1548,7 +1513,7 @@ function routeView() {
     case 'prizes': return vPrizes();
     case 'stream': return vStream();
     case 'rules': return vRules();
-    case 'faq': return vFaq();
+    case 'faq': return vRules();
     case 'profile': return vProfile();
     default: return v404();
   }
@@ -1714,7 +1679,7 @@ function ptsText(a) {
   return '—';
 }
 const availText = a => a.to ? (a.to === a.from ? `только ${dm(a.from)}` : `${dm(a.from)} – ${dm(a.to)}`) : `с ${dm(a.from)} до конца кампании`;
-const blockName = id => B[id].section ? `${B[id].name} («${B[id].section}»)` : B[id].name;
+const blockName = id => B[id].name;
 
 /* ---------- генерируемые куски ---------- */
 function gantt() {
@@ -1749,6 +1714,7 @@ function registry() {
     const acts = ACTS.filter(a => a.block === b.id); if (!acts.length) return; const st = blockStats(b.id); tot += st.max;
     rows += `<tr class="blk"><td colspan="7">${esc(blockName(b.id))}</td><td class="num">${st.max}</td></tr>`;
     acts.forEach(a => {
+      const g = groupOf(a); if (g && g.acts.length > 1 && g.acts[0] === a.id) rows += `<tr class="gsub"><td colspan="8">Активность «${esc(g.title)}»</td></tr>`;
       const dates = a.to ? (a.to === a.from ? dm(a.from) : `${dm(a.from)}–${dm(a.to)}`) : `с ${dm(a.from)}`;
       const late = plMax(a) > 0 && a.to && a.to < PROJECT.end;
       rows += `<tr><td>${tzA(a.id)}${a.hidden ? ' <span class="muted">(скрытая)</span>' : ''}${late ? ' <b style="color:var(--red)">⚠ удовольствие недоступно до конца кампании</b>' : ''}</td><td><a data-tz="mech-${a.type}">${esc(MECH[a.type].short)}</a></td><td style="white-space:nowrap">${dates}</td><td>${a.dep ? `<a data-tz="act-${a.dep}">${esc(shortT(A[a.dep]))}</a>` : '—'}</td><td class="num">${a.pl || 0} × ${a.max || 1}</td><td class="num">${esc(ptsShort(a))}</td><td>${sb(a.status)}</td><td class="num"><b>${plMax(a)}</b></td></tr>`;
@@ -1799,20 +1765,20 @@ const TZ = [
     ${ul([
       '<b>Что делаем:</b> онлайн-платформу с заданиями для сотрудников к 33-летию МТС и страницу онлайн-эфира 28.10.',
       '<b>Концепция:</b> «33 года — все 33 удовольствия». Сотрудник собирает 33 «удовольствия» — отметки о выполнении заданий. Слоган и идею МТС утвердил. Эфир — «34-е удовольствие», которое нельзя получить на платформе.',
-      '<b>Визуал — на пересмотре</b> (встреча 01.10): торт как главный образ для МТС слишком привычен. Новый KV готовят дизайнеры ивент-агентства с дизайнером МТС; торт может остаться частью праздника, финальным аккордом. В прототипе пока показан торт из пяти частей плюс шестой блок «Задания-сюрпризы» вне торта.',
+      '<b>Визуал — на пересмотре</b> (встреча 01.10): торт как главный образ для МТС слишком привычен. Новый KV готовят дизайнеры ивент-агентства с дизайнером МТС; торт может остаться частью праздника, финальным аккордом. В прототипе торта нет — оформление придёт с новым KV.',
       '<b>Аудитория:</b> сотрудники МТС и дочерних компаний, до 20 000 участников.',
       '<b>Устройства:</b> компьютер и телефон (браузер).',
       '<b>Не делаем:</b> вход через корпоративные учётные записи (регистрация — по корпоративной почте), магазин призов, офлайн-часть, уведомления участникам.',
     ])}
-    <h3>Структура: 5 частей торта + «Задания-сюрпризы»</h3>
-    ${tbl(['Блок', 'Раздел торта', 'Смысл', 'Удовольствий'], BLOCKS.map(b => [esc(b.name), b.section ? '«' + esc(b.section) + '»' : '— (вне торта)', esc(b.tagline), String(blockStats(b.id).max)]))}
-    <p class="small muted">В первой версии было 6 блоков; «Работа» и «Обучение» объединены, добавлен «Работаем вместе». Структура — на подтверждении у клиента. Названия блоков и разделов торта поменяются вместе с новым KV: «Работа и обучение» звучит непразднично.</p>` },
+    <h3>Структура: разделы → активности → задания</h3>
+    ${tbl(['Раздел', 'Смысл', 'Активности', 'Удовольствий'], BLOCKS.map(b => [esc(b.name), esc(b.tagline), GROUPS.filter(g => g.block === b.id).map(g => esc(g.title) + (g.acts.length > 1 ? ` <span class="muted">(${g.acts.length})</span>` : '')).join(', '), String(blockStats(b.id).max)]))}
+    <p>Участник выбирает раздел, в разделе — активность, внутри активности проходит её задания. Например: «Спорт» → «Сиять» → пять разминок. В скобках — число заданий в активности.</p>
+    <p class="small muted">В первой версии было 6 блоков; «Работа» и «Обучение» объединены, добавлен «Работаем вместе». Структура — на подтверждении у клиента. Названия разделов могут поменяться вместе с новым KV: «Работа и обучение» звучит непразднично.</p>` },
 
   { id: 'timeline', title: 'Сроки и этапы', html: () => `
     <div class="callout"><b>Праздник на платформе: ${dm(PROJECT.start)} – ${dm(PROJECT.end)}</b>, эфир — ${dm(PROJECT.stream)}. Неделя до эфира и две после — подтверждено на встрече с МТС 01.10 (в презентации было 14–28.10).</div>
-    ${tbl(['Этап', 'Даты', 'Что происходит'], PHASES.map(p => ['<b>' + esc(p.title) + '</b>', p.from === p.to ? dm(p.from) : dm(p.from) + '–' + dm(p.to), esc(p.desc)]))}
     ${ul([
-      'На сайте: шкала этапов на главной и лендинге, вид торта по этапу, этап у каждого задания.',
+      'Неделя до эфира — открываются первые задания; после эфира — основные задания, новые выпуски и сюрпризы.',
       '<b>К запуску минимум:</b> регистрация, 2–3 задания, страница эфира.',
       'Задания открываются постепенно: часть — до эфира, часть — после. Обновления — это новый контент (выпуски квиза, новая версия игры), а не новый дизайн. Экраны заданий, которые откроются позже, можно доделывать после запуска.',
       'Все даты — по Москве. Участники — от Калининграда до Дальнего Востока: анонсы и запуски — утром по Москве (около 10:00), повторяющиеся сюрпризы — в разное время, чтобы застали все.',
@@ -1833,15 +1799,16 @@ const TZ = [
 
   { id: 'journey', title: 'Путь участника', html: () => {
     const steps = [
-      ['Узнаёт о празднике', 'Переходит по ссылке из внутренних коммуникаций МТС на лендинг: суть праздника, торт, этапы, шесть блоков, эфир, призы.', 'landing'],
+      ['Узнаёт о празднике', 'Переходит по ссылке из внутренних коммуникаций МТС на лендинг: суть праздника, разделы, эфир, призы.', 'landing'],
       ['Регистрируется', 'По корпоративной почте МТС или дочерней компании и подтверждает её кодом из письма. Сразу получает первое удовольствие — «Регистрация».', 'register'],
-      ['Попадает на главную', 'Видит этап праздника, свой прогресс «N из 33», баллы и место, торт, шесть блоков, доступные задания и мини-рейтинг.', 'home'],
+      ['Попадает на главную', 'Видит разделы и турнирную таблицу. Свой прогресс «N из 33» и баллы — в шапке, возле аватара.', 'home'],
+      ['Выбирает раздел и активность', 'В разделе — карточки активностей. Внутри активности — её задания вкладками: например, «Спорт» → «Сиять» → пять разминок. Открывается первое невыполненное.', 'block/sport'],
       ['Выполняет задания', 'Рассказывает историю, загружает номер, проходит квиз, делает разминку, играет, голосует в истории. Удовольствия и баллы — сразу; за истории, номера и благодарности — после проверки организаторами.', 'act/recipe'],
       ['Следит за своими материалами', 'В профиле — «Мои материалы»: на модерации, опубликовано или отклонено. Писем и пушей нет — всё видно на платформе.', 'profile'],
       ['Возвращается', 'Открываются новые задания и выпуски, бонус недели, счастливые часы, спрятанная свечка. Пропущенное остаётся доступным.', 'home'],
       ['Смотрит эфир 28.10', 'Ток-шоу «Без галстука»: баллы за просмотр, квизы и опросы в плеере, развязка истории «Тайна пропавшего торта». Запись — после эфира.', 'stream'],
-      ['«Едим торт»', 'Две недели после эфира — основные задания. В «Моём прогрессе» видно, что осталось, и можно сразу перейти к непройденному.', 'progress'],
-      ['Собирает все 33 и следит за рейтингом', 'Лидеры рейтинга получают призы; среди всех, кто набрал пороговое число баллов, — отдельный розыгрыш.', 'rating'],
+      ['Две недели после эфира', 'Основные задания и новые выпуски. По клику на прогресс в шапке — «Мой прогресс»: что осталось и переход сразу к непройденному.', 'progress'],
+      ['Собирает все 33 и следит за турнирной таблицей', 'Лидеры рейтинга получают призы; среди всех, кто набрал пороговое число баллов, — отдельный розыгрыш.', 'rating'],
       ['Праздник завершён', 'После 11.11: личный итог, итоги розыгрышей, запись эфира. Всё доступно только для просмотра.', 'final'],
     ];
     return `<p>Как участник проходит праздник — от первого захода до итогов. Подробности по каждому шагу — в разделах ниже и в прототипе.</p>
@@ -1867,7 +1834,7 @@ const TZ = [
     <p>Черновое распределение 33 удовольствий: цифры из презентации, скорректированные по итогам обсуждений. Итоговую таблицу утверждаем отдельно.</p>${registry()}` },
 
   { id: 'acts', title: 'Задания подробно', kids: () => ACTS.map(a => ({ id: 'act-' + a.id, t: shortT(a) })),
-    html: () => BLOCKS.map(b => { const acts = ACTS.filter(a => a.block === b.id); return acts.length ? `<h3>${esc(blockName(b.id))}</h3>${acts.map(actCard).join('')}` : ''; }).join('') },
+    html: () => BLOCKS.map(b => { const gs = GROUPS.filter(g => g.block === b.id); return gs.length ? `<h3>${esc(blockName(b.id))}</h3>${gs.map(g => (g.acts.length > 1 ? `<h4>Активность «${esc(g.title)}»</h4>` : '') + gActs(g).map(actCard).join('')).join('')}` : ''; }).join('') },
 
   { id: 'mech', title: 'Как устроены задания', kids: () => Object.keys(MECH).map(k => ({ id: 'mech-' + k, t: MECH[k].short })),
     html: () => `<p>Типы заданий: как задание выглядит для участника и по каким правилам засчитывается. Задания одного типа отличаются только содержанием.</p>${Object.keys(MECH).map(mechSection).join('')}` },
@@ -1894,7 +1861,7 @@ const TZ = [
       'Всплывающие окна: находка свечки, «Все 33 собраны».',
       'Задания с микрофоном (АПОЖ): перед записью — подсказка, как разрешить доступ к микрофону в браузере.',
       'Баннеры: счастливый час, эфир (анонс / «в эфире сегодня»).',
-      'Подвал: правила, FAQ, техподдержка, политика обработки персональных данных.',
+      'Подвал: «Правила акции», полные правила (PDF), почта для вопросов, политика обработки персональных данных.',
     ])}${SCREENS.map(screenSection).join('')}` },
 
   { id: 'design', title: 'Дизайн и тексты', html: () => `
@@ -1940,11 +1907,11 @@ const TZ = [
       'Оформление трансляции: экран регистрации у провайдера — 1280 × 720; в начале трансляции сверху появляется отсчёт времени — учитывать в макете. Плашки спикеров и перебивки у провайдера есть.',
     ])}` },
 
-  { id: 'rating', title: 'Баллы, рейтинг, призы', html: () => `
+  { id: 'rating', title: 'Баллы, турнирная таблица, призы', html: () => `
     <h3>Шкала баллов (из презентации)</h3>
     ${tbl(['Баллы', 'Уровень', 'Примеры'], [['10', 'простые', 'благодарность, просмотр видео-разминки'], ['20', 'средние', 'выпуск квиза, рубеж в игре, угаданная песня в АПОЖ'], ['30', 'сложные и творческие', 'талант-шоу, «Секретный рецепт»'], ['50', 'особые', 'бонус за находку свечки']])}
     <p>Баллы по каждому заданию — в <a data-tz="registry">реестре</a>.</p>
-    <h3>Рейтинг</h3>${ul(['Сумма баллов. При равенстве выше тот, кто набрал раньше (рабочий вариант).', 'Экран «Рейтинг»: топ участников, строка «Ты» с местом и таблица «За что начисляются баллы». На главной — мини-рейтинг: топ-5 и строка «Ты».'])}
+    <h3>Турнирная таблица</h3>${ul(['Сумма баллов. При равенстве выше тот, кто набрал раньше (рабочий вариант).', 'На главной — топ-10 и строка «Ты» с местом. Отдельный экран «Турнирная таблица» — топ участников, строка «Ты» и таблица «За что начисляются баллы».'])}
     <h3>Призы и розыгрыши</h3>${ul([
       'Две категории победителей (предложение со встречи 01.10): <b>лидеры рейтинга</b> — например, розыгрыш среди топ-100 по баллам; <b>активные участники</b> — случайный розыгрыш среди всех, кто набрал пороговое число баллов: не просто зарегистрировался, а участвовал, пусть и не везде успешно.',
       'Список призов и количество (в том числе корпоративный мерч) даёт МТС. Призы показываем на платформе на странице «Призы».',
@@ -2043,7 +2010,7 @@ function syncDemo() {
   document.getElementById('d_candle').classList.toggle('on', S.candle && !S.candleFound);
 }
 function buildScreenSelect() {
-  const base = [['landing', 'Лендинг (гость)'], ['register', 'Регистрация'], ['login', 'Вход'], ['recover', 'Восстановление пароля'], ['home', 'Главная'], ['progress', 'Мой прогресс'], ['rating', 'Рейтинг'], ['prizes', 'Призы'], ['stream', 'Эфир'], ['rules', 'Правила'], ['faq', 'FAQ'], ['profile', 'Профиль'], ['final', 'Финальное состояние']];
+  const base = [['landing', 'Лендинг (гость)'], ['register', 'Регистрация'], ['login', 'Вход'], ['recover', 'Восстановление пароля'], ['home', 'Главная'], ['progress', 'Мой прогресс'], ['rating', 'Турнирная таблица'], ['prizes', 'Призы'], ['stream', 'Эфир'], ['rules', 'Правила акции'], ['profile', 'Профиль'], ['final', 'Финальное состояние']];
   let h = `<option value="">— перейти к экрану —</option><optgroup label="Экраны">${base.map(([r, t]) => `<option value="${r}">${t}</option>`).join('')}</optgroup>`;
   BLOCKS.forEach(b => {
     const acts = ACTS.filter(a => a.block === b.id && !['system', 'visit'].includes(a.type)); if (!acts.length) return;
