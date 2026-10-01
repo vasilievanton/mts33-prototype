@@ -1,0 +1,2019 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>МТС · 33 удовольствия — прототип и ТЗ</title>
+<!--
+  Кликабельный прототип + ТЗ в одном файле. Версия 0.2 от 01.10.2026.
+  Как вносить правки: данные (блоки, активности, механики, экраны, вопросы) — в объектах
+  PROJECT / BLOCKS / ACTS / MECH / SCREENS / QUESTIONS; обе вкладки строятся из них.
+  Любая правка прототипа = правка данных/текста ТЗ + запись в CHANGELOG.
+-->
+<style>
+:root{
+  --ink:#1b1b1f; --ink2:#3a3a42; --muted:#6b6b76; --line:#d6d6dd; --line2:#e7e7ec;
+  --bg:#e9ebef; --paper:#fff; --ph:#f2f3f5; --ph2:#e6e7eb;
+  --red:#ff0032; --red-ink:#d4002a; --red-soft:#ffe9ee;
+  --ok:#15803d; --ok-soft:#e6f5eb; --warn:#b45309; --warn-soft:#fdf0df; --draft:#6d28d9; --draft-soft:#f0eafc;
+  --chrome:#141419; --r:12px;
+  --font: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font:15px/1.45 var(--font);color:var(--ink);background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+[hidden]{display:none!important}
+
+/* ---------- Tool chrome ---------- */
+.chrome{flex:none;display:flex;align-items:center;gap:16px;height:52px;padding:0 16px;background:var(--chrome);color:#fff}
+.chrome .brand{display:flex;align-items:center;gap:10px;font-weight:600;white-space:nowrap;min-width:0}
+.chrome .brand .ver{font-weight:400;color:#a3a3ad;font-size:13px;overflow:hidden;text-overflow:ellipsis}
+.mtsbox{display:inline-grid;place-items:center;width:28px;height:28px;background:var(--red);color:#fff;font-size:9px;font-weight:800;letter-spacing:.02em;border-radius:3px;flex:none}
+.tabs{margin-left:auto;display:flex;gap:4px;background:#26262e;padding:4px;border-radius:10px}
+.tabs button{border:0;background:transparent;color:#c9c9d1;padding:6px 14px;border-radius:7px;cursor:pointer;font-weight:500;white-space:nowrap}
+.tabs button.on{background:#fff;color:var(--chrome)}
+@media (max-width:720px){.chrome .brand .ver{display:none}.tabs button{padding:6px 10px}}
+@media (max-width:520px){.chrome .brand span:not(.mtsbox){display:none}.chrome{gap:8px;padding:0 10px}}
+
+/* ---------- Prototype tab ---------- */
+#tab-proto{flex:1;min-height:0;display:flex;flex-direction:column}
+.demo{flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:7px 14px;background:#f7f7f9;border-bottom:1px solid var(--line);font-size:13px}
+.demo .lbl{color:var(--muted);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:.06em}
+.demo .grp{display:flex;align-items:center;gap:6px}
+.demo select{padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:175px}
+.seg2{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+.seg2 button{border:0;background:transparent;padding:4px 9px;cursor:pointer}
+.seg2 button.on{background:var(--ink);color:#fff}
+.dbtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 9px;cursor:pointer}
+.dbtn:hover{border-color:var(--ink2)}
+.dbtn.on{background:var(--red-soft);border-color:var(--red);color:var(--red-ink)}
+.stage{flex:1;min-height:0;display:flex;justify-content:center;padding:14px 16px 16px}
+.frame{position:relative;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;width:100%;max-width:1280px;height:100%;box-shadow:0 10px 30px rgba(20,20,30,.08)}
+.frame.mobile{width:390px;max-width:390px;height:min(100%,844px);border:10px solid #202027;border-radius:36px}
+.urlbar{flex:none;display:flex;align-items:center;gap:8px;padding:7px 12px;background:#f4f4f6;border-bottom:1px solid var(--line2);font-size:12px;color:var(--muted)}
+.urlbar .dots{display:flex;gap:5px}.urlbar .dots i{width:9px;height:9px;border-radius:50%;background:#d4d4da;display:block}
+.urlbar .url{flex:1;min-width:0;background:#fff;border:1px solid var(--line2);border-radius:6px;padding:3px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frame.mobile .urlbar .dots{display:none}
+.scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;position:relative}
+#overlay{position:absolute;inset:0;z-index:40;display:none;background:rgba(20,20,26,.45);align-items:center;justify-content:center;padding:16px}
+#overlay.on{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:440px;width:100%;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.25);text-align:center}
+.modal h3{margin:8px 0 6px;font-size:20px}
+.modal p{margin:0 0 14px;color:var(--ink2)}
+#toasts{position:absolute;left:0;right:0;bottom:14px;z-index:50;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
+.toast{background:var(--ink);color:#fff;padding:9px 14px;border-radius:10px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:tin .2s ease-out;max-width:90%}
+.toast b{color:#ffb3c2}
+@keyframes tin{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+.tzbtn{position:absolute;right:14px;bottom:14px;z-index:30;border:1px dashed #9b9ba6;background:rgba(255,255,255,.95);color:var(--ink2);border-radius:999px;padding:6px 12px;font-size:12px;cursor:pointer}
+.tzbtn:hover{border-style:solid;border-color:var(--ink)}
+.frame.mobile .tzbtn{bottom:10px;right:10px}
+
+/* ---------- Site (inside frame) ---------- */
+.site{container-type:inline-size;min-height:100%;display:flex;flex-direction:column;position:relative;background:#fff}
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 28px}
+.sh{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line2)}
+.sh .wrap{display:flex;align-items:center;gap:22px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;white-space:nowrap}
+.logo .mtsbox{width:34px;height:34px;font-size:10px}
+.nav{display:flex;gap:18px;font-size:14px}
+.nav a{text-decoration:none;color:var(--ink2);cursor:pointer;padding:4px 0;border-bottom:2px solid transparent}
+.nav a.on{color:var(--ink);border-bottom-color:var(--red)}
+.sh .right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.pchip{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 6px;font-size:13px;cursor:pointer;white-space:nowrap}
+.pchip .ring{width:22px;height:22px;border-radius:50%;background:conic-gradient(var(--red) var(--p,0%), var(--ph2) 0)}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--ph2);display:grid;place-items:center;font-size:12px;font-weight:700;cursor:pointer;flex:none}
+.burger{display:none;border:1px solid var(--line);background:#fff;border-radius:8px;width:38px;height:34px;cursor:pointer}
+.mmenu{display:none}
+.main{flex:1}
+.sf{margin-top:48px;border-top:1px solid var(--line2);background:#fafafb;font-size:13px;color:var(--muted)}
+.sf .wrap{display:flex;flex-wrap:wrap;gap:8px 20px;padding-top:18px;padding-bottom:60px}
+.sf a{cursor:pointer;text-decoration:underline;text-decoration-color:var(--line)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--ink);background:#fff;border-radius:10px;padding:10px 16px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.btn.red:hover{background:var(--red-ink)}
+.btn.sm{padding:6px 12px;font-size:13px;border-radius:8px}
+.btn.ghost{border-color:var(--line)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.link{color:var(--red-ink);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+h1,h2,h3{line-height:1.15;margin:0}
+.pg-h{padding-top:26px;padding-bottom:6px}
+.pg-h h1{font-size:30px;margin:6px 0 6px}
+.crumbs{font-size:13px;color:var(--muted)}
+.crumbs a{cursor:pointer;text-decoration:underline;text-decoration-color:var(--line)}
+.sec{margin-top:28px}
+.sec>h2{font-size:21px;margin-bottom:12px}
+
+/* placeholders */
+.ph{background:var(--ph) repeating-linear-gradient(45deg,transparent 0 10px,rgba(0,0,0,.035) 10px 20px);border:1px dashed #c9c9d1;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#8c8c97;font-size:12px;text-align:center;padding:6px}
+.ph.round{border-radius:50%}
+.lines i{display:block;height:9px;border-radius:5px;background:var(--ph2);margin:7px 0}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap;background:#fff}
+.chip.pl{border-color:#f3b3c1;background:var(--red-soft);color:var(--red-ink)}
+.chip.st-open{border-color:var(--ink);font-weight:600}
+.chip.st-open::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red)}
+.chip.st-partial{border-color:var(--red);color:var(--red-ink)}
+.chip.st-done{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.st-soon,.chip.st-closed,.chip.st-ended{color:var(--muted);background:var(--ph)}
+.chip.st-locked{color:var(--muted);border-style:dashed}
+.chip.st-pending{border-style:dashed;border-color:var(--warn);color:var(--warn)}
+.chip.hh{background:#fff4c2;border-color:#e3c24a;color:#7a5a00;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.sbadge{display:inline-block;font-size:11px;font-weight:600;border-radius:6px;padding:1px 7px;vertical-align:middle;white-space:nowrap}
+.sbadge.ok{background:var(--ok-soft);color:var(--ok)}
+.sbadge.client{background:var(--warn-soft);color:var(--warn)}
+.sbadge.draft{background:var(--draft-soft);color:var(--draft)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:center;padding-top:30px;padding-bottom:10px}
+.kicker{font-size:13px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hero h1{font-size:44px;letter-spacing:-.01em;margin:10px 0 12px}
+.hero p{color:var(--ink2);margin:0 0 18px;max-width:520px}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.cake{width:100%;max-width:440px;display:block;margin:0 auto}
+.cake .seg path{fill:#f6f6f8;stroke:#c7c7cf;stroke-width:1.5;cursor:pointer;transition:fill .15s}
+.cake .seg:hover path{fill:#fff0f3}
+.cake .dot{fill:#fff;stroke:#b9b9c3;stroke-width:1.5;pointer-events:none}
+.cake .dot.on{fill:var(--red);stroke:var(--red)}
+.cake text{pointer-events:none;font-family:var(--font)}
+.cake .segl{font-size:12.5px;font-weight:600;fill:var(--ink)}
+.cake .segn{font-size:11.5px;fill:var(--muted)}
+.cake .core{fill:#fff;stroke:#c7c7cf;stroke-width:1.5}
+.cake .core33{font-size:30px;font-weight:800;fill:var(--red)}
+.pcard{border:1px solid var(--line);border-radius:14px;padding:14px 16px;max-width:520px;margin-top:6px}
+.pcard .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pcard .num{font-size:28px;font-weight:800}
+.bar{height:8px;background:var(--ph2);border-radius:5px;overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:var(--red);border-radius:5px}
+.common-strip{display:flex;align-items:center;gap:12px;justify-content:space-between;border:1px dashed var(--line);border-radius:12px;padding:10px 14px;margin-top:12px;cursor:pointer}
+.common-strip:hover{border-color:var(--ink2)}
+
+/* banners */
+.banner{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;margin-top:14px;flex-wrap:wrap}
+.banner.hh{background:#fff4c2;border:1px solid #e9cd62}
+.banner.live{background:var(--red-soft);border:1px solid #f6b1c0}
+.banner.info{background:var(--ph);border:1px solid var(--line2)}
+.banner .grow{flex:1;min-width:180px}
+.banner .cd{font-variant-numeric:tabular-nums;font-weight:700}
+
+/* activity cards */
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.acard{border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;background:#fff;transition:border-color .15s}
+.acard:hover{border-color:var(--ink2)}
+.acard .top{display:flex;gap:12px}
+.acard .ico{width:52px;height:52px;flex:none;font-size:10px}
+.acard .t{font-weight:700;line-height:1.25}
+.acard .s{font-size:12px;color:var(--muted);margin-top:2px}
+.acard .d{font-size:13px;color:var(--ink2)}
+.acard .bot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;flex-wrap:wrap}
+.acard.dim{opacity:.72}
+.acard.secret{border-style:dashed}
+.alist{display:flex;flex-direction:column;gap:10px}
+.arow{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.arow:hover{border-color:var(--ink2)}
+.arow .ico{width:44px;height:44px;flex:none;font-size:10px}
+.arow .grow{flex:1;min-width:0}
+.arow .t{font-weight:700}
+.arow .d{font-size:13px;color:var(--ink2)}
+.arow .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.arow .side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+
+/* activity page */
+.apage{max-width:860px}
+.apage .chips{margin:10px 0 4px}
+.panel{border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+.panel.center{text-align:center;padding:30px 18px}
+.panel h3{font-size:18px;margin-bottom:8px}
+.tabs2{display:flex;gap:4px;border-bottom:1px solid var(--line2);margin-top:18px}
+.tabs2 button{border:0;background:transparent;padding:9px 12px;cursor:pointer;border-bottom:2px solid transparent;color:var(--ink2);font-weight:600}
+.tabs2 button.on{color:var(--ink);border-bottom-color:var(--red)}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.field label{font-size:13px;font-weight:600}
+.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;width:100%}
+.field textarea{min-height:96px;resize:vertical}
+.field .hint{font-size:12px;color:var(--muted)}
+.field .err{font-size:12px;color:var(--red-ink)}
+.field.bad input,.field.bad select{border-color:var(--red)}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-bottom:8px}
+.check input{margin-top:3px}
+.drop{height:140px;cursor:pointer}
+.drop.ok{border-style:solid;border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.demoact{display:inline-flex;align-items:center;gap:6px;border:1px dashed #a78bfa;color:var(--draft);background:var(--draft-soft);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer}
+.note{font-size:12px;color:var(--draft);background:var(--draft-soft);border-radius:8px;padding:6px 10px;margin-top:10px}
+.note.warn{color:var(--warn);background:var(--warn-soft)}
+.mylist{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.myitem{display:flex;align-items:center;gap:10px;border:1px solid var(--line2);border-radius:10px;padding:8px 10px;flex-wrap:wrap}
+.myitem .grow{flex:1;min-width:140px}
+
+/* film strip */
+.film{position:relative;background:#1f1f25;border-radius:12px;padding:22px 0;margin-top:14px}
+.film::before,.film::after{content:"";position:absolute;left:0;right:0;height:10px;background:repeating-linear-gradient(90deg,transparent 0 10px,#e9e9ee 10px 22px);opacity:.75}
+.film::before{top:6px}.film::after{bottom:6px}
+.film-track{display:flex;gap:10px;overflow-x:auto;scroll-behavior:auto;padding:0 12px;scrollbar-width:none}
+.film-track::-webkit-scrollbar{display:none}
+.frm{flex:none;width:210px;background:#fff;border-radius:6px;padding:8px}
+.frm .ph{height:130px;border-radius:4px}
+.frm .who{font-size:12px;font-weight:700;margin-top:6px}
+.frm .txt{font-size:12px;color:var(--ink2)}
+.filmctl{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+
+/* gallery */
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:12px}
+.gcard{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.gcard .ph{height:130px;border-radius:0;border:0;border-bottom:1px dashed #c9c9d1}
+.gcard .b{padding:10px}
+.gcard .who{font-weight:700;font-size:13px}
+.like{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px;cursor:pointer;font-size:13px;margin-top:8px}
+.like.on{background:var(--red);border-color:var(--red);color:#fff}
+.like[disabled]{opacity:.5;cursor:not-allowed}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:13px}
+.filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* wall */
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
+.sweet{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fffafb}
+.sweet .ph{width:44px;height:44px;margin-bottom:8px}
+.sweet .to{font-weight:700;font-size:13px}
+.sweet .tx{font-size:13px;color:var(--ink2);margin:4px 0}
+.sweet .from{font-size:12px;color:var(--muted)}
+
+/* quiz / options */
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.opt{border:1px solid var(--line);border-radius:10px;padding:11px 14px;background:#fff;text-align:left;cursor:pointer}
+.opt:hover{border-color:var(--ink2)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.opt.sel{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.opt[disabled]{cursor:default}
+.expl{border-left:3px solid var(--red);background:var(--ph);border-radius:0 10px 10px 0;padding:10px 14px;margin-top:12px;font-size:14px}
+.qhead{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.steps{display:flex;gap:6px;margin:6px 0 14px;flex-wrap:wrap}
+.steps span{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--muted)}
+.steps span.on{border-color:var(--ink);color:var(--ink);font-weight:600}
+.steps span.done{background:var(--ink);color:#fff;border-color:var(--ink)}
+.player{height:74px;display:flex;align-items:center;gap:12px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--ph)}
+.pbtn{width:42px;height:42px;border-radius:50%;border:0;background:var(--ink);color:#fff;cursor:pointer;display:grid;place-items:center;flex:none}
+.wave{flex:1;height:30px;background:repeating-linear-gradient(90deg,#c3c3cc 0 3px,transparent 3px 6px);-webkit-mask:linear-gradient(0deg,transparent 0 0);border-radius:4px;opacity:.8}
+.rec{width:74px;height:74px;border-radius:50%;border:0;background:var(--red);color:#fff;font-weight:700;cursor:pointer}
+.rec.on{animation:pulse 1s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(255,0,50,.15)}}
+.video{aspect-ratio:16/9;position:relative;max-height:420px;justify-content:flex-end!important;padding-bottom:14px!important}
+.video .play{position:absolute;inset:0;margin:auto;width:64px;height:64px;border-radius:50%;border:0;background:rgba(27,27,31,.85);color:#fff;cursor:pointer;display:grid;place-items:center}
+.timer{font-variant-numeric:tabular-nums}
+.game{aspect-ratio:16/7;position:relative;overflow:hidden}
+.runner{position:absolute;left:10%;bottom:18%;width:34px;height:44px;border-radius:8px;background:var(--ink);animation:jump .6s infinite alternate}
+@keyframes jump{to{transform:translateY(-40%)}}
+.vote{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.vres{border:1px solid var(--line);border-radius:10px;padding:8px 12px;position:relative;overflow:hidden}
+.vres i{position:absolute;inset:0 auto 0 0;background:var(--red-soft)}
+.vres span{position:relative}
+.vres.win{border-color:var(--red)}
+.chap{border:1px solid var(--line2);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center}
+.chap .ph{width:64px;height:48px;flex:none}
+
+/* progress page */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pcol{border:1px solid var(--line);border-radius:14px;padding:14px}
+.pcol h3{font-size:16px}
+.pcol .sub{font-size:12px;color:var(--muted)}
+.slots{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.slots i{width:18px;height:18px;border-radius:50%;border:1.5px solid #b9b9c3;display:block}
+.slots i.on{background:var(--red);border-color:var(--red)}
+.slots i.q{border-style:dashed}
+.plist{display:flex;flex-direction:column;gap:6px}
+.pitem{display:flex;flex-direction:column;gap:5px;font-size:13px;border-top:1px solid var(--line2);padding-top:7px}
+.pitem .pa{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pgrid>*{min-width:0}
+.pitem .go{color:var(--red-ink);cursor:pointer;white-space:nowrap}
+
+/* table (rating) */
+.rtable{width:100%;border-collapse:collapse;font-size:14px;margin-top:12px}
+.rtable th,.rtable td{padding:9px 10px;border-bottom:1px solid var(--line2);text-align:left}
+.rtable th{font-size:12px;color:var(--muted);font-weight:600}
+.rtable tr.me td{background:var(--red-soft);font-weight:700}
+.acc{border:1px solid var(--line);border-radius:12px;margin-top:8px}
+.acc summary{padding:12px 14px;cursor:pointer;font-weight:600}
+.acc div{padding:0 14px 12px;color:var(--ink2);font-size:14px}
+.authbox{max-width:460px;margin:30px auto 0;border:1px solid var(--line);border-radius:16px;padding:22px}
+.authbox h1{font-size:26px;margin-bottom:6px}
+.candle{position:absolute;z-index:25;width:30px;height:38px;border:0;background:transparent;cursor:pointer;padding:0}
+.candle svg{width:100%;height:100%}
+
+/* ---------- mobile (container) ---------- */
+@container (max-width:760px){
+  .wrap{padding:0 16px}
+  .nav,.sh .right .pchip .t{display:none}
+  .burger{display:block}
+  .mmenu.on{display:flex;flex-direction:column;border-top:1px solid var(--line2);padding:6px 16px 12px;background:#fff}
+  .mmenu a{padding:10px 0;border-bottom:1px solid var(--line2);cursor:pointer}
+  .hero{grid-template-columns:1fr;gap:12px;padding-top:18px}
+  .hero h1{font-size:30px}
+  .hero .cakeside{order:-1}
+  .cake{max-width:320px}
+  .pg-h h1{font-size:24px}
+  .pgrid{grid-template-columns:1fr}
+  .row2{grid-template-columns:1fr}
+  .agrid{grid-template-columns:1fr}
+  .arow{align-items:flex-start}
+  .arow .side{display:none}
+  .frm{width:170px}
+  .rtable .hm{display:none}
+  .gal{grid-template-columns:1fr 1fr}
+  .sh .wrap{gap:10px}
+  .logo .lt{display:none}
+}
+@container (max-width:420px){ .gal{grid-template-columns:1fr} }
+
+/* ---------- TZ tab ---------- */
+#tab-tz{flex:1;min-height:0;display:flex;background:#fff}
+.tznav{flex:none;width:290px;border-right:1px solid var(--line);overflow:auto;padding:14px 10px 40px;background:#fafafb;font-size:13.5px}
+.tznav .search{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin:0 0 10px;background:#fff}
+.tznav a{display:block;text-decoration:none;color:var(--ink2);padding:5px 10px;border-radius:7px;cursor:pointer;line-height:1.3}
+.tznav a:hover{background:#efeff3}
+.tznav a.on{background:var(--ink);color:#fff}
+.tznav .n{color:var(--muted);font-variant-numeric:tabular-nums;margin-right:6px}
+.tznav a.on .n{color:#bbb}
+.tznav .kids{margin:2px 0 6px 18px;border-left:1px solid var(--line);padding-left:4px}
+.tznav .kids a{font-size:12.5px;padding:3px 8px}
+.tznav details>summary{list-style:none;cursor:pointer}
+.tznav details>summary::-webkit-details-marker{display:none}
+.tzdoc{flex:1;min-width:0;overflow:auto;scroll-behavior:smooth}
+.tzin{max-width:1000px;margin:0 auto;padding:28px 32px 120px}
+.tzin h1{font-size:30px;margin:0 0 8px}
+.tzin h2{font-size:23px;margin:48px 0 12px;padding-top:12px;border-top:1px solid var(--line2);scroll-margin-top:12px}
+.tzin h2 .n{color:var(--red);margin-right:8px}
+.tzin h3{font-size:17px;margin:26px 0 8px;scroll-margin-top:12px}
+.tzin h4{font-size:14px;margin:16px 0 6px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.tzin p{margin:8px 0}
+.tzin ul{margin:6px 0 10px;padding-left:20px}
+.tzin li{margin:4px 0}
+.tzin code{background:var(--ph);border-radius:5px;padding:1px 5px;font-size:13px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 16px;color:var(--muted);font-size:13px}
+.legend{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line2);border-radius:12px;padding:12px 14px;margin:14px 0;font-size:13.5px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.kpi b{display:block;font-size:22px}
+.kpi span{font-size:12px;color:var(--muted)}
+.kpi.bad{border-color:var(--red);background:var(--red-soft)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+.tbl th,.tbl td{border:1px solid var(--line2);padding:6px 8px;text-align:left;vertical-align:top}
+.tbl th{background:#f6f6f8;font-weight:600;font-size:12px}
+.tbl td.num,.tbl th.num{text-align:center;white-space:nowrap}
+.tbl tr.blk td{background:#fafafb;font-weight:700}
+.tbl tr.tot td{background:var(--ink);color:#fff;font-weight:700}
+.tbl a{color:var(--ink);cursor:pointer}
+.tblwrap{overflow-x:auto}
+.tzcard{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:14px 0;scroll-margin-top:12px}
+.tzcard .hd{display:flex;align-items:flex-start;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.tzcard h3{margin:0}
+.tzcard .sub{color:var(--muted);font-weight:400;font-size:14px}
+.kv{display:grid;grid-template-columns:200px 1fr;gap:4px 14px;margin:10px 0;font-size:13.5px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.open{border:1px solid var(--ink);border-radius:8px;padding:3px 10px;font-size:12px;cursor:pointer;background:#fff;white-space:nowrap}
+.open:hover{background:var(--ink);color:#fff}
+.notes{background:#fafafb;border-radius:10px;padding:8px 12px 8px 28px!important}
+.gantt{border:1px solid var(--line2);border-radius:12px;overflow:hidden;margin:12px 0;font-size:12px}
+.gantt .gr{display:grid;grid-template-columns:230px 1fr;border-bottom:1px solid var(--line2)}
+.gantt .gr:last-child{border-bottom:0}
+.gantt .gl{padding:5px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid var(--line2);cursor:pointer}
+.gantt .gl:hover{text-decoration:underline}
+.gantt .gt{position:relative;height:26px;background:repeating-linear-gradient(90deg,transparent 0 calc(100%/22 - 1px),#f0f0f3 calc(100%/22 - 1px) calc(100%/22))}
+.gantt .gb{position:absolute;top:6px;height:14px;border-radius:4px;background:#c9c9d2}
+.gantt .gb.ok{background:#8fcaa3}.gantt .gb.client{background:#f1c27d}.gantt .gb.draft{background:#c4b0f5}
+.gantt .gh .gt{height:24px;background:#fafafb}
+.gantt .gh .gl{font-weight:600;background:#fafafb;cursor:default}
+.gantt .gh .gl:hover{text-decoration:none}
+.gantt .gblk .gl{font-weight:700;background:#f6f6f8;cursor:default}
+.gantt .gblk .gl:hover{text-decoration:none}
+.gantt .gblk .gt{height:22px;background:#f6f6f8}
+.gantt .tick{position:absolute;top:4px;font-size:10px;color:var(--muted);transform:translateX(-50%)}
+.gantt .eth{position:absolute;top:0;bottom:0;width:2px;background:var(--red);opacity:.6}
+.qlist li{margin:6px 0}
+.qlist a{color:var(--muted);font-size:12px;cursor:pointer}
+.callout{border-left:3px solid var(--red);background:#fff7f9;padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0}
+.navtoggle{display:none}
+@media (max-width:860px){
+  .tznav{position:absolute;z-index:60;top:52px;bottom:0;left:0;transform:translateX(-100%);transition:transform .2s;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+  .tznav.on{transform:none}
+  .navtoggle{display:inline-flex;position:fixed;left:12px;bottom:12px;z-index:61}
+  .tzin{padding:20px 16px 100px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kv{grid-template-columns:1fr}
+  .kv dt{margin-top:6px}
+  .gantt .gr{grid-template-columns:130px 1fr}
+}
+
+</style>
+</head>
+<body>
+<header class="chrome">
+  <div class="brand"><span class="mtsbox">МТС</span><span>33 удовольствия</span><span class="ver">Прототип и ТЗ · v0.2 · 01.10.2026</span></div>
+  <nav class="tabs"><button data-tab="proto" class="on">Прототип</button><button data-tab="tz">Техническое задание</button></nav>
+</header>
+
+<section id="tab-proto">
+  <div class="demo">
+    <span class="lbl">Демо</span>
+    <label class="grp">Дата <select id="d_date"></select></label>
+    <div class="grp">Кто <div class="seg2" id="d_auth"><button data-v="0">Гость</button><button data-v="1">Участник</button></div></div>
+    <div class="grp">Вид <div class="seg2" id="d_view"><button data-v="desktop">Десктоп</button><button data-v="mobile">Мобайл</button></div></div>
+    <button class="dbtn" id="d_hh">Счастливый час</button>
+    <button class="dbtn" id="d_candle">Спрятать свечку</button>
+    <button class="dbtn" id="d_fill">Заполнить прогресс</button>
+    <button class="dbtn" id="d_reset">Сбросить</button>
+    <select id="d_screen" aria-label="Перейти к экрану"></select>
+  </div>
+  <div class="stage">
+    <div class="frame desktop" id="frame">
+      <div class="urlbar"><span class="dots"><i></i><i></i><i></i></span><span class="url" id="url"></span></div>
+      <div class="scroll" id="scroll"><div class="site" id="site"></div></div>
+      <div id="overlay"></div>
+      <div id="toasts"></div>
+      <button class="tzbtn" id="tzbtn">ТЗ по экрану ↗</button>
+    </div>
+  </div>
+</section>
+
+<section id="tab-tz" hidden>
+  <aside class="tznav" id="tznav"></aside>
+  <main class="tzdoc" id="tzdoc"></main>
+  <button class="btn sm navtoggle" id="navtoggle">☰ Разделы</button>
+</section>
+
+<script>
+/* =====================================================================
+   ЕДИНЫЙ ИСТОЧНИК ДАННЫХ
+   Прототип и ТЗ строятся из объектов ниже. Правило правок:
+   1) меняем механику / экран / цифры — меняем их ЗДЕСЬ (или текст ТЗ в tz.js);
+   2) обе вкладки перестраиваются автоматически;
+   3) добавляем запись в CHANGELOG.
+   ===================================================================== */
+
+const PROJECT = {
+  title: 'МТС · 33 удовольствия',
+  doc: 'Онлайн-платформа к 33-летию МТС',
+  version: '0.2',
+  updated: '01.10.2026',
+  start: '2026-10-21',
+  end: '2026-11-11',
+  stream: '2026-10-28',
+  pleasuresTotal: 33,
+  sources: [
+    'Презентация «Празднование 33-летия МТС. Предложение по проведению онлайн-мероприятия» (Grand Day), которую видел клиент',
+    'Созвон Deep 30.09: разбор презентации и таймлайна',
+    'Созвон Deep 30.09 с разработкой: архитектура активностей, АПОЖ, лайки, сюрпризы',
+  ],
+};
+
+/* Статусы проработки (для ТЗ и бейджей в прототипе) */
+const STATUS = {
+  ok:     { label: 'Согласовано',     desc: 'Есть в презентации клиенту или решено внутри команды. Можно брать в работу.' },
+  client: { label: 'На согласовании', desc: 'Ждём решения или данных от МТС. В прототипе показан рабочий вариант.' },
+  draft:  { label: 'Допущение',       desc: 'Наша заглушка для прототипа: цифры, даты или формат нужно утвердить.' },
+};
+
+/* Состояния активности. Одни и те же подписи в прототипе и в ТЗ */
+const STATES = {
+  soon:    { label: 'Скоро',               desc: 'Дата «от» ещё не наступила. Карточка видна с подписью «Откроется ДД.ММ», войти нельзя.' },
+  locked:  { label: 'Закрыто',             desc: 'Не выполнена активность-зависимость. Показываем «Сначала пройди «…»» со ссылкой на неё.' },
+  open:    { label: 'Доступно',            desc: 'Можно выполнять.' },
+  partial: { label: 'В процессе',          desc: 'Выполнено меньше лимита повторов, например «1 из 2».' },
+  pending: { label: 'На модерации',        desc: 'Материал отправлен и ждёт проверки. Начисление — после одобрения.' },
+  done:    { label: 'Выполнено',           desc: 'Лимит выполнений исчерпан, всё начислено. Контент остаётся доступным для просмотра.' },
+  closed:  { label: 'Завершено',           desc: 'У активности есть дата «до», и она прошла. Исключение из общего принципа — например, голосование по главе.' },
+  ended:   { label: 'Платформа завершена', desc: 'После окончания кампании всё доступно только для просмотра.' },
+};
+
+const BLOCKS = [
+  { id: 'work',  name: 'Работа и обучение', section: 'Начинка',          lines: ['Работа', 'и обучение'], tagline: 'Удовольствие от новых открытий',
+    desc: 'Поделиться опытом, узнавать компанию в нестандартных форматах, получать заряд от забавных игр.', cake: true },
+  { id: 'sport', name: 'Спорт',             section: 'Форма',            lines: ['Спорт'],                tagline: 'Удовольствие от движения',
+    desc: 'Лёгкость после разминки, заряд от игровой активности, ментальный отдых.', cake: true },
+  { id: 'art',   name: 'Творчество',        section: 'Изюминка',         lines: ['Творчество'],           tagline: 'Удовольствие от самовыражения',
+    desc: 'Поделиться талантами, получить поддержку коллег, почерпнуть новое.', cake: true },
+  { id: 'good',  name: 'Добро',             section: 'Вишенка на торте', lines: ['Добро'],                tagline: 'Удовольствие от добрых дел',
+    desc: 'Получить и подарить признательность, почувствовать себя частью большой команды.', cake: true },
+  { id: 'team',  name: 'Работаем вместе',   section: 'Сборка',           lines: ['Работаем', 'вместе'],   tagline: 'Удовольствие от совместного времяпрепровождения',
+    desc: 'Командная активность, реализованная с помощью ИИ.', cake: true },
+  { id: 'common', name: 'Общее и сюрпризы', section: null, lines: [], tagline: 'Удовольствия вне блоков',
+    desc: 'Регистрация и задания-сюрпризы. В ЛК — отдельный, шестой раздел прогресса.', cake: false },
+  { id: 'stream', name: 'Онлайн-эфир',      section: null, lines: [], tagline: '34-е удовольствие',
+    desc: 'Эфир 28.10 — «тридцать четвёртое удовольствие, которое нельзя получить на платформе». Баллы за участие есть, удовольствий нет.', cake: false },
+];
+
+/* ---------------------------------------------------------------------
+   РЕЕСТР АКТИВНОСТЕЙ
+   pl  — удовольствий за одно выполнение; max — выполнений на пользователя
+   pts — правило баллов: fixed | score (по верным ответам, v = максимум) |
+         result (v за рубеж) | bonus | code (live / rec)
+   dep — id активности, которую нужно выполнить раньше
+   to  — дата «до» (необязательно; по умолчанию — до конца кампании)
+   --------------------------------------------------------------------- */
+const ACTS = [
+  // ---------- Общее и сюрпризы ----------
+  { id: 'reg', block: 'common', title: 'Регистрация', type: 'system', from: '2026-10-21', max: 1, pl: 1, pts: { kind: 'fixed', v: 0 }, status: 'client',
+    desc: 'Удовольствие начисляется автоматически после регистрации.',
+    notes: ['Можно ли называть «удовольствием» нецелевое действие — вопрос копирайта к клиенту. Если нельзя, это удовольствие переносим в другую активность.'] },
+  { id: 'candle', block: 'common', title: 'Пропавшая свечка', type: 'find', hidden: true, from: '2026-10-24', to: '2026-10-24', max: 1, pl: 1, pts: { kind: 'bonus', v: 50 }, status: 'draft',
+    desc: 'Найти и кликнуть иконку свечи, спрятанную в случайном месте интерфейса.',
+    notes: ['Дата и окно — пример. Бонус получают первые N нашедших (N = 34 — допущение).', 'Размер бонуса пользователь узнаёт только после находки (из презентации).'] },
+  { id: 'surprise3', block: 'common', title: 'Сюрприз №3', type: 'tbd', hidden: true, from: '2026-11-03', max: 1, pl: 1, pts: { kind: 'fixed', v: 0 }, status: 'draft',
+    desc: 'Механика не выбрана.',
+    notes: ['Нужна идея: простая в разработке, но для пользователя непохожая на счастливый час и свечку. Двух сюрпризов на отдельный раздел мало.', '«Тайный ингредиент» из презентации снят: слишком похож на счастливый час.'] },
+  { id: 'visit', block: 'common', title: 'Бонус недели', type: 'visit', from: '2026-10-21', max: 3, pl: 0, pts: { kind: 'fixed', v: 10 }, status: 'client',
+    desc: 'Баллы за первый заход на платформу в течение календарной недели.',
+    notes: ['Заменяет серийный множитель «несколько дней подряд» из презентации: контент обновляется не каждый день, гнать людей на платформу ежедневно незачем.'] },
+
+  // ---------- Работа и обучение («Начинка») ----------
+  { id: 'recipe', block: 'work', title: 'Секретный рецепт', sub: 'Кадр в истории', type: 'ugc_photo', from: '2026-10-21', max: 2, pl: 1, pts: { kind: 'fixed', v: 30 }, status: 'ok',
+    desc: 'Загрузить фото и короткую историю о своей работе в МТС. Истории собираются в общую ленту-киноплёнку.',
+    notes: ['До двух историй за кампанию — до двух удовольствий (из презентации).', 'Без обновлений контента; открывается до эфира — «готовим торт».'] },
+  { id: 'quiz1', block: 'work', title: 'Дегустация фактов. Выпуск 1', sub: 'Квиз с эксплейнерами', type: 'quiz', from: '2026-10-28', max: 1, pl: 3, pts: { kind: 'score', v: 20 }, status: 'draft',
+    desc: 'Квиз: после каждого ответа — объяснение или факт из истории компании, а не просто «верно/неверно».',
+    notes: ['В презентации — 5 выпусков по 1 удовольствию. По итогам созвона 30.09 квиз обновляется раз в неделю после эфира, то есть 2 выпуска. 5 удовольствий делим 3 + 2 (допущение).'] },
+  { id: 'quiz2', block: 'work', title: 'Дегустация фактов. Выпуск 2', sub: 'Квиз с эксплейнерами', type: 'quiz', from: '2026-11-04', dep: 'quiz1', max: 1, pl: 2, pts: { kind: 'score', v: 20 }, status: 'draft',
+    desc: 'Второй выпуск квиза с новыми вопросами.',
+    notes: ['Отдельная активность того же типа со своими вопросами. Доступна после прохождения выпуска 1.'] },
+  { id: 'apozh1', block: 'work', title: 'Какой праздник без песен: спой перевёртыш', sub: 'АПОЖ', type: 'audio', mode: 'sing', from: '2026-10-28', max: 1, pl: 1, pts: { kind: 'fixed', v: 20 }, status: 'client',
+    desc: 'Послушать перевёрнутую заготовку, повторить её голосом, услышать свою запись в правильную сторону и угадать, что спел.',
+    notes: ['Механика АПОЖ не утверждена: ждём, как её видит клиент. Показан рабочий вариант на заготовках, без ручной проверки ответов.'] },
+  { id: 'apozh2', block: 'work', title: 'Какой праздник без песен: угадай коллегу', sub: 'АПОЖ', type: 'audio', mode: 'guess', from: '2026-10-28', max: 1, pl: 1, pts: { kind: 'fixed', v: 20 }, status: 'client',
+    desc: 'Послушать перепевку другого участника и выбрать песню из вариантов.',
+    notes: ['Снимает риск, что петь сами захотят не все.'] },
+  { id: 'apozh3', block: 'work', title: 'Какой праздник без песен: поделись перепевкой', sub: 'АПОЖ', type: 'audio', mode: 'share', from: '2026-10-28', dep: 'apozh1', max: 1, pl: 1, pts: { kind: 'fixed', v: 20 }, status: 'client',
+    desc: 'Отправить свою перепевку в общий пул, чтобы её угадывали коллеги.',
+    notes: ['В презентации три удовольствия «на выбор» за разные роли в одной игре. Чтобы не усложнять начисление внутри одной активности, это три отдельные активности.'] },
+
+  // ---------- Спорт («Форма») ----------
+  { id: 'shine1', block: 'sport', title: 'Сиять. Разминка 1', sub: 'Видео-разминка', type: 'video_view', from: '2026-10-21', max: 1, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'ok',
+    desc: 'Посмотреть ролик с разминкой и отметить «Я тоже размялся!».',
+    notes: ['Серия из 5 роликов, каждый — отдельное удовольствие (из презентации).', 'Два обновления (созвон 30.09): до эфира — «разминаемся, чтобы месить тесто и собирать ягоды», после — «держим форму после торта», упражнения сидя на стуле. Разбивка 2 + 3 ролика — допущение.'] },
+  { id: 'shine2', block: 'sport', title: 'Сиять. Разминка 2', sub: 'Видео-разминка', type: 'video_view', from: '2026-10-21', dep: 'shine1', max: 1, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'ok',
+    desc: 'Второй ролик серии «до эфира».', notes: ['Ролики серии открываются по порядку.'] },
+  { id: 'shine3', block: 'sport', title: 'Сиять. Разминка 3', sub: 'Видео-разминка', type: 'video_view', from: '2026-10-28', dep: 'shine2', max: 1, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'ok',
+    desc: 'Первый ролик серии «после эфира».', notes: [] },
+  { id: 'shine4', block: 'sport', title: 'Сиять. Разминка 4', sub: 'Видео-разминка', type: 'video_view', from: '2026-10-28', dep: 'shine3', max: 1, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'ok',
+    desc: 'Ролик серии «после эфира».', notes: [] },
+  { id: 'shine5', block: 'sport', title: 'Сиять. Разминка 5', sub: 'Видео-разминка', type: 'video_view', from: '2026-10-28', dep: 'shine4', max: 1, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'ok',
+    desc: 'Финальный ролик серии.', notes: [] },
+  { id: 'run1', block: 'sport', title: 'Праздничный забег: собираем ягоды', sub: 'Игра-сайдскроллер', type: 'game', from: '2026-10-21', max: 1, pl: 1, pts: { kind: 'result', v: 20 }, status: 'draft',
+    desc: 'Казуальная мини-игра: герой бежит, собирает ягоды и перепрыгивает препятствия.',
+    notes: ['Версия «до эфира». Удовольствие — за первую завершённую игру (допущение). 20 баллов за рубеж — из презентации.'] },
+  { id: 'run2', block: 'sport', title: 'Праздничный забег: после праздника', sub: 'Игра-сайдскроллер', type: 'game', from: '2026-10-28', max: 1, pl: 1, pts: { kind: 'result', v: 20 }, status: 'draft',
+    desc: 'Та же игра с новыми ассетами: после торта собираем грязные тарелки.',
+    notes: ['Отличаются только ассеты. Первая версия после эфира не закрывается.'] },
+
+  // ---------- Творчество («Изюминка») ----------
+  { id: 'talent', block: 'art', title: 'Талант-шоу: мой номер', sub: 'Талант-шоу', type: 'ugc_video', from: '2026-10-21', max: 2, pl: 1, pts: { kind: 'fixed', v: 30 }, status: 'ok',
+    desc: 'Загрузить видео или фото о своём хобби, увлечении, творчестве с коротким описанием. Номера собираются в галерею.',
+    notes: ['Первое удовольствие — загрузка номера, ещё одно — за второй номер в другой номинации (из презентации).', 'Можно отметить согласие показать ролик на МТС ТВ. Галочка «готов выступить вживую» — уточнить: офлайн-части нет.'] },
+  { id: 'talent_like', block: 'art', title: 'Талант-шоу: поддержи коллег', sub: 'Талант-шоу', type: 'like', from: '2026-10-21', max: 1, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'client',
+    desc: 'Поддержать (лайкнуть) номера коллег в галерее.',
+    notes: ['Удовольствие — за первую поддержку (допущение).', 'Ограничения против перекоса и накрутки — на согласовании с клиентом.', 'Автору номера баллы за полученные лайки не начисляем.'] },
+  { id: 'talent_mc', block: 'art', title: 'Мини-мастер-класс от таланта', sub: 'Талант-шоу', type: 'video_view', from: '2026-10-28', max: 1, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'draft',
+    desc: 'Посмотреть мини-мастер-класс от одного из участников талант-шоу.',
+    notes: ['Из презентации. Формат не определён, показан как просмотр видео.'] },
+
+  // ---------- Добро («Вишенка на торте») ----------
+  { id: 'thanks', block: 'good', title: 'Настоящие сладости', sub: 'Доска благодарности', type: 'thanks', from: '2026-10-28', max: 5, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'ok',
+    desc: 'Оставить благодарность коллеге — она появится на общей стене.',
+    notes: ['До 5 благодарностей — до 5 удовольствий (из презентации).', 'Визуал «пробковая доска со стикерами-конфетами» слабый и сложный при одновременных публикациях — нужен новый креатив. Запуск после эфира.'] },
+  { id: 'vol1', block: 'good', title: 'Угостить добром: запись в проект', sub: 'Волонтёрство', type: 'volunteer', mode: 'signup', from: '2026-10-21', max: 1, pl: 1, pts: { kind: 'fixed', v: 0 }, status: 'client',
+    desc: 'Выбрать волонтёрский проект МТС и записаться.',
+    notes: ['Список проектов или фондов — от клиента. Скорее без баллов, но с удовольствием (созвон 30.09).'] },
+  { id: 'vol2', block: 'good', title: 'Угостить добром: пригласи коллегу', sub: 'Волонтёрство', type: 'volunteer', mode: 'invite', from: '2026-10-21', dep: 'vol1', max: 1, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'draft',
+    desc: 'Пригласить коллегу в тот же проект по корпоративной почте.',
+    notes: ['Из презентации. Засчитываем за отправку приглашения (допущение).'] },
+  { id: 'vol3', block: 'good', title: 'Угостить добром: личное участие', sub: 'Волонтёрство', type: 'volunteer', mode: 'confirm', from: '2026-10-21', dep: 'vol1', max: 1, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'draft',
+    desc: 'Подтвердить личное участие в акции.',
+    notes: ['Из презентации. Как подтверждаем участие — открытый вопрос.', 'Ещё 2 удовольствия из презентации («дополнительные активности взаимопомощи») не закладываем: описаны размыто.'] },
+
+  // ---------- Работаем вместе («Сборка») ----------
+  { id: 'ai1', block: 'team', title: 'Тайна пропавшего торта. Глава 1', sub: 'ИИ-история', type: 'story', mode: 'vote', from: '2026-10-21', to: '2026-10-22', max: 1, pl: 0, pts: { kind: 'fixed', v: 10 }, status: 'client',
+    desc: 'Прочитать главу и проголосовать, куда двигаться в расследовании.',
+    notes: ['ИИ-активность обязательна. Из 4 идей презентации предлагаем №4. Главы генерируем вручную и загружаем через админку; на платформе заявляем как генерацию нейросети.', 'Голосование ограничено окном главы — исключение из принципа «прошлое не закрываем».'] },
+  { id: 'ai2', block: 'team', title: 'Тайна пропавшего торта. Глава 2', sub: 'ИИ-история', type: 'story', mode: 'vote', from: '2026-10-23', to: '2026-10-24', max: 1, pl: 0, pts: { kind: 'fixed', v: 10 }, status: 'client',
+    desc: 'Продолжение по итогам голосования за главу 1.', notes: [] },
+  { id: 'ai3', block: 'team', title: 'Тайна пропавшего торта. Глава 3', sub: 'ИИ-история', type: 'story', mode: 'vote', from: '2026-10-25', to: '2026-10-26', max: 1, pl: 0, pts: { kind: 'fixed', v: 10 }, status: 'client',
+    desc: 'Продолжение по итогам голосования за главу 2.', notes: [] },
+  { id: 'ai4', block: 'team', title: 'Тайна пропавшего торта. Глава 4', sub: 'ИИ-история', type: 'story', mode: 'vote', from: '2026-10-27', to: '2026-10-27', max: 1, pl: 0, pts: { kind: 'fixed', v: 10 }, status: 'client',
+    desc: 'Последняя глава перед развязкой. Развязка — в эфире 28.10.', notes: [] },
+  { id: 'aiguess', block: 'team', title: 'Тайна пропавшего торта: кто виновник?', sub: 'ИИ-история', type: 'story', mode: 'guess', from: '2026-10-21', to: '2026-10-27', max: 1, pl: 1, pts: { kind: 'fixed', v: 20 }, status: 'client',
+    desc: 'Выдвинуть свою версию, кто стащил торт, до развязки на эфире.',
+    notes: ['Единственное удовольствие блока «Работаем вместе». Пришедшие после эфира его не получат — вопрос: переносить ли историю на период после эфира.'] },
+
+  // ---------- Онлайн-эфир ----------
+  { id: 'st_watch', block: 'stream', title: 'Эфир: смотреть ток-шоу', type: 'stream', mode: 'watch', from: '2026-10-28', max: 1, pl: 0, pts: { kind: 'fixed', v: 10 }, status: 'draft',
+    desc: 'Баллы за просмотр эфира или его записи.',
+    notes: ['Удовольствий нет: эфир — «34-е удовольствие» (из презентации).'] },
+  { id: 'st_code', block: 'stream', title: 'Эфир: кодовое слово', type: 'stream', mode: 'code', from: '2026-10-28', max: 1, pl: 0, pts: { kind: 'code', live: 10, rec: 2 }, status: 'client',
+    desc: 'Ввести кодовое слово, которое прозвучало в эфире.',
+    notes: ['Альтернатива — вопросы под плеером, ответы на которые есть только в эфире.'] },
+];
+
+/* Счастливые часы (бустеры). Даты — примеры для прототипа */
+const BOOSTERS = [
+  { id: 'hh1', act: 'recipe', date: '2026-10-23', from: '12:00', to: '13:00', mult: 2 },
+  { id: 'hh2', act: 'quiz1',  date: '2026-10-30', from: '18:00', to: '19:00', mult: 2 },
+  { id: 'hh3', act: 'thanks', date: '2026-11-06', from: '10:00', to: '14:00', mult: 2, note: 'вариант «счастливые 4 часа»' },
+];
+
+/* Даты для демо-панели прототипа */
+const DEMO_DATES = [
+  { v: '2026-10-21', l: '21.10 — старт' },
+  { v: '2026-10-25', l: '25.10 — неделя до эфира' },
+  { v: '2026-10-28', l: '28.10 — день эфира' },
+  { v: '2026-11-04', l: '04.11 — вторая неделя' },
+  { v: '2026-11-12', l: '12.11 — платформа завершена' },
+];
+
+/* ---------------------------------------------------------------------
+   МЕХАНИКИ (универсальные типы активностей). Текст идёт в ТЗ.
+   --------------------------------------------------------------------- */
+const MECH = {
+  system: { short: 'Системное действие', title: 'Системное действие', sections: [
+    ['Как работает', ['Выполнение создаётся автоматически при событии (регистрация). От пользователя ничего не требуется.']],
+    ['Админка', ['Вкл/выкл, количество удовольствий и баллов.']],
+  ]},
+  ugc_photo: { short: 'UGC: фото + текст', title: 'Пользовательский контент: фото + текст → лента', sections: [
+    ['Пользователь', [
+      'Открывает активность: видит ленту чужих историй и вкладку «Рассказать историю» со счётчиком «0 из 2».',
+      'Форма: 1 фото + текст истории (лимит символов — определить). Отправка → статус «На модерации».',
+      'После одобрения история попадает в ленту, пользователю приходит начисление (рабочий вариант: начисляем после одобрения).',
+    ]],
+    ['Лента', [
+      'Горизонтальная лента в стиле киноплёнки: перфорация по краям, кадр = фото + имя, город, текст.',
+      'Лента едет на автоскролле; её можно перемотать вручную (стрелки, свайп). При наведении или касании автоскролл встаёт на паузу. Закладываем сразу, не «потом».',
+      'Все материалы сразу не грузим: сервер отдаёт случайную пачку из N опубликованных. Кнопка «Следующая бобина» — новая пачка, старые кадры выгружаем из DOM, чтобы не тормозило.',
+      'Разные пропорции фото: либо ограничиваем соотношение сторон при загрузке, либо вписываем с подгонкой по высоте — решить с дизайном.',
+    ]],
+    ['Бэкенд', [
+      'Приём файла, проверка типа и размера, сжатие и превью на сервере.',
+      'Материал: автор, активность, текст, файл, статус модерации, дата.',
+      'API ленты: случайная выборка опубликованных, без повторов в рамках сессии.',
+      'Один бэкенд с видео-механикой «Талант-шоу», отличается только обработчик файлов.',
+    ]],
+    ['Админка', ['Очередь модерации: одобрить или отклонить.', 'Скрыть опубликованное постфактум.', 'Лимит выполнений, баллы, удовольствия, даты.']],
+    ['Крайние случаи', ['Отклонённый материал не засчитывается, попытка возвращается пользователю.', 'Пустая лента на старте: заглушка или примеры от организаторов.']],
+  ]},
+  ugc_video: { short: 'UGC: видео/фото', title: 'Пользовательский контент: видео/фото + описание + номинация → галерея', sections: [
+    ['Пользователь', [
+      'Вкладка «Галерея»: номера коллег, фильтр по номинациям, кнопка поддержки у каждого номера.',
+      'Вкладка «Мой номер»: файл (видео или фото), описание, номинация, галочки «Согласен показать ролик на МТС ТВ» и «Готов выступить вживую» (вторая — уточнить).',
+      'Отправка → «На модерации» → после одобрения номер в галерее, начисление.',
+      'Второй номер — только в другой номинации: занятая номинация в списке неактивна.',
+    ]],
+    ['Бэкенд', [
+      'Общий с «Секретным рецептом»: приём файлов, модерация, выдача пачками.',
+      'Отдельный обработчик видео: перекодирование, превью-кадр, ограничение длительности и размера.',
+    ]],
+    ['Админка', ['Модерация, справочник номинаций, выгрузка согласий на показ на МТС ТВ.']],
+  ]},
+  like: { short: 'Лайк', title: 'Поддержка чужих материалов (лайк)', sections: [
+    ['Пользователь', [
+      'Ставит «Поддержать» номерам коллег в галерее талант-шоу. Удовольствие — за первую поддержку (допущение), баллы — по настройке.',
+      'Нельзя поддержать свой номер и нельзя дважды один номер. Отмена поддержки — нет (рабочий вариант).',
+    ]],
+    ['Правила против перекоса (на согласовании)', [
+      'Лимит поддержек на человека, например 10.',
+      'Порядок показа учитывает уже набранные лайки: выше номера с меньшим числом, чтобы не было «100 у одного и 0 у остальных».',
+      'Жёсткий вариант «дали 3 случайных — выбери 1» не делаем: слишком дорого по срокам.',
+      'Автору за полученные лайки баллы не начисляем.',
+    ]],
+    ['Бэкенд', ['Уникальность пары «пользователь — материал», счётчик лайков у материала, проверка лимита на сервере.']],
+  ]},
+  quiz: { short: 'Квиз', title: 'Квиз с эксплейнерами', sections: [
+    ['Пользователь', [
+      'Вступление: сколько вопросов, сколько баллов и удовольствий.',
+      'Вопрос → выбор ответа → сразу «верно/неверно» и эксплейнер (объяснение или факт) → «Дальше».',
+      'Финал: число верных ответов, начисленные баллы и удовольствия.',
+    ]],
+    ['Правила', [
+      'Баллы — пропорционально верным ответам, максимум задаётся в активности (20 за выпуск — из презентации).',
+      'Удовольствия — за прохождение выпуска, не зависят от результата.',
+      'Выпуск проходится один раз; незаконченный продолжается с того же вопроса (рабочий вариант).',
+      'Каждый выпуск — отдельная активность со своими вопросами; следующий доступен после прохождения предыдущего.',
+    ]],
+    ['Бэкенд', ['Правильные ответы на фронт заранее не отдаём, проверка на сервере.', 'Хранение ответов пользователя по вопросам.']],
+    ['Админка', ['Вопросы, варианты, правильный ответ, эксплейнер (текст, по желанию картинка).']],
+    ['Состояния', ['Все состояния и ошибки продумать в дизайне: нет сети при ответе, повторный вход, выпуск пройден.']],
+  ]},
+  audio: { short: 'АПОЖ (аудио)', title: 'АПОЖ — игра на реверсе звука', sections: [
+    ['Статус', ['Механика на согласовании с клиентом. Ниже рабочий вариант из созвона 30.09: на заготовках, чтобы никому не приходилось вручную проверять ответы.']],
+    ['Спой перевёртыш', ['Пользователь получает случайную заготовку — перевёрнутый фрагмент песни (готовим заранее, хоть 100 шт.), слушает, записывает, как повторил, прямо на сайте.', 'Бэк переворачивает запись обратно, пользователь слушает и выбирает из вариантов, что за песню спел.']],
+    ['Угадай коллегу', ['Пользователь слушает развёрнутую перепевку другого участника и выбирает песню из вариантов.', 'Пул записей: сначала наши эталонные, затем записи участников, которые согласились поделиться.']],
+    ['Поделись перепевкой', ['После «Спой перевёртыш» пользователь отправляет свою запись в общий пул для угадывания.']],
+    ['Фронт', ['Запись аудио в браузере, запрос доступа к микрофону и состояние «доступ запрещён».', 'Сжатие аудио на клиенте перед отправкой — обязательно.', 'Проигрывание записей.']],
+    ['Бэкенд', ['Приём аудио, реверс (есть готовая библиотека для PHP).', 'Выдача заготовок и чужих записей случайно, с учётом «кому что уже выдано».', 'Варианты ответа: правильный + 3 случайных из справочника песен.']],
+    ['Отложено', ['Свои песни с названием и модерацией — много ручной работы, скорее нет.', 'В презентации: «первые песни размещаются топами» — уточнить.']],
+  ]},
+  video_view: { short: 'Просмотр видео', title: 'Просмотр видео с таймером', sections: [
+    ['Пользователь', ['Видео во встроенном плеере. Таймер стартует после первого «Play», пауза его не сбрасывает (как на МТС 30).', 'Когда таймер истёк — кнопка «Я тоже размялся!» → начисление и уведомление «баллы начислены».']],
+    ['Настройки', ['Видео (файл или внешний плеер — решить), длительность таймера, баллы, удовольствия.']],
+    ['Серии', ['Ролики одной серии — отдельные активности с зависимостью от предыдущего ролика.']],
+  ]},
+  game: { short: 'Мини-игра', title: 'Мини-игра (сайдскроллер)', sections: [
+    ['Пользователь', ['Экран старта (правила, лучший результат) → игра → экран результата (рубежи, баллы, рекорд, «Сыграть ещё»).', 'Сайдскроллер: герой бежит, собирает предметы в воздухе, перепрыгивает препятствия. Референс — «самокат».', 'До эфира собираем ягоды, после — грязные тарелки. Отличаются только ассеты.']],
+    ['Правила', ['20 баллов за рубеж (из презентации). В рейтинг идёт лучший результат: при новом рекорде доначисляем разницу (рабочий вариант).', 'Удовольствие — за первую завершённую игру.']],
+    ['Бэкенд', ['Валидация результата на сервере: длительность игры, правдоподобность счёта.']],
+    ['Разработка', ['Старый самокат проще сделать заново, чем обновлять (оценка фронта).', 'Нужен полноценный дизайн игры: все экраны и состояния, а не одна картинка.']],
+  ]},
+  thanks: { short: 'Благодарность', title: 'Благодарность коллеге → стена', sections: [
+    ['Пользователь', ['Форма: кому (коллега), текст, выбор «сладости» — вида стикера. Отправка → модерация → стена.', 'Лимит — 5 за кампанию, каждая благодарность — удовольствие.']],
+    ['Открыто', ['Визуальный концепт стены — нужен новый.', 'Выбор коллеги: из зарегистрированных (автокомплит) или свободным вводом имени.', 'Видит ли получатель свои благодарности и уведомляем ли его.', 'Генерацию «конфетки» нейросетью из презентации не закладываем.']],
+  ]},
+  volunteer: { short: 'Волонтёрство', title: 'Волонтёрство: запись, приглашение, участие', sections: [
+    ['Запись', ['Список проектов (карточки: название, описание, город/формат, даты) → «Записаться» → подтверждение. Выбор одного проекта (рабочий).']],
+    ['Приглашение', ['Корпоративная почта коллеги (домен из белого списка) → письмо-приглашение. Засчитываем за отправку.']],
+    ['Участие', ['Формат подтверждения на согласовании: фото-отчёт с модерацией или выгрузка от клиента.']],
+    ['Админка', ['Справочник проектов, выгрузка записавшихся и приглашённых для клиента.']],
+  ]},
+  story: { short: 'ИИ-история', title: 'ИИ-история с голосованием', sections: [
+    ['Суть', ['Идея 4 из презентации — «Тайна пропавшего торта» (за неё топим на созвоне 01.10; выбор — за клиентом). Коллективный сюжетный квиз: всего 5–6 генераций на кампанию, а не одна на человека.']],
+    ['Пользователь', ['Глава = иллюстрация + текст + 3 варианта продолжения. Один голос на пользователя, после голосования видны проценты.', 'Окно голосования ~2 дня. Победивший вариант определяет следующую главу.', 'Отдельно — «Кто виновник?»: выбор подозреваемого до развязки. Развязка — в эфире 28.10, вместе с выносом торта (из презентации).']],
+    ['Бэкенд и админка', ['Главы генерируем вручную и загружаем через админку: текст, картинка, варианты, окно голосования.', 'Подсчёт голосов, фиксация итога главы.']],
+    ['Ограничение', ['Голосование по главе закрывается вместе с окном — исключение из принципа «прошлое не закрываем». Прошлые главы остаются для чтения.']],
+  ]},
+  find: { short: 'Спрятанный объект', title: 'Спрятанный объект (свечка)', sections: [
+    ['Пользователь', ['В заданное окно в случайном месте интерфейса появляется маленькая иконка свечи. Клик → модалка «Ты нашёл пропавшую свечку!» + бонус.', 'Бонус получают первые N нашедших; остальным — «Свечку уже нашли, следи за сюрпризами».', 'Задание нигде не анонсируется. В прогрессе — скрытый слот «???», пока не найдено.']],
+    ['Бэкенд', ['Атомарный счётчик нашедших. Небольшой запас сверх N на одновременные клики — лучше выдать бонус 35-му, чем спорить.', 'Место появления — случайное из списка точек на страницах (определить с фронтом).']],
+  ]},
+  tbd: { short: 'Не выбрана', title: 'Сюрприз №3 — механика не выбрана', sections: [
+    ['Требование', ['Простая для нас, отличающаяся для пользователя. Может прийти идея от разработки.']],
+  ]},
+  visit: { short: 'Бонус за заход', title: 'Бонус за заход', sections: [
+    ['Как работает', ['Первый заход на платформу в календарной неделе → +10 баллов и уведомление. Удовольствий нет.', 'Серийный множитель из презентации не делаем.']],
+  ]},
+  stream: { short: 'Эфир', title: 'Эфир: просмотр и кодовое слово', sections: [
+    ['Просмотр', ['Баллы за просмотр эфира или записи: таймер после «Play», как у видео.']],
+    ['Кодовое слово', ['Ведущий называет слово в эфире, пользователь вводит его в поле под плеером. Одна попытка.', 'Ввод в течение 5 минут после прозвучавшего слова в прямом эфире — 10 баллов, позже (в записи) — 2 балла.']],
+  ]},
+};
+
+/* ---------------------------------------------------------------------
+   ЭКРАНЫ. route — адрес в прототипе.
+   --------------------------------------------------------------------- */
+const SCREENS = [
+  { id: 'landing', route: 'landing', title: 'Лендинг (гость)',
+    purpose: 'Первое, что видит сотрудник по ссылке: суть праздника и вход в регистрацию.',
+    elements: ['Шапка: логотип МТС, «О проекте», «Призы», «Правила», «FAQ», кнопки «Войти» и «Регистрация».', 'Первый экран: «33 года — все 33 удовольствия!», даты, торт из 5 частей, кнопки «Зарегистрироваться» и «Войти».', '«Как это работает» — 3 шага.', 'Пять блоков: название, раздел торта, описание.', 'Анонс эфира 28.10 и призов.', 'Подвал: правила, FAQ, техподдержка, политика обработки персональных данных.'],
+    states: ['Кампания идёт — регистрация открыта.', 'Кампания завершена — регистрация закрыта, плашка «Праздник завершён».'] },
+  { id: 'register', route: 'register', title: 'Регистрация',
+    purpose: 'Создание аккаунта по корпоративной почте.',
+    elements: ['Поля — см. раздел «Регистрация и профиль».', 'Согласия: правила, обработка персональных данных.', 'Ссылка «Уже есть аккаунт? Войти».'],
+    states: ['Ошибки: домен почты не из списка, почта уже зарегистрирована, пароли не совпадают, пустые обязательные поля.', 'Успех → главная + начисление за регистрацию. Если включим подтверждение почты кодом — промежуточный шаг ввода кода.'] },
+  { id: 'login', route: 'login', title: 'Вход',
+    purpose: 'Вход по почте и паролю.',
+    elements: ['Почта, пароль, «Забыли пароль?», «Зарегистрироваться».'],
+    states: ['Ошибка «неверная почта или пароль».'] },
+  { id: 'recover', route: 'recover', title: 'Восстановление пароля',
+    purpose: 'Сброс пароля по ссылке из письма.',
+    elements: ['Поле почты → «Отправить ссылку» → экран «Письмо отправлено» → по ссылке форма нового пароля.'],
+    states: ['Почта не найдена — показываем тот же экран «Если аккаунт существует, мы отправили письмо».'] },
+  { id: 'home', route: 'home', title: 'Главная (участник)',
+    purpose: 'Торт прогресса и быстрый вход в доступные задания.',
+    elements: ['Баннер счастливого часа с обратным отсчётом (если активен).', 'Баннер эфира: до эфира — отсчёт, в день эфира — «Смотреть эфир».', 'Прогресс: «N из 33 удовольствий», шкала, баллы, место в рейтинге, ссылка «Мой прогресс».', 'Торт из 5 частей: в каждой точки-удовольствия (закрашены собранные) и счётчик. Клик по части → страница блока.', 'Раздел «Общее и сюрпризы» — отдельная плашка под тортом.', '«Доступно сейчас» и «Скоро откроется» — карточки активностей.'],
+    states: ['Новичок (0 из 33).', 'Частичный прогресс.', 'Все 33 собраны — поздравление и участие в розыгрыше.', 'Платформа завершена — см. «Финальное состояние».'] },
+  { id: 'block', route: 'block/work', title: 'Страница блока',
+    purpose: 'Все активности одного блока торта.',
+    elements: ['Хлебные крошки, название блока и раздела торта, подзаголовок, прогресс блока.', 'Карточки активностей: название, описание, удовольствия, баллы, даты, статус, кнопка.'],
+    states: ['Статусы карточек — см. «Доступность и начисления».', 'Раздел «Общее и сюрпризы»: скрытые задания показываются как «???», пока не выполнены.'] },
+  { id: 'activity', route: 'act/recipe', title: 'Страница активности (общий каркас)',
+    purpose: 'Единая обёртка для всех механик.',
+    elements: ['Хлебные крошки, название, подзаголовок, чипы: удовольствия, баллы, даты, статус.', 'Плашка счастливого часа, если на активность действует бустер.', 'Тело — по типу механики (см. «Механики»).'],
+    states: ['«Скоро» — плашка «Откроется ДД.ММ» и описание.', '«Закрыто» — «Сначала пройди «…»» со ссылкой.', '«Завершено» или «Платформа завершена» — только просмотр.'] },
+  { id: 'progress', route: 'progress', title: 'Мой прогресс',
+    purpose: 'Табель удовольствий: что собрано и куда идти за остальным.',
+    elements: ['Итог: «N из 33», баллы, место в рейтинге.', 'Шесть колонок: 5 блоков + «Общее и сюрпризы». В каждой — точки-удовольствия и список активностей с названием, статусом и ссылкой «Перейти».', 'Скрытые сюрпризы — «???», пока не найдены.'],
+    states: [],
+    notes: ['В референсе из презентации только кружочки без подписей — так неудобно: непонятно, что осталось пройти. Нужны названия и переход сразу к непройденному (как карта активностей в ПСБ).'] },
+  { id: 'rating', route: 'rating', title: 'Рейтинг',
+    purpose: 'Турнирная таблица по баллам.',
+    elements: ['Топ участников: место, имя, регион или компания, баллы, удовольствия.', 'Строка «Ты» с местом, даже если вне топа.'],
+    states: ['Пустой рейтинг на старте.'] },
+  { id: 'prizes', route: 'prizes', title: 'Призы',
+    purpose: 'Что и как разыгрывается.',
+    elements: ['Розыгрыш по баллам и розыгрыш среди собравших все 33 — карточки с описанием.', 'Итоги после завершения.'],
+    states: ['До решения клиента — заглушка.'] },
+  { id: 'stream', route: 'stream', title: 'Онлайн-эфир',
+    purpose: 'Ток-шоу «Без галстука» 28.10: плеер и вовлечение.',
+    elements: ['До эфира: отсчёт, анонс, «Добавить в календарь».', 'В эфир: встроенный плеер провайдера, чат (если есть у провайдера), поле кодового слова.', 'После: запись, кодовое слово за меньшие баллы.'],
+    states: ['До / во время / после эфира.'] },
+  { id: 'rules', route: 'rules', title: 'Правила', purpose: 'Текст правил (от клиента), структура разделов.', elements: ['Сроки, участники, удовольствия, баллы, розыгрыши, модерация.'], states: [] },
+  { id: 'faq', route: 'faq', title: 'FAQ и техподдержка', purpose: 'Частые вопросы и связь с поддержкой (требование тендера).',
+    elements: ['Аккордеон вопросов.', 'Форма обращения: тема, сообщение → «Обращение отправлено». Почта для ответа берётся из профиля.'], states: [] },
+  { id: 'profile', route: 'profile', title: 'Профиль',
+    purpose: 'Данные участника и настройки.',
+    elements: ['Имя, фамилия, регион, компания — редактируются.', 'Почта — только просмотр.', 'Смена пароля, выход.'],
+    states: ['Сохранено / ошибка валидации.'],
+    notes: ['Редактирование профиля закладываем, если не добавляет заметных часов работы.'] },
+  { id: 'final', route: 'home', title: 'Финальное состояние (после 11.11)',
+    purpose: 'Как выглядит платформа, когда всё закончилось. Продумать заранее, а не в процессе.',
+    elements: ['Главная: «Праздник завершён», личный итог (удовольствия, баллы, место), ссылки на итоги розыгрышей и запись эфира.', 'Все активности — только просмотр: ленты, галерея, стена благодарностей, главы истории.', 'Регистрация закрыта.'],
+    states: [] },
+];
+
+/* ---------------------------------------------------------------------
+   ОТКРЫТЫЕ ВОПРОСЫ
+   --------------------------------------------------------------------- */
+const QUESTIONS = [
+  { to: 'client', text: 'Подтвердить структуру из 5 блоков: «Работу» и «Обучение» объединили, добавили «Работаем вместе». Это отличается от первой версии.', ref: 'summary' },
+  { to: 'client', text: 'Период работы платформы: 21.10–11.11 (неделя до эфира и две после) вместо 14–28.10 из презентации. Запуск ~21.10 с регистрацией, 2–3 активностями и плеером.', ref: 'timeline' },
+  { to: 'client', text: 'Полный актуальный список доменов корпоративной почты МТС и дочерних компаний — сразу весь.', ref: 'auth' },
+  { to: 'client', text: 'Справочники для регистрации: регионы, компании.', ref: 'auth' },
+  { to: 'client', text: 'Призы и розыгрыши: что разыгрываем за баллы (топ или случайно среди топ-N) и среди собравших все 33.', ref: 'rating' },
+  { to: 'client', text: 'Копирайт: можно ли называть «удовольствием» нецелевые действия (регистрация и т.п.).', ref: 'act-reg' },
+  { to: 'client', text: 'Талант-шоу: ограничения на лайки (лимит, порядок показа), список номинаций, нужна ли галочка «готов выступить вживую», видео и фото или только видео.', ref: 'mech-like' },
+  { to: 'client', text: 'Волонтёрство: есть ли фонды и проекты, куда нужны волонтёры; как подтверждается участие.', ref: 'mech-volunteer' },
+  { to: 'client', text: 'ИИ-активность: предлагаем идею 4 «Тайна пропавшего торта». Если развязка на эфире, пришедшие позже не получат удовольствие блока.', ref: 'mech-story' },
+  { to: 'client', text: 'АПОЖ: как клиент видит механику (заготовки / свои песни / «топы поют первыми»).', ref: 'mech-audio' },
+  { to: 'client', text: 'Эфир: провайдер плеера, есть ли чат, прод-токен; вовлечение — кодовое слово или вопросы под плеером.', ref: 'stream' },
+  { to: 'client', text: 'Разминки «Сиять»: контент снимает клиент или мы; тренер; участие топ-менеджмента.', ref: 'act-shine1' },
+  { to: 'client', text: 'Контент квиза (вопросы, факты, эксплейнеры) — от клиента или готовим мы.', ref: 'act-quiz1' },
+  { to: 'client', text: 'KV: финальный или ориентируемся на вариант из презентации.', ref: 'start' },
+  { to: 'client', text: 'Документ с требованиями ИБ МТС.', ref: 'nfr' },
+  { to: 'client', text: 'Email-рассылки по участникам: можно ли, от чьего имени, какие поводы.', ref: 'notify' },
+  { to: 'team', text: 'Подтверждение почты кодом при регистрации: да или нет (давний спор: надёжность против лишнего шага).', ref: 'auth' },
+  { to: 'team', text: 'Модерация UGC: пре- или пост-; начисляем после одобрения (рабочий вариант) или сразу со списанием при отклонении.', ref: 'logic' },
+  { to: 'team', text: 'Лимиты: размер и длительность видео, размер фото, длина текстов.', ref: 'nfr' },
+  { to: 'team', text: 'Лента «Секретного рецепта»: размер пачки, пропорции фото.', ref: 'mech-ugc_photo' },
+  { to: 'team', text: 'Благодарность: выбор коллеги из зарегистрированных или свободный ввод; видит ли получатель.', ref: 'mech-thanks' },
+  { to: 'team', text: 'Третье задание-сюрприз.', ref: 'surprises' },
+  { to: 'team', text: 'Мастер-класс в талант-шоу — формат.', ref: 'act-talent_mc' },
+  { to: 'team', text: 'Забег: число рубежей и потолок баллов; в рейтинг лучший результат или сумма.', ref: 'mech-game' },
+  { to: 'team', text: 'Рейтинг: правило при равенстве баллов, обновление в реальном времени или с кэшем.', ref: 'rating' },
+  { to: 'team', text: 'Итоговая таблица 33 удовольствий и баллов по активностям (Антон + Настя). Сейчас в реестре черновое распределение.', ref: 'registry' },
+];
+
+const CHANGELOG = [
+  { v: '0.2', date: '01.10.2026', items: ['Прототип: техническая кнопка «Демо: пропустить регистрацию» на экранах гостя (лендинг, регистрация, вход, восстановление пароля) — сразу входит участником. Это не функционал сайта, в разработку не идёт.'] },
+  { v: '0.1', date: '30.09.2026', items: ['Первая версия прототипа и ТЗ по презентации Grand Day и двум созвонам 30.09.'] },
+];
+
+/* =====================================================================
+   ПРОТОТИП. Все цифры, даты и тексты активностей берутся из data.js
+   ===================================================================== */
+const A = Object.fromEntries(ACTS.map(a => [a.id, a]));
+const B = Object.fromEntries(BLOCKS.map(b => [b.id, b]));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const dm = iso => iso.slice(8, 10) + '.' + iso.slice(5, 7);
+const dayDiff = (a, b) => Math.round((new Date(b + 'T12:00:00') - new Date(a + 'T12:00:00')) / 864e5);
+function plural(n, f1, f2, f5) { n = Math.abs(n) % 100; const n1 = n % 10; if (n > 10 && n < 20) return f5; if (n1 > 1 && n1 < 5) return f2; if (n1 === 1) return f1; return f5; }
+const wPl = n => plural(n, 'удовольствие', 'удовольствия', 'удовольствий');
+const wPts = n => plural(n, 'балл', 'балла', 'баллов');
+
+/* ---------- заглушки контента ---------- */
+const PEOPLE = ['Анна К. · Москва', 'Игорь С. · Казань', 'Мария Л. · Екатеринбург', 'Олег Д. · Новосибирск', 'Екатерина П. · Самара', 'Денис В. · Краснодар', 'Ольга Н. · Мурманск', 'Павел Р. · Нижний Новгород', 'Тамара Ш. · Красноярск', 'Сергей Г. · Санкт-Петербург', 'Людмила Б. · Владивосток', 'Артём Ж. · Ростов-на-Дону'];
+const NOMS = ['Номинация 1', 'Номинация 2', 'Номинация 3'];
+const TALENTS = PEOPLE.slice(0, 9).map((p, i) => ({ id: 't' + i, who: p, nom: NOMS[i % 3], likes: [3, 0, 7, 1, 0, 12, 2, 5, 0][i], kind: i % 4 === 3 ? 'Фото' : 'Видео' }));
+const WALL = [[0, 3], [4, 1], [2, 7], [5, 8], [9, 6], [10, 11]];
+const PROJECTS = [
+  { id: 'p1', t: 'Волонтёрский проект 1', d: 'Описание, формат, город и даты — от клиента.' },
+  { id: 'p2', t: 'Волонтёрский проект 2', d: 'Описание, формат, город и даты — от клиента.' },
+  { id: 'p3', t: 'Волонтёрский проект 3', d: 'Описание, формат, город и даты — от клиента.' },
+];
+const SONGS = ['Песня 1 — Исполнитель', 'Песня 2 — Исполнитель', 'Песня 3 — Исполнитель', 'Песня 4 — Исполнитель'];
+const SUSPECTS = ['Подозреваемый 1', 'Подозреваемый 2', 'Подозреваемый 3', 'Подозреваемый 4'];
+const quizQs = n => [0, 1, 2, 3].map(i => ({ q: `Вопрос ${i + 1} выпуска ${n}: текст вопроса о компании`, opts: ['Вариант ответа A', 'Вариант ответа B', 'Вариант ответа C'], right: [1, 0, 2, 1][i] }));
+const CODE_WORD = 'торт';
+
+/* ---------- состояние прототипа (только в памяти) ---------- */
+const S = {
+  date: DEMO_DATES[0].v, auth: false, view: 'desktop', hh: false, candle: false, candleFound: false, candlePos: null,
+  route: 'landing', menu: false,
+  done: {}, apts: {}, sub: {}, quiz: {}, audio: {}, vid: {}, game: {}, likes: new Set(), votes: {}, guess: null,
+  vol: null, code: null, visitWeeks: new Set(), ui: { nom: 'all', batch: 0 },
+  regErr: false, loginErr: false, recovered: false,
+};
+function resetProgress() {
+  Object.assign(S, { done: {}, apts: {}, sub: {}, quiz: {}, audio: {}, vid: {}, game: {}, likes: new Set(), votes: {}, guess: null, vol: null, code: null, candleFound: false, visitWeeks: new Set(), ui: { nom: 'all', batch: 0 } });
+}
+
+/* ---------- логика доступности и начислений (описана в ТЗ, раздел «Доступность и начисления») ---------- */
+const ended = () => S.date > PROJECT.end;
+const cnt = a => S.done[a.id] || 0;
+const isComplete = a => cnt(a) >= (a.max || 1);
+const hasPending = a => (S.sub[a.id] || []).some(x => x.st === 'pending');
+function actState(a) {
+  if (isComplete(a)) return 'done';
+  if (ended()) return 'ended';
+  if (S.date < a.from) return 'soon';
+  if (a.to && S.date > a.to) return 'closed';
+  if (a.dep && !isComplete(A[a.dep])) return 'locked';
+  if (hasPending(a) && cnt(a) === 0) return 'pending';
+  if (cnt(a) > 0) return 'partial';
+  return 'open';
+}
+const canDo = a => ['open', 'partial', 'pending'].includes(actState(a));
+const plMax = a => (a.pl || 0) * (a.max || 1);
+const plGot = a => (a.pl || 0) * Math.min(cnt(a), a.max || 1);
+const PL_MAX = ACTS.reduce((s, a) => s + plMax(a), 0);
+const totalPl = () => ACTS.reduce((s, a) => s + plGot(a), 0);
+const totalPts = () => Object.values(S.apts).reduce((s, v) => s + v, 0);
+function blockStats(bid) { let got = 0, max = 0; ACTS.filter(a => a.block === bid).forEach(a => { got += plGot(a); max += plMax(a); }); return { got, max }; }
+const listable = a => !a.hidden && !['system', 'visit'].includes(a.type) && a.block !== 'stream';
+const myPlace = () => Math.max(11, 3140 - totalPts() * 7);
+
+function activeBooster() {
+  if (!S.hh || !S.auth) return null;
+  let b = BOOSTERS.find(x => canDo(A[x.act]));
+  if (!b) { const a = ACTS.find(x => listable(x) && canDo(x) && x.pts.v > 0); if (a) b = { act: a.id, mult: 2, demo: true }; }
+  return b || null;
+}
+function award(id, pts, opt = {}) {
+  const a = A[id]; const bo = activeBooster();
+  const mult = bo && bo.act === id && pts > 0 ? bo.mult : 1;
+  const p = pts * mult;
+  const before = totalPl();
+  if (!opt.pointsOnly) S.done[id] = cnt(a) + 1;
+  S.apts[id] = (S.apts[id] || 0) + p;
+  const pl = opt.pointsOnly ? 0 : (a.pl || 0);
+  const parts = [];
+  if (pl) parts.push(`+${pl} ${wPl(pl)}`);
+  if (p) parts.push(`+${p} ${wPts(p)}`);
+  if (mult > 1) parts.push('×2 счастливый час');
+  if (parts.length) toast(`<b>${parts.join(' · ')}</b> — ${esc(a.title)}`);
+  if (before < PL_MAX && totalPl() === PL_MAX) setTimeout(() => modal(`<div class="ph round" style="width:70px;height:70px;margin:0 auto">торт</div><h3>Все ${PL_MAX} удовольствия собраны!</h3><p>Ты участвуешь в розыгрыше среди собравших весь торт.</p><button class="btn red" data-act="closeModal">Ура!</button>`), 500);
+}
+function checkVisit() {
+  if (!S.auth || ended() || S.date < PROJECT.start) return;
+  const w = Math.floor(dayDiff(PROJECT.start, S.date) / 7);
+  if (S.visitWeeks.has(w) || isComplete(A.visit)) return;
+  S.visitWeeks.add(w); award('visit', A.visit.pts.v);
+}
+
+/* ---------- подписи ---------- */
+function ptsLabel(a) {
+  const p = a.pts;
+  if (p.kind === 'fixed') return p.v ? `${p.v} ${wPts(p.v)}${(a.max || 1) > 1 ? ' за каждое' : ''}` : 'без баллов';
+  if (p.kind === 'score') return `до ${p.v} баллов`;
+  if (p.kind === 'result') return `${p.v} баллов за рубеж`;
+  if (p.kind === 'bonus') return 'бонус-сюрприз';
+  if (p.kind === 'code') return `${p.live} / ${p.rec} ${wPts(p.rec)}`;
+  return '';
+}
+function plLabel(a) { const t = plMax(a); if (!t) return ''; return ((a.max || 1) > 1 ? 'до ' : '') + t + ' ' + wPl(t); }
+const dateLabel = a => a.to ? (a.to === a.from ? dm(a.from) : `${dm(a.from)}–${dm(a.to)}`) : `с ${dm(a.from)}`;
+const shortT = a => a.title.replace('Какой праздник без песен: ', 'АПОЖ: ').replace('Тайна пропавшего торта. ', '').replace('Тайна пропавшего торта: ', '');
+function stateChip(a) {
+  const st = actState(a); let t = STATES[st].label;
+  if (st === 'soon') t = 'Откроется ' + dm(a.from);
+  if (st === 'locked') t = 'Сначала: ' + shortT(A[a.dep]);
+  if (st === 'partial') t = `${cnt(a)} из ${a.max}` + (hasPending(a) ? ' · есть на модерации' : '');
+  return `<span class="chip st-${st}">${esc(t)}</span>`;
+}
+const sBadge = a => `<span class="sbadge ${a.status}" title="Статус проработки в ТЗ">${STATUS[a.status].label}</span>`;
+const plChip = a => plMax(a) ? `<span class="chip pl">${esc(plLabel(a))}</span>` : '';
+const ICO = { ugc_photo: 'фото', ugc_video: 'видео', like: '♥', quiz: 'квиз', audio: 'аудио', video_view: '▶', game: 'игра', thanks: 'спасибо', volunteer: 'добро', story: 'ИИ', stream: 'эфир', find: '?', tbd: '?', system: '✓', visit: '+' };
+
+/* ---------- таймеры (чистятся при каждой перерисовке) ---------- */
+let TIMERS = [];
+const every = (fn, ms) => TIMERS.push(setInterval(fn, ms));
+const later = (fn, ms) => TIMERS.push(setTimeout(fn, ms));
+function clearTimers() { TIMERS.forEach(t => { clearInterval(t); clearTimeout(t); }); TIMERS = []; }
+
+/* ---------- UI-помощники ---------- */
+function toast(html) {
+  const box = document.getElementById('toasts'); const el = document.createElement('div');
+  el.className = 'toast'; el.innerHTML = html; box.appendChild(el); while (box.children.length > 3) box.firstChild.remove(); setTimeout(() => el.remove(), 3200);
+}
+function modal(html) { const o = document.getElementById('overlay'); o.innerHTML = `<div class="modal">${html}</div>`; o.classList.add('on'); }
+function closeModal() { const o = document.getElementById('overlay'); o.classList.remove('on'); o.innerHTML = ''; }
+const demoBtn = (act, label, extra = '') => `<button class="demoact" data-act="${act}" ${extra}>Демо: ${esc(label)}</button>`;
+const skipBtn = (style = 'margin:0 0 14px') => `<div style="${style}">${demoBtn('skipReg', 'пропустить регистрацию →', 'title="Техническая кнопка прототипа: сразу войти участником"')}</div>`;
+
+/* ---------- торт ---------- */
+function pol(cx, cy, r, deg) { const t = deg * Math.PI / 180; return [cx + r * Math.cos(t), cy + r * Math.sin(t)]; }
+function arcPath(cx, cy, r0, r1, a0, a1) {
+  const [x0, y0] = pol(cx, cy, r1, a0), [x1, y1] = pol(cx, cy, r1, a1), [x2, y2] = pol(cx, cy, r0, a1), [x3, y3] = pol(cx, cy, r0, a0);
+  const f = n => n.toFixed(1);
+  return `M${f(x0)} ${f(y0)} A${r1} ${r1} 0 0 1 ${f(x1)} ${f(y1)} L${f(x2)} ${f(y2)} A${r0} ${r0} 0 0 0 ${f(x3)} ${f(y3)}Z`;
+}
+function cakeSVG(withProgress) {
+  const bl = BLOCKS.filter(b => b.cake); const n = bl.length; const cx = 200, cy = 200;
+  let s = `<svg class="cake" viewBox="0 0 400 400" role="img" aria-label="Торт из ${n} частей">`;
+  bl.forEach((b, i) => {
+    const a0 = -90 + i * 360 / n + 1.2, a1 = -90 + (i + 1) * 360 / n - 1.2;
+    const st = blockStats(b.id); const got = withProgress ? st.got : 0;
+    s += `<g class="seg" data-go="${S.auth ? 'block/' + b.id : 'register'}"><path d="${arcPath(cx, cy, 48, 192, a0, a1)}"/>`;
+    let placed = 0, k = 0;
+    for (const rad of [70, 94, 118, 142]) {
+      if (placed >= st.max) break;
+      const cap = Math.max(1, Math.floor(((a1 - a0 - 10) * Math.PI / 180 * rad) / 21)); const c = Math.min(cap, st.max - placed);
+      for (let j = 0; j < c; j++) {
+        const ang = a0 + 5 + (j + .5) / c * (a1 - a0 - 10); const [x, y] = pol(cx, cy, rad, ang);
+        s += `<circle class="dot ${k < got ? 'on' : ''}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7"/>`; k++;
+      }
+      placed += c;
+    }
+    const mid = (a0 + a1) / 2; const [lx, ly] = pol(cx, cy, 166, mid);
+    b.lines.forEach((ln, li) => { s += `<text class="segl" x="${lx.toFixed(1)}" y="${(ly - 8 + li * 14 - (b.lines.length - 1) * 7).toFixed(1)}" text-anchor="middle">${esc(ln)}</text>`; });
+    s += `<text class="segn" x="${lx.toFixed(1)}" y="${(ly + 10 + (b.lines.length - 1) * 7).toFixed(1)}" text-anchor="middle">${withProgress ? got + ' из ' : ''}${st.max}</text></g>`;
+  });
+  s += `<circle class="core" cx="${cx}" cy="${cy}" r="42"/><text class="core33" x="${cx}" y="${cy + 11}" text-anchor="middle">33</text></svg>`;
+  return s;
+}
+
+/* ---------- каркас сайта ---------- */
+const PUBLIC = ['landing', 'register', 'login', 'recover', 'prizes', 'rules', 'faq'];
+function header() {
+  const base = S.route.split('/')[0];
+  const nav = S.auth
+    ? [['home', 'Главная'], ['progress', 'Мой прогресс'], ['stream', 'Эфир'], ['rating', 'Рейтинг'], ['prizes', 'Призы'], ['faq', 'FAQ']]
+    : [['landing', 'О проекте'], ['prizes', 'Призы'], ['rules', 'Правила'], ['faq', 'FAQ']];
+  const on = r => base === r || (r === 'home' && ['block', 'act'].includes(base));
+  const links = nav.map(([r, t]) => `<a data-go="${r}" class="${on(r) ? 'on' : ''}">${t}</a>`).join('');
+  const pct = Math.round(totalPl() / PL_MAX * 100);
+  const right = S.auth
+    ? `<div class="pchip" data-go="progress" style="--p:${pct}%" title="Удовольствия и баллы"><span class="ring"></span><b>${totalPl()} / ${PL_MAX}</b><span class="t muted">· ${totalPts()} ${wPts(totalPts())}</span></div><div class="avatar" data-go="profile" title="Профиль">ИП</div>`
+    : `<button class="btn sm ghost" data-go="login">Войти</button><button class="btn sm red" data-go="register">Регистрация</button>`;
+  return `<header class="sh"><div class="wrap"><div class="logo" data-go="${S.auth ? 'home' : 'landing'}"><span class="mtsbox">МТС</span><span class="lt">33 удовольствия</span></div><nav class="nav">${links}</nav><div class="right">${right}<button class="burger" data-act="menu" aria-label="Меню">☰</button></div></div>
+  <div class="mmenu ${S.menu ? 'on' : ''}">${nav.map(([r, t]) => `<a data-go="${r}">${t}</a>`).join('')}${S.auth ? '<a data-go="profile">Профиль</a>' : ''}</div></header>`;
+}
+const footer = () => `<footer class="sf"><div class="wrap"><span>© МТС, 2026</span><a data-go="rules">Правила</a><a data-go="faq">FAQ</a><a data-go="faq">Техподдержка</a><a data-act="toast" data-v="Политика обработки персональных данных — документ клиента">Политика обработки ПДн</a></div></footer>`;
+
+/* ---------- экраны ---------- */
+function hhBanner(onlyAct) {
+  const bo = activeBooster(); if (!bo) return ''; if (onlyAct && bo.act !== onlyAct) return '';
+  const a = A[bo.act];
+  return `<div class="banner hh"><b>Счастливый час!</b><span class="grow">×${bo.mult} баллов за «${esc(a.title)}»</span><span>осталось <span class="cd" id="hhcd">42:15</span></span>${onlyAct ? '' : `<button class="btn sm" data-go="act/${a.id}">Успеть</button>`}</div>`;
+}
+function streamBanner() {
+  const d = S.date, sd = PROJECT.stream;
+  if (d < sd) { const n = dayDiff(d, sd); return `<div class="banner info"><b>Онлайн-эфир ${dm(sd)}</b><span class="grow">Ток-шоу «Без галстука» — через ${n} ${plural(n, 'день', 'дня', 'дней')}</span><button class="btn sm ghost" data-go="stream">Подробнее</button></div>`; }
+  if (d === sd) return `<div class="banner live"><span class="chip st-open">В эфире сегодня</span><span class="grow"><b>Ток-шоу «Без галстука»</b> — 34-е удовольствие</span><button class="btn sm red" data-go="stream">Смотреть эфир</button></div>`;
+  return '';
+}
+function acard(a) {
+  const st = actState(a);
+  return `<div class="acard ${['soon', 'locked', 'closed'].includes(st) ? 'dim' : ''}" data-go="act/${a.id}">
+    <div class="top"><div class="ph ico">${ICO[a.type] || ''}</div><div><div class="t">${esc(a.title)}</div><div class="s">${esc(B[a.block].name)}${a.sub ? ' · ' + esc(a.sub) : ''}</div></div></div>
+    <div class="d">${esc(a.desc)}</div>
+    <div class="bot"><div class="chips">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span></div>${stateChip(a)}</div></div>`;
+}
+function arow(a) {
+  const st = actState(a); const secret = a.hidden && st !== 'done';
+  if (secret) return `<div class="arow" style="border-style:dashed;cursor:default"><div class="ph ico">?</div><div class="grow"><div class="t">??? Секретное задание</div><div class="d">Появится неожиданно. Следи за платформой.</div><div class="meta">${plChip(a)}</div></div></div>`;
+  return `<div class="arow" data-go="act/${a.id}"><div class="ph ico">${ICO[a.type] || ''}</div><div class="grow"><div class="t">${esc(a.title)}</div><div class="d">${esc(a.desc)}</div>
+    <div class="meta">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span>${stateChip(a)}</div></div>
+    <div class="side">${['open', 'partial'].includes(st) ? '<span class="btn sm red">Выполнить</span>' : '<span class="btn sm ghost">Открыть</span>'}</div></div>`;
+}
+
+function vLanding() {
+  const off = ended();
+  return `<div class="wrap">
+  ${off ? '<div class="banner info"><b>Праздник завершён.</b><span class="grow">Регистрация закрыта. Спасибо всем, кто собирал удовольствия!</span></div>' : ''}
+  <section class="hero"><div>
+    <div class="kicker"><span class="chip">${dm(PROJECT.start)}–${dm(PROJECT.end)}</span><span class="chip">Онлайн-праздник для сотрудников</span></div>
+    <h1>33 года — все 33 удовольствия!</h1>
+    <p>С ${dm(PROJECT.start)} по ${dm(PROJECT.end)} — задания, чтобы собрать свой торт удовольствий и отметить день рождения МТС. Работа, спорт, творчество, добро и общая история, а ${dm(PROJECT.stream)} — большой онлайн-эфир.</p>
+    <div class="ctas"><button class="btn red" data-go="register" ${off ? 'disabled' : ''}>Зарегистрироваться</button><button class="btn" data-go="login">Войти</button></div>
+    ${skipBtn('margin-top:12px')}
+  </div><div class="cakeside">${cakeSVG(false)}</div></section>
+  <section class="sec"><h2>Как это работает</h2><div class="agrid">
+    ${[['1', 'Зарегистрируйся', 'По корпоративной почте МТС или дочерней компании.'], ['2', 'Собирай удовольствия', 'Выполняй задания в пяти частях торта. Новые открываются постепенно, пропущенные остаются доступными.'], ['3', 'Смотри эфир и участвуй в розыгрыше', `${dm(PROJECT.stream)} — ток-шоу «Без галстука». Баллы идут в рейтинг, а собравшие все 33 участвуют в розыгрыше.`]]
+      .map(([n, t, d]) => `<div class="acard" style="cursor:default"><div class="top"><div class="ph ico round">${n}</div><div><div class="t">${t}</div></div></div><div class="d">${d}</div></div>`).join('')}
+  </div></section>
+  <section class="sec"><h2>Пять частей торта</h2><div class="agrid">
+    ${BLOCKS.filter(b => b.cake).map(b => `<div class="acard" data-go="register"><div class="top"><div class="ph ico">${esc(b.lines[0])}</div><div><div class="t">${esc(b.name)}</div><div class="s">Раздел «${esc(b.section)}» · ${blockStats(b.id).max} ${wPl(blockStats(b.id).max)}</div></div></div><div class="d">${esc(b.tagline)}. ${esc(b.desc)}</div></div>`).join('')}
+  </div></section>
+  <section class="sec"><div class="agrid">
+    <div class="acard" data-go="login"><div class="t">Онлайн-эфир ${dm(PROJECT.stream)}</div><div class="d">Ток-шоу «Без галстука» — то самое 34-е удовольствие, которое нельзя получить на платформе.</div><div class="ph" style="height:120px">KV эфира</div></div>
+    <div class="acard" data-go="prizes"><div class="t">Призы</div><div class="d">Розыгрыш по баллам и розыгрыш среди собравших все 33 удовольствия.</div><div class="ph" style="height:120px">Призы — на согласовании</div></div>
+  </div></section></div>`;
+}
+
+function vHome() {
+  if (ended()) return vFinal();
+  const got = totalPl(); const pct = Math.round(got / PL_MAX * 100);
+  const cs = blockStats('common');
+  const now = ACTS.filter(a => listable(a) && ['open', 'partial', 'pending'].includes(actState(a)));
+  const soon = ACTS.filter(a => listable(a) && actState(a) === 'soon').sort((x, y) => x.from.localeCompare(y.from));
+  return `<div class="wrap">${hhBanner()}${streamBanner()}
+  <section class="hero"><div>
+    <div class="kicker"><span class="chip">${dm(PROJECT.start)}–${dm(PROJECT.end)}</span><span>Сегодня ${dm(S.date)}</span></div>
+    <h1>Собери свой торт</h1>
+    <p>Каждое задание закрывает удовольствия в своей части торта. Новые задания открываются постепенно, пропущенные остаются доступными.</p>
+    <div class="pcard"><div class="top"><span>Твой прогресс</span><span class="link small" data-go="progress">Мой прогресс →</span></div>
+      <div class="num">${got} <span class="muted" style="font-size:18px;font-weight:600">/ ${PL_MAX} удовольствий</span></div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <div class="small muted">Баллы: <b style="color:var(--ink)">${totalPts()}</b> · место в рейтинге: <b style="color:var(--ink)">${totalPts() ? myPlace() : '—'}</b> · <span class="link" data-go="rating">Рейтинг</span></div></div>
+    <div class="common-strip" data-go="block/common"><span><b>Общее и сюрпризы</b> <span class="muted small">— регистрация и секретные задания</span></span><span class="chip">${cs.got} из ${cs.max}</span></div>
+  </div><div class="cakeside">${cakeSVG(true)}<div class="small muted" style="text-align:center">Нажми на часть торта, чтобы открыть задания</div></div></section>
+  <section class="sec"><h2>Доступно сейчас</h2>${now.length ? `<div class="agrid">${now.map(acard).join('')}</div>` : '<div class="panel center muted">Всё доступное выполнено. Новые задания скоро откроются.</div>'}</section>
+  ${soon.length ? `<section class="sec"><h2>Скоро откроется</h2><div class="agrid">${soon.slice(0, 6).map(acard).join('')}</div></section>` : ''}
+  </div>`;
+}
+function vFinal() {
+  return `<div class="wrap"><section class="hero"><div>
+    <div class="kicker"><span class="chip st-ended">Платформа завершена</span></div>
+    <h1>Праздник завершён!</h1><p>Спасибо, что собирал удовольствия вместе с МТС. Все материалы доступны для просмотра.</p>
+    <div class="pcard"><div class="top"><span>Твой итог</span></div><div class="num">${totalPl()} <span class="muted" style="font-size:18px">/ ${PL_MAX} удовольствий</span></div>
+      <div class="small muted">Баллы: <b style="color:var(--ink)">${totalPts()}</b> · итоговое место: <b style="color:var(--ink)">${totalPts() ? myPlace() : '—'}</b></div></div>
+    <div class="ctas" style="margin-top:14px"><button class="btn red" data-go="prizes">Итоги розыгрышей</button><button class="btn" data-go="stream">Запись эфира</button><button class="btn ghost" data-go="progress">Мой прогресс</button></div>
+  </div><div class="cakeside">${cakeSVG(true)}</div></section></div>`;
+}
+
+function vBlock(id) {
+  const b = B[id]; if (!b) return v404();
+  const st = blockStats(id);
+  const acts = ACTS.filter(a => a.block === id && (listable(a) || a.hidden || (id === 'common' && a.type !== 'visit')));
+  return `<div class="wrap"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / ${esc(b.name)}</div>
+    <h1>${esc(b.name)}</h1><div class="muted">${b.section ? `Раздел «${esc(b.section)}» · ` : ''}${esc(b.tagline)}</div>
+    <div class="chips" style="margin-top:10px"><span class="chip pl">${st.got} из ${st.max} ${wPl(st.max)}</span></div></div>
+    ${hhBanner()}
+    <div class="alist" style="margin-top:16px">${acts.map(arow).join('')}</div>
+    ${id === 'common' ? `<div class="note warn">Бонус недели: +${A.visit.pts.v} баллов за первый заход в каждую неделю (на согласовании). Эфир — «34-е удовольствие», удовольствий на платформе не даёт.</div>` : ''}
+  </div>`;
+}
+
+/* ---------- активность: каркас ---------- */
+function vAct(id) {
+  const a = A[id]; if (!a) return v404();
+  const b = B[a.block]; const st = actState(a);
+  const head = `<div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / ${a.block === 'stream' ? '<a data-go="stream">Эфир</a>' : `<a data-go="block/${b.id}">${esc(b.name)}</a>`}</div>
+    <h1>${esc(a.title)}</h1><div class="muted">${a.sub ? esc(a.sub) + ' · ' : ''}${esc(b.name)} ${sBadge(a)}</div>
+    <div class="chips">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span>${stateChip(a)}</div></div>`;
+  let body;
+  if (a.hidden && st !== 'done' && a.type !== 'find') body = `<div class="panel center"><h3>??? Секретное задание</h3><p class="muted">Механика в работе. Задание появится неожиданно.</p></div>`;
+  else if (st === 'soon') body = `<div class="panel center"><h3>Откроется ${dm(a.from)}</h3><p class="muted">${esc(a.desc)}</p>${demoBtn('setDate', 'перейти на ' + dm(a.from), `data-v="${a.from}"`)}</div>`;
+  else if (st === 'locked') body = `<div class="panel center"><h3>Сначала пройди «${esc(A[a.dep].title)}»</h3><p class="muted">Задания этой серии проходятся по порядку. Пропущенное можно пройти в любой момент.</p><div class="ctas" style="justify-content:center;display:flex;gap:8px;flex-wrap:wrap"><button class="btn red" data-go="act/${a.dep}">Перейти</button>${demoBtn('forceDone', 'засчитать «' + shortT(A[a.dep]) + '»', `data-id="${a.dep}"`)}</div></div>`;
+  else body = (BODY[a.type] || bodyStub)(a, st);
+  return `<div class="wrap apage">${head}${hhBanner(a.id)}${st === 'ended' ? '<div class="banner info">Платформа завершена — только просмотр.</div>' : ''}${body}</div>`;
+}
+const ro = st => ['ended', 'closed', 'done'].includes(st);
+const bodyStub = a => `<div class="panel center"><h3>${esc(a.title)}</h3><p class="muted">${esc(a.desc)}</p></div>`;
+
+/* ---------- тела активностей по типам механик ---------- */
+const BODY = {
+  system: a => `<div class="panel center"><h3>${isComplete(a) ? 'Готово ✓' : 'Начисляется автоматически'}</h3><p class="muted">${esc(a.desc)}</p></div>`,
+  visit: a => `<div class="panel center"><h3>Бонус недели</h3><p class="muted">${esc(a.desc)} Получено: ${cnt(a)} из ${a.max}.</p></div>`,
+  tbd: bodyStub,
+  find: a => `<div class="panel center"><h3>${isComplete(a) ? 'Свечка найдена ✓' : 'Свечка где-то прячется'}</h3><p class="muted">Задание нигде не анонсируется: иконка появляется в случайном месте интерфейса. В демо-панели нажми «Спрятать свечку».</p></div>`,
+
+  ugc_photo(a, st) {
+    const tab = S.ui['tab_' + a.id] || 'feed'; const mine = S.sub[a.id] || [];
+    const tabs = `<div class="tabs2"><button class="${tab === 'feed' ? 'on' : ''}" data-act="tab" data-id="${a.id}" data-v="feed">Лента историй</button><button class="${tab === 'my' ? 'on' : ''}" data-act="tab" data-id="${a.id}" data-v="my">Рассказать историю · ${mine.length} из ${a.max}</button></div>`;
+    if (tab === 'feed') {
+      const own = mine.filter(x => x.st === 'ok').map(x => `<div class="frm"><div class="ph">твоё фото</div><div class="who">Ты</div><div class="txt">${esc(x.text || 'Твоя история')}</div></div>`);
+      const off = (S.ui.batch * 5) % PEOPLE.length;
+      const items = [...PEOPLE.slice(off), ...PEOPLE.slice(0, off)].slice(0, 7).map((p, i) => `<div class="frm"><div class="ph">фото</div><div class="who">${esc(p)}</div><div class="txt">Короткая история о работе в МТС (кадр ${off + i + 1})</div></div>`);
+      return tabs + `<div class="film" id="film"><div class="film-track" id="filmTrack">${own.join('')}${items.join('')}</div></div>
+      <div class="filmctl"><button class="btn sm ghost" data-act="film" data-v="-1">◀</button><button class="btn sm ghost" data-act="filmPause">${S.ui.filmPaused ? '▶ Автоскролл' : '❚❚ Пауза'}</button><button class="btn sm ghost" data-act="film" data-v="1">▶</button><span class="grow"></span><button class="btn sm" data-act="batch">↻ Следующая бобина</button></div>
+      <p class="small muted">Лента едет сама и перематывается вручную; при наведении — пауза. Сервер отдаёт случайную пачку опубликованных историй, «Следующая бобина» подгружает новую.</p>`;
+    }
+    return tabs + ugcForm(a, st, { file: 'Фото', text: 'Короткая история о своей работе в МТС', noun: 'историю' });
+  },
+
+  ugc_video(a, st) {
+    const tab = S.ui['tab_' + a.id] || 'gallery'; const mine = S.sub[a.id] || [];
+    const tabs = `<div class="tabs2"><button class="${tab === 'gallery' ? 'on' : ''}" data-act="tab" data-id="${a.id}" data-v="gallery">Галерея</button><button class="${tab === 'my' ? 'on' : ''}" data-act="tab" data-id="${a.id}" data-v="my">Мой номер · ${mine.length} из ${a.max}</button></div>`;
+    if (tab === 'gallery') return tabs + gallery();
+    const used = mine.map(x => x.nom);
+    const extra = `<div class="field"><label>Номинация</label><select id="f_nom">${NOMS.map(n => `<option ${used.includes(n) ? 'disabled' : ''}>${n}${used.includes(n) ? ' — уже есть номер' : ''}</option>`).join('')}</select><span class="hint">Второй номер — только в другой номинации. Список номинаций — от клиента.</span></div>
+      <label class="check"><input type="checkbox" checked> Согласен показать ролик на МТС ТВ</label>
+      <label class="check"><input type="checkbox"> Готов выступить вживую <span class="sbadge client">уточнить: офлайна нет</span></label>`;
+    return tabs + ugcForm(a, st, { file: 'Видео или фото', text: 'Расскажи о своём хобби или таланте', noun: 'номер', extra });
+  },
+
+  like(a) { return `<p class="muted" style="margin-top:14px">Поддержи номера коллег в галерее талант-шоу. Удовольствие — за первую поддержку.</p>` + gallery(); },
+
+  quiz(a, st) {
+    const q = S.quiz[a.id] || { phase: 'intro', i: 0, ans: [] }; const qs = quizQs(a.id === 'quiz1' ? 1 : 2);
+    if (isComplete(a) || q.phase === 'result') {
+      const right = (q.ans || []).filter((x, i) => x === qs[i].right).length;
+      return `<div class="panel center"><h3>Выпуск пройден ✓</h3><p>Верных ответов: <b>${q.ans && q.ans.length ? right : '—'}</b> из ${qs.length}. Начислено: ${a.pl} ${wPl(a.pl)} и ${S.apts[a.id] || 0} ${wPts(S.apts[a.id] || 0)}.</p>${a.id === 'quiz1' && !ro(actState(A.quiz2)) ? `<button class="btn" data-go="act/quiz2">К выпуску 2</button>` : ''}</div>`;
+    }
+    if (ro(st)) return bodyStub(a);
+    if (q.phase === 'intro') return `<div class="panel"><h3>${qs.length} вопроса · до ${a.pts.v} баллов · ${a.pl} ${wPl(a.pl)}</h3><p class="muted">После каждого ответа — короткое объяснение или факт из истории компании. Удовольствия начисляются за прохождение, баллы — за верные ответы.</p><button class="btn red" data-act="quizStart" data-id="${a.id}">Начать</button></div>`;
+    const cur = qs[q.i]; const my = q.ans[q.i]; const answered = my != null;
+    return `<div class="panel"><div class="qhead"><span class="muted small">Вопрос ${q.i + 1} из ${qs.length}</span><span class="chip">верных: ${q.ans.filter((x, i) => x === qs[i].right).length}</span></div>
+      <h3 style="margin-top:8px">${esc(cur.q)}</h3>
+      <div class="opts">${cur.opts.map((o, i) => `<button class="opt ${answered ? (i === cur.right ? 'right' : (i === my ? 'wrong' : '')) : ''}" ${answered ? 'disabled' : ''} data-act="quizAns" data-id="${a.id}" data-v="${i}">${esc(o)}</button>`).join('')}</div>
+      ${answered ? `<div class="expl"><b>${my === cur.right ? 'Верно!' : 'Не совсем.'}</b> Эксплейнер: короткое объяснение или факт из истории компании (контент — от клиента).</div><div style="margin-top:12px"><button class="btn red" data-act="quizNext" data-id="${a.id}">${q.i + 1 < qs.length ? 'Дальше' : 'Завершить'}</button></div>` : ''}
+    </div>`;
+  },
+
+  audio(a, st) {
+    const s = S.audio[a.id] || { step: 0 };
+    if (a.mode === 'sing') {
+      const labels = ['Послушай перевёртыш', 'Запиши', 'Послушай себя', 'Угадай'];
+      const steps = `<div class="steps">${labels.map((l, i) => `<span class="${isComplete(a) || i < s.step ? 'done' : i === s.step ? 'on' : ''}">${i + 1}. ${l}</span>`).join('')}</div>`;
+      if (isComplete(a)) return `<div class="panel">${steps}<h3>Готово ✓</h3><p>${s.ok ? 'Угадал!' : 'Это была «' + SONGS[2] + '».'} Хочешь, чтобы твою перепевку угадывали коллеги?</p><button class="btn red" data-go="act/apozh3">Поделиться перепевкой</button> <button class="btn ghost" data-go="act/apozh2">Угадать коллегу</button></div>`;
+      if (ro(st)) return bodyStub(a);
+      if (s.step === 0) return `<div class="panel">${steps}<h3>Это песня задом наперёд</h3><p class="muted">Послушай внимательно и постарайся повторить эти странные звуки.</p>${player('Заготовка: перевёрнутый фрагмент песни')}<div style="margin-top:12px"><button class="btn red" data-act="audioStep" data-id="${a.id}" data-v="1">Готов записать</button></div></div>`;
+      if (s.step === 1) return `<div class="panel center">${steps}<h3>${s.rec ? 'Идёт запись…' : 'Запиши, как повторил'}</h3><p class="muted">Нужен доступ к микрофону. Запись сжимается на устройстве перед отправкой.</p><button class="rec ${s.rec ? 'on' : ''}" data-act="audioRec" data-id="${a.id}">${s.rec ? '<span class="timer" id="rect">0:03</span>' : '● REC'}</button><p class="small"><span class="link" data-act="toast" data-v="Состояние «Доступ к микрофону запрещён»: подсказка, как разрешить в браузере">Нет доступа к микрофону?</span></p></div>`;
+      if (s.step === 2) return `<div class="panel">${steps}<h3>Мы развернули твою запись</h3><p class="muted">Послушай, что получилось, когда звук снова идёт в правильную сторону.</p>${player('Твоя запись, развёрнутая обратно')}<div style="margin-top:12px"><button class="btn red" data-act="audioStep" data-id="${a.id}" data-v="3">Угадать песню</button> <button class="btn ghost" data-act="audioStep" data-id="${a.id}" data-v="1">Перезаписать</button></div></div>`;
+      return `<div class="panel">${steps}<h3>Какую песню ты спел?</h3><div class="opts">${SONGS.map((o, i) => `<button class="opt" data-act="audioGuess" data-id="${a.id}" data-v="${i}">${esc(o)}</button>`).join('')}</div></div>`;
+    }
+    if (a.mode === 'guess') {
+      if (isComplete(a)) return `<div class="panel center"><h3>${s.ok ? 'Угадал ✓' : 'Мимо, но засчитано ✓'}</h3><p class="muted">Это была «${SONGS[1]}».</p></div>`;
+      if (ro(st)) return bodyStub(a);
+      return `<div class="panel"><h3>Что спел коллега?</h3>${player('Перепевка: ' + PEOPLE[4])}<div class="opts">${SONGS.map((o, i) => `<button class="opt" data-act="audioGuess" data-id="${a.id}" data-v="${i}">${esc(o)}</button>`).join('')}</div><p class="small muted">Пул: сначала наши эталонные записи, потом перепевки участников. Варианты: верный + 3 случайных из справочника песен.</p></div>`;
+    }
+    if (isComplete(a)) return `<div class="panel center"><h3>Перепевка в общем пуле ✓</h3><p class="muted">Коллеги будут угадывать, что ты спел.</p></div>`;
+    if (ro(st)) return bodyStub(a);
+    return `<div class="panel"><h3>Поделись своей перепевкой</h3>${player('Твоя запись из «Спой перевёртыш»')}<label class="check" style="margin-top:12px"><input type="checkbox" checked> Разрешаю давать мою запись коллегам для угадывания</label><button class="btn red" data-act="audioShare" data-id="${a.id}">Отправить в общий пул</button></div>`;
+  },
+
+  video_view(a, st) {
+    const v = S.vid[a.id] || {}; const series = ACTS.filter(x => x.type === 'video_view' && x.block === a.block && x.id !== a.id && x.sub === a.sub);
+    const btnText = a.block === 'art' ? 'Я поучаствовал!' : 'Я тоже размялся!';
+    let ctl;
+    if (isComplete(a)) ctl = `<div class="banner info"><b>Выполнено ✓</b><span class="grow">Ролик можно пересмотреть.</span></div>`;
+    else if (ro(st)) ctl = '';
+    else if (v.ready) ctl = `<div style="margin-top:12px"><button class="btn red" data-act="vidDone" data-id="${a.id}">${btnText}</button></div>`;
+    else if (v.started) ctl = `<p class="muted small" style="margin-top:10px">Кнопка появится через <b class="timer" id="vt">${v.left}</b> с. <span class="sbadge draft">демо: 5 с вместо длительности ролика</span></p>`;
+    else ctl = `<p class="muted small" style="margin-top:10px">Нажми «Play». Таймер стартует после первого запуска, пауза его не сбрасывает.</p>`;
+    return `<div class="panel"><div class="ph video"><span>${a.block === 'art' ? 'Видео мастер-класса' : 'Видео-разминка'}</span><button class="play" data-act="vidPlay" data-id="${a.id}" aria-label="Play">▶</button></div>${ctl}</div>
+      ${series.length ? `<section class="sec"><h2>Вся серия</h2><div class="alist">${[a, ...series].sort((x, y) => x.id.localeCompare(y.id)).map(arow).join('')}</div></section>` : ''}`;
+  },
+
+  game(a, st) {
+    const g = S.game[a.id] || { phase: 'start', best: 0 }; const item = a.id === 'run1' ? 'ягоды' : 'грязные тарелки';
+    if (g.phase === 'play') return `<div class="panel"><div class="ph game"><div class="runner"></div><span>Игровое поле: бег, прыжки, собираем ${item}</span></div><p class="muted small" style="margin-top:8px">Идёт игра… <span class="sbadge draft">демо: результат случайный</span></p></div>`;
+    const res = g.phase === 'result' ? `<div class="banner info"><b>Рубежей: ${g.last}</b><span class="grow">+${g.last * a.pts.v} ${wPts(g.last * a.pts.v)} за игру. Лучший результат: ${g.best} ${plural(g.best, 'рубеж', 'рубежа', 'рубежей')}. В рейтинг идёт лучший.</span></div>` : '';
+    return `<div class="panel"><div class="ph game"><span>Стартовый экран игры<br>Правила: беги, собирай ${item}, перепрыгивай препятствия</span></div>${res}
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${ro(st) && !isComplete(a) ? '' : `<button class="btn red" data-act="gamePlay" data-id="${a.id}" ${ended() ? 'disabled' : ''}>${g.phase === 'result' ? 'Сыграть ещё' : 'Играть'}</button>`}<span class="muted small">Лучший результат: ${g.best || '—'} · ${a.pts.v} баллов за рубеж</span></div></div>`;
+  },
+
+  thanks(a, st) {
+    const tab = S.ui['tab_' + a.id] || 'wall'; const mine = S.sub[a.id] || [];
+    const tabs = `<div class="tabs2"><button class="${tab === 'wall' ? 'on' : ''}" data-act="tab" data-id="${a.id}" data-v="wall">Стена благодарностей</button><button class="${tab === 'my' ? 'on' : ''}" data-act="tab" data-id="${a.id}" data-v="my">Сказать спасибо · ${mine.length} из ${a.max}</button></div>`;
+    if (tab === 'wall') {
+      const own = mine.filter(x => x.st === 'ok').map(x => `<div class="sweet"><div class="ph round">сладость</div><div class="to">Кому: ${esc(x.to || 'коллеге')}</div><div class="tx">${esc(x.text || 'Спасибо!')}</div><div class="from">От: тебя</div></div>`);
+      return tabs + `<div class="note warn">Визуальный концепт стены — в работе (вместо пробковой доски).</div><div class="wall">${own.join('')}${WALL.map(([f, t]) => `<div class="sweet"><div class="ph round">сладость</div><div class="to">Кому: ${esc(PEOPLE[t])}</div><div class="tx">Текст благодарности коллеге.</div><div class="from">От: ${esc(PEOPLE[f])}</div></div>`).join('')}</div>`;
+    }
+    const extra = `<div class="field"><label>Кому</label><input id="f_to" list="colleagues" placeholder="Начни вводить имя коллеги"><datalist id="colleagues">${PEOPLE.map(p => `<option value="${esc(p)}">`).join('')}</datalist><span class="hint">Из зарегистрированных или свободный ввод — решаем.</span></div>
+      <div class="field"><label>Сладость</label><div class="chips">${['Сладость 1', 'Сладость 2', 'Сладость 3'].map((s, i) => `<label class="chip"><input type="radio" name="sw" ${i ? '' : 'checked'}> ${s}</label>`).join('')}</div></div>`;
+    return tabs + ugcForm(a, st, { text: 'За что спасибо', noun: 'благодарность', extra, nofile: true });
+  },
+
+  volunteer(a, st) {
+    if (a.mode === 'signup') {
+      if (S.vol) { const p = PROJECTS.find(x => x.id === S.vol); return `<div class="panel"><h3>Ты записан в «${esc(p.t)}» ✓</h3><p class="muted">Организаторы свяжутся по корпоративной почте. Что ещё можно сделать:</p><div class="alist">${[A.vol2, A.vol3].map(arow).join('')}</div></div>`; }
+      if (ro(st)) return bodyStub(a);
+      return `<div class="note warn">Список проектов и фондов — от клиента.</div><div class="alist" style="margin-top:12px">${PROJECTS.map(p => `<div class="arow" style="cursor:default"><div class="ph ico">фото</div><div class="grow"><div class="t">${esc(p.t)}</div><div class="d">${esc(p.d)}</div></div><button class="btn sm red" data-act="volSignup" data-v="${p.id}">Записаться</button></div>`).join('')}</div>`;
+    }
+    if (a.mode === 'invite') {
+      if (isComplete(a)) return `<div class="panel center"><h3>Приглашение отправлено ✓</h3></div>`;
+      if (ro(st)) return bodyStub(a);
+      return `<div class="panel"><h3>Позови коллегу с собой</h3><div class="field"><label>Корпоративная почта коллеги</label><input id="f_inv" placeholder="name@mts.ru"><span class="hint">Только домены из белого списка. Коллеге придёт письмо-приглашение.</span></div><button class="btn red" data-act="volInvite">Отправить приглашение</button></div>`;
+    }
+    if (isComplete(a)) return `<div class="panel center"><h3>Участие подтверждено ✓</h3></div>`;
+    if (ro(st)) return bodyStub(a);
+    return `<div class="panel"><h3>Подтверди, что поучаствовал</h3><p class="muted">Формат подтверждения на согласовании: фото-отчёт с модерацией или выгрузка от организаторов.</p><button class="btn red" data-act="volConfirm">Я участвовал</button></div>`;
+  },
+
+  story(a, st) {
+    const chapters = ACTS.filter(x => x.type === 'story' && x.mode === 'vote');
+    const overview = `<section class="sec"><h2>История</h2><div class="alist">${chapters.map(c => {
+      const cs = actState(c); const past = cs === 'closed' || (cs === 'done' && S.date > c.to) || ended();
+      return `<div class="chap" data-go="act/${c.id}" style="cursor:pointer"><div class="ph">${cs === 'soon' ? '?' : 'илл.'}</div><div class="grow"><b>${esc(shortT(c))}</b><div class="small muted">${cs === 'soon' ? 'Откроется ' + dm(c.from) : past ? 'Голосование завершено · победил вариант B' : 'Голосование до ' + dm(c.to)}</div></div>${stateChip(c)}</div>`;
+    }).join('')}<div class="chap"><div class="ph">★</div><div class="grow"><b>Развязка</b><div class="small muted">В эфире ${dm(PROJECT.stream)} — вместе с выносом настоящего торта</div></div>${S.date >= PROJECT.stream ? '<span class="link small" data-go="stream">Смотреть</span>' : ''}</div>
+      ${a.mode === 'vote' ? `<div class="chap" data-go="act/aiguess" style="cursor:pointer"><div class="ph">?</div><div class="grow"><b>Кто виновник?</b><div class="small muted">Твоя версия до развязки · ${plLabel(A.aiguess)}</div></div>${stateChip(A.aiguess)}</div>` : ''}</div></section>`;
+    if (a.mode === 'guess') {
+      let body;
+      if (S.guess != null) body = `<div class="panel center"><h3>Твоя версия: ${SUSPECTS[S.guess]} ✓</h3><p class="muted">Развязка — в эфире ${dm(PROJECT.stream)}.</p></div>`;
+      else if (st === 'closed' || ended()) body = `<div class="panel center"><h3>Приём версий завершён</h3><p class="muted">Развязка прозвучала в эфире ${dm(PROJECT.stream)}.</p><button class="btn" data-go="stream">Смотреть запись</button></div>`;
+      else body = `<div class="panel"><h3>Кто стащил праздничный торт?</h3><p class="muted">Выбери одного подозреваемого. Изменить выбор нельзя.</p><div class="opts">${SUSPECTS.map((o, i) => `<button class="opt" data-act="guess" data-v="${i}">${o} <span class="muted small">— персонаж истории</span></button>`).join('')}</div></div>`;
+      return body + overview;
+    }
+    const my = S.votes[a.id]; const closed = st === 'closed' || ended();
+    const base = [44, 31, 25]; const opts = ['Вариант продолжения A', 'Вариант продолжения B', 'Вариант продолжения C'];
+    const results = `<div class="vote">${opts.map((o, i) => { const p = closed ? [28, 47, 25][i] : base[i] + (my === i ? 1 : 0); return `<div class="vres ${closed && i === 1 ? 'win' : ''}"><i style="width:${p}%"></i><span>${o} — <b>${p}%</b>${my === i ? ' · твой голос' : ''}${closed && i === 1 ? ' · победил' : ''}</span></div>`; }).join('')}</div>`;
+    const chapter = `<div class="panel"><div class="ph" style="height:200px">Иллюстрация главы (генерация ИИ)</div><div class="lines" style="margin-top:12px"><i style="width:96%"></i><i style="width:88%"></i><i style="width:92%"></i><i style="width:60%"></i></div><p class="small muted">Текст главы. Главы генерируем и загружаем через админку.</p>
+      <h3 style="margin-top:12px">Куда двигаться дальше?</h3>
+      ${my != null || closed ? results + `<p class="small muted">${closed ? 'Голосование завершено.' : 'Голосование до ' + dm(a.to) + '. Итог определит следующую главу.'}</p>` : `<div class="opts">${opts.map((o, i) => `<button class="opt" data-act="vote" data-id="${a.id}" data-v="${i}">${o}</button>`).join('')}</div><p class="small muted">Один голос. Проценты — после голосования.</p>`}</div>`;
+    return chapter + overview;
+  },
+
+  stream(a) { return vStreamInner(); },
+};
+function player(label) { return `<div class="player"><button class="pbtn" data-act="toast" data-v="Воспроизведение аудио">▶</button><div class="grow"><div class="small"><b>${esc(label)}</b></div><div class="wave"></div></div><span class="small muted timer">0:08</span></div>`; }
+function ugcForm(a, st, o) {
+  const mine = S.sub[a.id] || []; const left = (a.max || 1) - mine.length;
+  const list = mine.length ? `<div class="mylist">${mine.map((x, i) => `<div class="myitem"><div class="grow"><b>${o.noun === 'благодарность' ? 'Благодарность' : o.noun === 'номер' ? 'Номер' : 'История'} ${i + 1}</b>${x.nom ? ' · ' + esc(x.nom) : ''}${x.to ? ' · ' + esc(x.to) : ''}<div class="small muted">${esc(x.text || '')}</div></div>${x.st === 'pending' ? `<span class="chip st-pending">На модерации</span>${demoBtn('approve', 'одобрить модератором', `data-id="${a.id}" data-v="${i}"`)}` : '<span class="chip st-done">Опубликовано ✓</span>'}</div>`).join('')}</div>` : '';
+  if (left <= 0 || ro(st)) return `<div class="panel">${left <= 0 ? `<h3>Лимит: ${a.max} из ${a.max}</h3><p class="muted">Спасибо! Больше отправить нельзя.</p>` : '<p class="muted">Отправка закрыта.</p>'}${list}</div>`;
+  const att = S.ui['att_' + a.id];
+  return `<div class="panel">
+    ${o.nofile ? '' : `<div class="ph drop ${att ? 'ok' : ''}" data-act="attach" data-id="${a.id}"><span>${att ? '✓ файл прикреплён (демо)' : '+ ' + o.file + '<br><span class="small">Нажми, чтобы прикрепить. Сжатие и превью — на сервере</span>'}</span></div>`}
+    ${o.extra ? '<div style="margin-top:12px">' + o.extra + '</div>' : ''}
+    <div class="field" style="margin-top:12px"><label>${o.text}</label><textarea id="f_text" maxlength="500" data-counter="cnt_${a.id}" placeholder="Текст"></textarea><span class="hint"><span id="cnt_${a.id}">0</span> / 500 · лимит символов — уточнить</span></div>
+    ${S.ui['err_' + a.id] ? '<div class="field"><span class="err">Прикрепи файл</span></div>' : ''}
+    <button class="btn red" data-act="submitUGC" data-id="${a.id}" data-noun="${o.noun}" data-nofile="${o.nofile ? 1 : ''}">Отправить ${o.noun}</button>
+    <p class="small muted">После отправки — модерация. Удовольствие и баллы начислим после одобрения. Осталось: ${left} из ${a.max}.</p>${list}</div>`;
+}
+function gallery() {
+  const nom = S.ui.nom || 'all'; const limit = 10; const left = limit - S.likes.size;
+  const mine = (S.sub.talent || []).filter(x => x.st === 'ok');
+  let items = TALENTS.filter(t => nom === 'all' || t.nom === nom).slice().sort((x, y) => (x.likes + (S.likes.has(x.id) ? 1 : 0)) - (y.likes + (S.likes.has(y.id) ? 1 : 0)));
+  return `<div class="filters">${['all', ...NOMS].map(n => `<button class="${nom === n ? 'on' : ''}" data-act="nom" data-v="${n}">${n === 'all' ? 'Все' : n}</button>`).join('')}<span class="chip" style="margin-left:auto">Осталось поддержек: ${left} из ${limit}</span></div>
+    <div class="note warn">Лимит поддержек и порядок показа (меньше лайков — выше) — на согласовании с клиентом.</div>
+    <div class="gal">${mine.map(x => `<div class="gcard"><div class="ph">твой номер</div><div class="b"><div class="who">Ты</div><div class="small muted">${esc(x.nom)}</div><button class="like" disabled>♥ свой номер</button></div></div>`).join('')}
+    ${items.map(t => { const on = S.likes.has(t.id); return `<div class="gcard"><div class="ph">${t.kind} ▶</div><div class="b"><div class="who">${esc(t.who)}</div><div class="small muted">${t.nom} · описание номера</div><button class="like ${on ? 'on' : ''}" data-act="like" data-v="${t.id}" ${on || (!on && left <= 0) || ended() ? 'disabled' : ''}>♥ ${t.likes + (on ? 1 : 0)}${on ? ' · ты поддержал' : ''}</button></div></div>`; }).join('')}</div>`;
+}
+
+/* ---------- эфир ---------- */
+function vStreamInner() {
+  const d = S.date, sd = PROJECT.stream; const w = A.st_watch, c = A.st_code; const v = S.vid.st_watch || {};
+  if (d < sd) {
+    const n = dayDiff(d, sd);
+    return `<div class="panel center"><div class="kicker" style="justify-content:center"><span class="chip">${dm(sd)}</span></div><h3 style="font-size:24px;margin-top:8px">До эфира ${n} ${plural(n, 'день', 'дня', 'дней')}</h3><p class="muted">Ток-шоу «Без галстука» — 34-е удовольствие, которое нельзя получить на платформе.</p><button class="btn" data-act="toast" data-v="Скачивается .ics-файл для календаря">Добавить в календарь</button></div>
+    <section class="sec"><h2>Что будет в эфире</h2><div class="agrid">${[['Гости', 'Ведущий и 20 гостей: 5 блоков по 4 человека — 3 сотрудника с платформы и 1 топ-менеджер.'], ['«Золотые цитаты»', 'Смешные фразы из чатов.'], ['«Фото-кринж»', 'Забавные фото, которые согласились показать гости.'], ['«Байки из офиса»', 'Видео-приветы из разных городов с короткими историями.']].map(([t, x]) => `<div class="acard" style="cursor:default"><div class="t">${t}</div><div class="d">${x}</div></div>`).join('')}</div></section>`;
+  }
+  const live = d === sd; const off = ended();
+  const watchCtl = isComplete(w) ? `<span class="chip st-done">Баллы за просмотр начислены ✓</span>` : off ? '' : v.ready ? `<button class="btn sm red" data-act="vidDone" data-id="st_watch">Забрать ${w.pts.v} баллов</button>` : v.started ? `<span class="small muted">Баллы за просмотр через <b class="timer" id="vt">${v.left}</b> с</span>` : `<span class="small muted">Нажми «Play» — баллы за просмотр начислятся по таймеру</span>`;
+  const codeCtl = S.code ? `<div class="banner info"><b>${S.code.ok ? 'Верно ✓' : 'Неверно'}</b><span class="grow">${S.code.ok ? `+${S.code.pts} ${wPts(S.code.pts)}` : 'Попытка была одна.'}</span></div>` : off ? '' :
+    `<div class="field" style="margin-top:12px"><label>Кодовое слово из эфира</label><div style="display:flex;gap:8px"><input id="f_code" placeholder="Введи слово, которое прозвучало в эфире"><button class="btn red" data-act="code">Отправить</button></div><span class="hint">${live ? `В течение 5 минут после показа — ${c.pts.live} баллов, позже — ${c.pts.rec}.` : `В записи — ${c.pts.rec} ${wPts(c.pts.rec)}.`} Одна попытка. <span class="sbadge draft">демо: слово «${CODE_WORD}»</span></span></div>`;
+  return `<div class="row2" style="grid-template-columns:2fr 1fr;margin-top:16px">
+    <div><div class="ph video">${live ? '<span class="chip st-open" style="position:absolute;top:10px;left:10px">LIVE</span>' : ''}<span>${live ? 'Встроенный плеер провайдера' : 'Запись эфира'}</span><button class="play" data-act="vidPlay" data-id="st_watch">▶</button></div>
+      <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${watchCtl}</div>${codeCtl}</div>
+    <div class="ph" style="min-height:240px"><span>Чат трансляции<br><span class="small">если есть у провайдера — уточнить</span></span></div></div>`;
+}
+function vStream() {
+  const d = S.date, sd = PROJECT.stream;
+  const t = d < sd ? 'Онлайн-эфир' : d === sd ? 'Эфир идёт' : 'Запись эфира';
+  return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / Эфир</div><h1>${t}: ток-шоу «Без галстука»</h1><div class="muted">${dm(sd)} · 34-е удовольствие · ${sBadge(A.st_code)}</div></div>${vStreamInner()}</div>`;
+}
+
+/* ---------- прочие экраны ---------- */
+function vProgress() {
+  const cols = BLOCKS.filter(b => b.cake || b.id === 'common');
+  return `<div class="wrap"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / Мой прогресс</div><h1>Мой прогресс</h1>
+    <div class="chips" style="margin-top:8px"><span class="chip pl">${totalPl()} из ${PL_MAX} ${wPl(PL_MAX)}</span><span class="chip">${totalPts()} ${wPts(totalPts())}</span><span class="chip">место: ${totalPts() ? myPlace() : '—'}</span></div></div>
+  <div class="pgrid" style="margin-top:14px">${cols.map(b => {
+    const acts = ACTS.filter(a => a.block === b.id && plMax(a) > 0); const st = blockStats(b.id);
+    const slots = acts.flatMap(a => Array.from({ length: plMax(a) }, (_, i) => `<i class="${i < plGot(a) ? 'on' : ''} ${a.hidden && !isComplete(a) ? 'q' : ''}" title="${a.hidden && !isComplete(a) ? '???' : esc(a.title)}"></i>`)).join('');
+    return `<div class="pcol"><h3>${esc(b.name)}</h3><div class="sub">${b.section ? 'Раздел «' + esc(b.section) + '» · ' : ''}${st.got} из ${st.max}</div><div class="slots">${slots}</div>
+      <div class="plist">${acts.map(a => { const secret = a.hidden && !isComplete(a); const s = actState(a);
+        return `<div class="pitem"><div>${secret ? '??? Секретное задание' : esc(shortT(a))} <span class="muted">· ${plGot(a)}/${plMax(a)}</span></div>${secret ? '' : `<div class="pa">${stateChip(a)}${['done', 'soon'].includes(s) ? '' : `<span class="go" data-go="act/${a.id}">Перейти →</span>`}</div>`}</div>`; }).join('')}</div></div>`;
+  }).join('')}</div>
+  <div class="banner info"><b>Эфир ${dm(PROJECT.stream)}</b><span class="grow">34-е удовольствие — его нельзя получить на платформе. Баллы за участие в эфире идут в рейтинг.</span><button class="btn sm ghost" data-go="stream">К эфиру</button></div></div>`;
+}
+function vRating() {
+  const top = PEOPLE.slice(0, 10).map((p, i) => ({ p, pts: 640 - i * 23, pl: Math.max(18, 33 - i) }));
+  return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / Рейтинг</div><h1>Рейтинг</h1><div class="muted">По сумме баллов. При равенстве выше тот, кто набрал раньше.</div></div>
+    <table class="rtable"><thead><tr><th>#</th><th>Участник</th><th class="hm">Удовольствия</th><th>Баллы</th></tr></thead><tbody>
+    ${top.map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.p)}</td><td class="hm">${r.pl} / ${PL_MAX}</td><td>${r.pts}</td></tr>`).join('')}
+    <tr><td colspan="4" class="muted" style="text-align:center">…</td></tr>
+    <tr class="me"><td>${totalPts() ? myPlace() : '—'}</td><td>Ты</td><td class="hm">${totalPl()} / ${PL_MAX}</td><td>${totalPts()}</td></tr></tbody></table></div>`;
+}
+function vPrizes() {
+  return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="${S.auth ? 'home' : 'landing'}">Главная</a> / Призы</div><h1>Призы</h1><div class="muted">Список призов и правила розыгрышей — на согласовании с МТС.</div></div>
+  ${ended() ? '<div class="banner info"><b>Итоги подведены</b><span class="grow">Здесь — список победителей розыгрышей.</span></div>' : ''}
+  <div class="agrid" style="margin-top:16px">
+    <div class="acard" style="cursor:default"><div class="ph" style="height:140px">Призы за баллы</div><div class="t">Розыгрыш по рейтингу</div><div class="d">Призы для лидеров рейтинга или розыгрыш среди топ-N — решает клиент.</div></div>
+    <div class="acard" style="cursor:default"><div class="ph" style="height:140px">Призы за весь торт</div><div class="t">Розыгрыш среди собравших все ${PL_MAX}</div><div class="d">Случайный выбор среди тех, кто собрал все удовольствия.</div></div>
+  </div></div>`;
+}
+function vRules() {
+  const sec = [['Сроки', `Платформа работает с ${dm(PROJECT.start)} по ${dm(PROJECT.end)}. Онлайн-эфир — ${dm(PROJECT.stream)}.`], ['Кто участвует', 'Сотрудники МТС и дочерних компаний с корпоративной почтой.'], ['Удовольствия', `Всего ${PL_MAX}. Начисляются за выполнение заданий, не зависят от результата.`], ['Баллы и рейтинг', 'Начисляются за задания в зависимости от вложенных усилий и результата. Рейтинг — по сумме баллов.'], ['Розыгрыши', 'Условия — на согласовании.'], ['Модерация', 'Фото, видео и тексты проходят модерацию перед публикацией.']];
+  return `<div class="wrap apage"><div class="pg-h"><h1>Правила</h1><div class="muted">Структура разделов. Финальный текст — от клиента.</div></div>${sec.map(([t, d]) => `<div class="panel"><h3>${t}</h3><p class="muted" style="margin:0">${d}</p></div>`).join('')}</div>`;
+}
+function vFaq() {
+  const qa = [['Что такое удовольствия?', `Отметки о выполнении заданий. Всего ${PL_MAX}, они закрашивают части торта. Собравшие все участвуют в отдельном розыгрыше.`], ['Чем баллы отличаются от удовольствий?', 'Баллы — для рейтинга: их количество зависит от сложности задания и результата. Удовольствия — просто факт выполнения.'], ['Я пришёл позже. Успею?', 'Да. Пропущенные задания остаются доступными, их можно пройти по порядку. Исключение — голосования по главам истории: у них есть срок.'], ['Когда эфир?', `${dm(PROJECT.stream)}. Если не успеешь в прямом эфире, будет запись.`], ['Почему мою историю не видно?', 'Материалы проходят модерацию. Удовольствие и баллы начислим после одобрения.']];
+  return `<div class="wrap apage"><div class="pg-h"><h1>FAQ и техподдержка</h1></div>${qa.map(([q, a]) => `<details class="acc"><summary>${q}</summary><div>${a}</div></details>`).join('')}
+  <div class="panel"><h3>Написать в поддержку</h3><div class="field"><label>Тема</label><select><option>Не могу войти</option><option>Не начислились баллы</option><option>Другое</option></select></div><div class="field"><label>Сообщение</label><textarea></textarea></div><button class="btn red" data-act="toast" data-v="Обращение отправлено. Ответим на почту из профиля">Отправить</button></div></div>`;
+}
+function vProfile() {
+  return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / Профиль</div><h1>Профиль</h1></div>
+  <div class="panel"><div class="row2"><div class="field"><label>Имя</label><input value="Иван"></div><div class="field"><label>Фамилия</label><input value="Петров"></div></div>
+  <div class="field"><label>Корпоративная почта</label><input value="i.petrov@mts.ru" disabled><span class="hint">Изменить нельзя</span></div>
+  <div class="row2"><div class="field"><label>Регион</label><select><option>Москва</option><option>Регион из справочника</option></select></div><div class="field"><label>Компания</label><select><option>ПАО «МТС»</option><option>Компания из справочника</option></select></div></div>
+  <button class="btn red" data-act="toast" data-v="Сохранено">Сохранить</button> <button class="btn ghost" data-act="toast" data-v="Форма смены пароля: текущий, новый, повтор">Сменить пароль</button></div>
+  <div class="panel"><div class="chips"><span class="chip pl">${totalPl()} из ${PL_MAX} ${wPl(PL_MAX)}</span><span class="chip">${totalPts()} ${wPts(totalPts())}</span></div><div style="margin-top:12px"><button class="btn ghost" data-act="logout">Выйти</button></div></div></div>`;
+}
+function vRegister() {
+  const e = S.regErr;
+  const f = (label, input, err, hint) => `<div class="field ${e && err ? 'bad' : ''}"><label>${label}</label>${input}${e && err ? `<span class="err">${err}</span>` : hint ? `<span class="hint">${hint}</span>` : ''}</div>`;
+  if (ended()) return `<div class="wrap"><div class="authbox">${skipBtn()}<h1>Регистрация закрыта</h1><p class="muted">Праздник завершён.</p><button class="btn" data-go="login">Войти</button></div></div>`;
+  return `<div class="wrap"><div class="authbox">${skipBtn()}<h1>Регистрация</h1><p class="muted small">Уже есть аккаунт? <span class="link" data-go="login">Войти</span></p>
+    <div class="row2">${f('Имя', '<input>', e ? 'Заполни поле' : '', '')}${f('Фамилия', '<input>', '', '')}</div>
+    ${f('Корпоративная почта', '<input placeholder="name@mts.ru">', 'Домен не из списка МТС и дочерних компаний', 'Только корпоративные домены МТС и дочерних компаний')}
+    <div class="row2">${f('Пароль', '<input type="password">', '', 'Требования — определить')}${f('Повтор пароля', '<input type="password">', 'Пароли не совпадают', '')}</div>
+    <div class="row2">${f('Регион', '<select><option>Выбери регион</option></select>', '', 'Справочник от клиента')}${f('Компания', '<select><option>Выбери компанию</option></select>', '', 'Справочник от клиента')}</div>
+    <label class="check"><input type="checkbox"> Принимаю правила участия</label><label class="check"><input type="checkbox"> Согласен на обработку персональных данных</label>
+    <button class="btn red" style="width:100%;margin-top:6px" data-act="register">Зарегистрироваться</button>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">${demoBtn('regErr', e ? 'скрыть ошибки' : 'показать ошибки')}</div>
+    <div class="note warn">Подтверждение почты кодом — решаем. Если включим, после этой формы будет шаг ввода кода из письма.</div></div></div>`;
+}
+function vLogin(msg) {
+  return `<div class="wrap"><div class="authbox">${msg ? `<div class="note warn" style="margin:0 0 12px">${msg}</div>` : ''}${skipBtn()}<h1>Вход</h1><p class="muted small">Нет аккаунта? <span class="link" data-go="register">Регистрация</span></p>
+    <div class="field ${S.loginErr ? 'bad' : ''}"><label>Корпоративная почта</label><input placeholder="name@mts.ru"></div>
+    <div class="field ${S.loginErr ? 'bad' : ''}"><label>Пароль</label><input type="password">${S.loginErr ? '<span class="err">Неверная почта или пароль</span>' : ''}</div>
+    <button class="btn red" style="width:100%" data-act="login">Войти</button>
+    <p class="small"><span class="link" data-go="recover">Забыли пароль?</span></p>${demoBtn('loginErr', S.loginErr ? 'скрыть ошибку' : 'показать ошибку')}</div></div>`;
+}
+function vRecover() {
+  return `<div class="wrap"><div class="authbox">${skipBtn()}<h1>Восстановление пароля</h1>${S.recovered ? '<p>Если аккаунт с такой почтой существует, мы отправили письмо со ссылкой для смены пароля.</p><button class="btn" data-go="login">Ко входу</button>' : `<div class="field"><label>Корпоративная почта</label><input placeholder="name@mts.ru"></div><button class="btn red" style="width:100%" data-act="recover">Отправить ссылку</button><p class="small"><span class="link" data-go="login">Вспомнил пароль</span></p>`}</div></div>`;
+}
+const v404 = () => `<div class="wrap"><div class="panel center"><h3>Страница не найдена</h3><button class="btn" data-go="home">На главную</button></div></div>`;
+
+/* ---------- рендер ---------- */
+function routeView() {
+  const [base, param] = S.route.split('/');
+  if (S.auth && ['landing', 'register', 'login', 'recover'].includes(base)) { S.route = 'home'; return vHome(); }
+  if (!S.auth && !PUBLIC.includes(base)) return vLogin('Эта страница доступна после входа.');
+  switch (base) {
+    case 'landing': return vLanding();
+    case 'register': return vRegister();
+    case 'login': return vLogin();
+    case 'recover': return vRecover();
+    case 'home': return vHome();
+    case 'block': return vBlock(param);
+    case 'act': return vAct(param);
+    case 'progress': return vProgress();
+    case 'rating': return vRating();
+    case 'prizes': return vPrizes();
+    case 'stream': return vStream();
+    case 'rules': return vRules();
+    case 'faq': return vFaq();
+    case 'profile': return vProfile();
+    default: return v404();
+  }
+}
+function render() {
+  clearTimers();
+  const view = routeView();
+  const site = document.getElementById('site');
+  site.innerHTML = header() + `<main class="main">${view}</main>` + footer();
+  document.getElementById('url').textContent = 'https://[домен согласуется]/' + (S.route === 'landing' ? '' : S.route);
+  const fr = document.getElementById('frame'); fr.classList.toggle('mobile', S.view === 'mobile'); fr.classList.toggle('desktop', S.view !== 'mobile');
+  afterRender(site);
+  syncDemo();
+}
+function afterRender(site) {
+  // лента-киноплёнка
+  const tr = document.getElementById('filmTrack');
+  if (tr) {
+    let hover = false;
+    tr.addEventListener('mouseenter', () => hover = true); tr.addEventListener('mouseleave', () => hover = false);
+    tr.addEventListener('touchstart', () => hover = true, { passive: true }); tr.addEventListener('touchend', () => later(() => hover = false, 1500));
+    every(() => { if (S.ui.filmPaused || hover) return; tr.scrollLeft += 1; if (tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 1) tr.scrollLeft = 0; }, 30);
+  }
+  // таймеры видео
+  Object.entries(S.vid).forEach(([id, v]) => {
+    if (!v.started || v.ready || !document.getElementById('vt')) return;
+    every(() => { v.left--; const el = document.getElementById('vt'); if (el) el.textContent = v.left; if (v.left <= 0) { v.ready = true; render(); } }, 1000);
+  });
+  // запись АПОЖ
+  const rec = document.getElementById('rect');
+  if (rec) { let t = 3; every(() => { t--; rec.textContent = '0:0' + t; if (t <= 0) { const s = S.audio.apozh1; s.rec = false; s.step = 2; render(); } }, 1000); }
+  // игра
+  Object.entries(S.game).forEach(([id, g]) => {
+    if (g.phase !== 'play' || !document.querySelector('.runner')) return;
+    later(() => { const r = 1 + Math.floor(Math.random() * 4); const a = A[id]; const first = !isComplete(a); const gain = Math.max(0, r - (g.best || 0)) * a.pts.v;
+      g.last = r; g.phase = 'result'; if (r > (g.best || 0)) g.best = r;
+      if (first) award(id, gain); else if (gain) award(id, gain, { pointsOnly: true }); else toast('Рекорд не побит — в рейтинге остаётся лучший результат');
+      render(); }, 2200);
+  });
+  // обратный отсчёт счастливого часа
+  const cd = document.getElementById('hhcd');
+  if (cd) { let sec = 42 * 60 + 15; every(() => { sec--; const el = document.getElementById('hhcd'); if (el) el.textContent = Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'); }, 1000); }
+  // свечка
+  if (S.candle && S.auth && !S.candleFound) {
+    if (!S.candlePos) S.candlePos = { top: 150 + Math.random() * 650, left: 6 + Math.random() * 84 };
+    site.insertAdjacentHTML('beforeend', `<button class="candle" data-act="candle" style="top:${S.candlePos.top}px;left:${S.candlePos.left}%" title="?"><svg viewBox="0 0 30 38"><path d="M15 2c3 5 5 7 5 10a5 5 0 0 1-10 0c0-3 2-5 5-10z" fill="#ffb020"/><rect x="10" y="16" width="10" height="20" rx="2" fill="#ff0032"/><rect x="10" y="21" width="10" height="3" fill="#fff"/><rect x="10" y="28" width="10" height="3" fill="#fff"/></svg></button>`);
+  }
+  // счётчики символов
+  site.querySelectorAll('[data-counter]').forEach(t => t.addEventListener('input', () => { const c = document.getElementById(t.dataset.counter); if (c) c.textContent = t.value.length; }));
+}
+
+/* ---------- действия ---------- */
+function go(route) { S.route = route; S.menu = false; render(); document.getElementById('scroll').scrollTop = 0; setHash('proto/' + route); }
+const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+const ACTIONS = {
+  menu() { S.menu = !S.menu; render(); },
+  toast(el) { toast(esc(el.dataset.v)); },
+  closeModal,
+  tab(el) { S.ui['tab_' + el.dataset.id] = el.dataset.v; render(); },
+  attach(el) { S.ui['att_' + el.dataset.id] = !S.ui['att_' + el.dataset.id]; S.ui['err_' + el.dataset.id] = false; render(); },
+  submitUGC(el) {
+    const id = el.dataset.id;
+    if (!el.dataset.nofile && !S.ui['att_' + id]) { S.ui['err_' + id] = true; render(); return; }
+    const item = { st: 'pending', text: val('f_text') };
+    if (document.getElementById('f_nom')) item.nom = val('f_nom').replace(' — уже есть номер', '');
+    if (document.getElementById('f_to')) item.to = val('f_to') || 'Коллега';
+    (S.sub[id] = S.sub[id] || []).push(item); S.ui['att_' + id] = false;
+    toast('Отправлено на модерацию'); render();
+  },
+  approve(el) { const id = el.dataset.id; const it = S.sub[id][+el.dataset.v]; it.st = 'ok'; award(id, A[id].pts.v); render(); },
+  batch() { S.ui.batch++; render(); },
+  film(el) { const tr = document.getElementById('filmTrack'); if (tr) tr.scrollBy({ left: +el.dataset.v * 230, behavior: 'smooth' }); },
+  filmPause() { S.ui.filmPaused = !S.ui.filmPaused; render(); },
+  nom(el) { S.ui.nom = el.dataset.v; render(); },
+  like(el) {
+    if (S.likes.size >= 10) return; S.likes.add(el.dataset.v);
+    if (!isComplete(A.talent_like) && canDo(A.talent_like)) award('talent_like', A.talent_like.pts.v); else toast('Поддержка засчитана');
+    render();
+  },
+  quizStart(el) { S.quiz[el.dataset.id] = { phase: 'q', i: 0, ans: [] }; render(); },
+  quizAns(el) { const q = S.quiz[el.dataset.id]; q.ans[q.i] = +el.dataset.v; render(); },
+  quizNext(el) {
+    const id = el.dataset.id; const q = S.quiz[id]; const qs = quizQs(id === 'quiz1' ? 1 : 2);
+    if (q.i + 1 < qs.length) { q.i++; render(); return; }
+    q.phase = 'result'; const right = q.ans.filter((x, i) => x === qs[i].right).length;
+    award(id, Math.round(A[id].pts.v * right / qs.length)); render();
+  },
+  audioStep(el) { S.audio[el.dataset.id] = Object.assign(S.audio[el.dataset.id] || {}, { step: +el.dataset.v, rec: false }); render(); },
+  audioRec(el) { const s = S.audio[el.dataset.id]; if (s.rec) { s.rec = false; s.step = 2; } else s.rec = true; render(); },
+  audioGuess(el) { const id = el.dataset.id; const s = S.audio[id] = S.audio[id] || {}; s.ok = +el.dataset.v === (id === 'apozh1' ? 2 : 1); award(id, A[id].pts.v); render(); },
+  audioShare(el) { award(el.dataset.id, A[el.dataset.id].pts.v); render(); },
+  vidPlay(el) { const id = el.dataset.id; const v = S.vid[id] = S.vid[id] || {}; if (!v.started && !isComplete(A[id]) && !ended()) { v.started = true; v.left = 5; render(); } else toast('Воспроизведение'); },
+  vidDone(el) { award(el.dataset.id, A[el.dataset.id].pts.v); render(); },
+  gamePlay(el) { const id = el.dataset.id; S.game[id] = Object.assign(S.game[id] || { best: 0 }, { phase: 'play' }); render(); },
+  volSignup(el) { S.vol = el.dataset.v; award('vol1', 0); render(); },
+  volInvite() { if (!val('f_inv').includes('@')) { toast('Укажи корпоративную почту коллеги'); return; } award('vol2', A.vol2.pts.v); render(); },
+  volConfirm() { award('vol3', A.vol3.pts.v); render(); },
+  vote(el) { S.votes[el.dataset.id] = +el.dataset.v; award(el.dataset.id, A[el.dataset.id].pts.v); render(); },
+  guess(el) { S.guess = +el.dataset.v; award('aiguess', A.aiguess.pts.v); render(); },
+  code() {
+    const w = val('f_code').toLowerCase(); if (!w) return; const live = S.date === PROJECT.stream; const ok = w === CODE_WORD;
+    const pts = ok ? (live ? A.st_code.pts.live : A.st_code.pts.rec) : 0; S.code = { ok, pts };
+    if (ok) award('st_code', pts); else S.done.st_code = 1; render();
+  },
+  candle() {
+    S.candleFound = true; S.candle = false; const a = A.candle; award('candle', a.pts.v);
+    modal(`<svg viewBox="0 0 30 38" width="46" height="58"><path d="M15 2c3 5 5 7 5 10a5 5 0 0 1-10 0c0-3 2-5 5-10z" fill="#ffb020"/><rect x="10" y="16" width="10" height="20" rx="2" fill="#ff0032"/></svg><h3>Ты нашёл пропавшую свечку!</h3><p>Ты 12-й из 34 счастливчиков. +1 удовольствие и бонус ${a.pts.v} баллов.</p><button class="btn red" data-act="closeModal">Забрать</button>`);
+    render();
+  },
+  forceDone(el) { const a = A[el.dataset.id]; S.done[a.id] = a.max || 1; S.apts[a.id] = (S.apts[a.id] || 0); if (a.id === 'vol1') S.vol = 'p1'; toast('Демо: засчитано «' + esc(a.title) + '»'); render(); },
+  setDate(el) { setDate(el.dataset.v); },
+  regErr() { S.regErr = !S.regErr; render(); },
+  loginErr() { S.loginErr = !S.loginErr; render(); },
+  skipReg() { S.auth = true; S.regErr = false; S.loginErr = false; if (!isComplete(A.reg)) award('reg', 0); checkVisit(); go(PUBLIC.includes(S.route.split('/')[0]) ? 'home' : S.route); },
+  register() { S.auth = true; S.regErr = false; if (!isComplete(A.reg)) award('reg', 0); checkVisit(); go('home'); },
+  login() { S.auth = true; S.loginErr = false; checkVisit(); go('home'); },
+  recover() { S.recovered = true; render(); },
+  logout() { S.auth = false; go('landing'); },
+};
+function setDate(v) { S.date = v; checkVisit(); render(); }
+
+/* ---------- демо: заполнить прогресс ---------- */
+function demoFill() {
+  if (!S.auth) { S.auth = true; award('reg', 0); }
+  ACTS.forEach(a => {
+    if (a.hidden || a.block === 'stream' || a.type === 'visit' || !canDo(a) || Math.random() < .35) return;
+    const n = a.max > 1 ? 1 + Math.floor(Math.random() * a.max) : 1; S.done[a.id] = n;
+    const p = a.pts; S.apts[a.id] = p.kind === 'fixed' ? p.v * n : p.kind === 'score' ? Math.round(p.v * .75) : p.kind === 'result' ? p.v * 2 : 0;
+    if (['ugc_photo', 'ugc_video', 'thanks'].includes(a.type)) S.sub[a.id] = Array.from({ length: n }, (_, i) => ({ st: 'ok', text: 'Демо', nom: NOMS[i], to: PEOPLE[i] }));
+    if (a.type === 'quiz') S.quiz[a.id] = { phase: 'result', ans: [1, 0, 0, 1], i: 3 };
+    if (a.type === 'game') S.game[a.id] = { phase: 'start', best: 2 };
+    if (a.type === 'audio') S.audio[a.id] = { step: 3, ok: true };
+    if (a.id === 'vol1') S.vol = 'p1';
+    if (a.type === 'story' && a.mode === 'vote') S.votes[a.id] = 0;
+    if (a.id === 'aiguess') S.guess = 1;
+    if (a.id === 'talent_like') S.likes.add('t1');
+  });
+  checkVisit(); toast('Демо-прогресс заполнен'); go('home');
+}
+
+/* =====================================================================
+   ТЗ. Разделы с таблицами и карточками генерируются из data.js,
+   текстовые разделы — ниже. Правим текст здесь, данные — в data.js.
+   ===================================================================== */
+const tzA = id => `<a data-tz="act-${id}">${esc(A[id].title)}</a>`;
+const openBtn = route => `<button class="open" data-open="${route}">Открыть в прототипе →</button>`;
+const ul = items => `<ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+const sb = s => `<span class="sbadge ${s}">${STATUS[s].label}</span>`;
+function ptsText(a) {
+  const p = a.pts;
+  if (p.kind === 'fixed') return p.v ? `${p.v} за выполнение` : 'нет';
+  if (p.kind === 'score') return `до ${p.v} за выпуск, пропорционально верным ответам`;
+  if (p.kind === 'result') return `${p.v} за каждый рубеж; в рейтинг — лучший результат`;
+  if (p.kind === 'bonus') return `бонус ${p.v}; размер пользователь узнаёт после находки`;
+  if (p.kind === 'code') return `${p.live} — в прямом эфире (5 минут после показа), ${p.rec} — в записи`;
+  return '—';
+}
+const availText = a => a.to ? (a.to === a.from ? `только ${dm(a.from)}` : `${dm(a.from)} – ${dm(a.to)}`) : `с ${dm(a.from)} до конца кампании`;
+const blockName = id => B[id].section ? `${B[id].name} («${B[id].section}»)` : B[id].name;
+
+/* ---------- генерируемые куски ---------- */
+function gantt() {
+  const days = dayDiff(PROJECT.start, PROJECT.end) + 1;
+  const pos = iso => Math.max(0, Math.min(100, dayDiff(PROJECT.start, iso) / days * 100));
+  const ticks = [];
+  for (let i = 0; i < days; i += 3) { const d = new Date(PROJECT.start + 'T12:00:00'); d.setDate(d.getDate() + i); const iso = d.toISOString().slice(0, 10); ticks.push(`<span class="tick" style="left:${(i + .5) / days * 100}%">${dm(iso)}</span>`); }
+  const eth = `<i class="eth" style="left:${(dayDiff(PROJECT.start, PROJECT.stream) + .5) / days * 100}%"></i>`;
+  let rows = `<div class="gr gh"><div class="gl">Активность</div><div class="gt">${ticks.join('')}${eth}</div></div>`;
+  BLOCKS.forEach(b => {
+    const acts = ACTS.filter(a => a.block === b.id); if (!acts.length) return;
+    rows += `<div class="gr gblk"><div class="gl">${esc(b.name)}</div><div class="gt">${eth}</div></div>`;
+    acts.forEach(a => {
+      const to = a.to || PROJECT.end; const l = pos(a.from); const w = Math.max(100 / days, (dayDiff(a.from, to) + 1) / days * 100);
+      rows += `<div class="gr"><div class="gl" data-tz="act-${a.id}" title="${esc(a.title)}">${esc(shortT(a))}</div><div class="gt"><i class="gb ${a.status}" style="left:${l}%;width:${w}%"></i>${eth}</div></div>`;
+    });
+  });
+  return `<div class="gantt">${rows}</div><p class="small muted">Красная линия — эфир ${dm(PROJECT.stream)}. Цвет полосы — статус проработки активности.</p>`;
+}
+function ptsShort(a) {
+  const p = a.pts;
+  if (p.kind === 'fixed') return p.v ? String(p.v) : '—';
+  if (p.kind === 'score') return `до ${p.v}`;
+  if (p.kind === 'result') return `${p.v} / рубеж`;
+  if (p.kind === 'bonus') return `бонус ${p.v}`;
+  if (p.kind === 'code') return `${p.live} / ${p.rec}`;
+  return '—';
+}
+function registry() {
+  let rows = ''; let tot = 0;
+  BLOCKS.forEach(b => {
+    const acts = ACTS.filter(a => a.block === b.id); if (!acts.length) return; const st = blockStats(b.id); tot += st.max;
+    rows += `<tr class="blk"><td colspan="7">${esc(blockName(b.id))}</td><td class="num">${st.max}</td></tr>`;
+    acts.forEach(a => {
+      const dates = a.to ? (a.to === a.from ? dm(a.from) : `${dm(a.from)}–${dm(a.to)}`) : `с ${dm(a.from)}`;
+      rows += `<tr><td>${tzA(a.id)}${a.hidden ? ' <span class="muted">(скрытая)</span>' : ''}</td><td><a data-tz="mech-${a.type}">${esc(MECH[a.type].short)}</a></td><td style="white-space:nowrap">${dates}</td><td>${a.dep ? `<a data-tz="act-${a.dep}">${esc(shortT(A[a.dep]))}</a>` : '—'}</td><td class="num">${a.pl || 0} × ${a.max || 1}</td><td class="num">${esc(ptsShort(a))}</td><td>${sb(a.status)}</td><td class="num"><b>${plMax(a)}</b></td></tr>`;
+    });
+  });
+  const ok = tot === PROJECT.pleasuresTotal;
+  rows += `<tr class="tot"><td colspan="7">Итого удовольствий в реестре${ok ? '' : ' — не сходится с ' + PROJECT.pleasuresTotal + '!'}</td><td class="num">${tot} / ${PROJECT.pleasuresTotal}</td></tr>`;
+  return `<div class="tblwrap"><table class="tbl"><thead><tr><th>Активность</th><th>Механика</th><th>Даты</th><th>Зависит от</th><th class="num">Уд. × раз</th><th class="num">Баллы</th><th>Статус</th><th class="num">Всего уд.</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <p class="small muted">«Уд. × раз» — удовольствий за одно выполнение × лимит выполнений. Баллы: число — за выполнение; «до N» — пропорционально верным ответам; «N / рубеж» — за рубеж в игре, в рейтинг идёт лучший результат; «10 / 2» — в прямом эфире / в записи. Даты «с …» — до конца кампании.</p>`;
+}
+function actCard(a) {
+  const users = ACTS.filter(x => x.dep === a.id);
+  return `<article class="tzcard" id="act-${a.id}"><div class="hd"><h3>${esc(a.title)}${a.sub ? ` <span class="sub">· ${esc(a.sub)}</span>` : ''}</h3><div style="display:flex;gap:8px;align-items:center">${sb(a.status)}${openBtn('act/' + a.id)}</div></div>
+    <p>${esc(a.desc)}</p>
+    <dl class="kv">
+      <dt>Блок</dt><dd>${esc(blockName(a.block))}</dd>
+      <dt>Механика</dt><dd><a data-tz="mech-${a.type}">${esc(MECH[a.type].title)}</a>${a.mode ? ` · режим <code>${a.mode}</code>` : ''}</dd>
+      <dt>Доступна</dt><dd>${availText(a)}</dd>
+      <dt>Зависит от</dt><dd>${a.dep ? tzA(a.dep) : '—'}</dd>
+      ${users.length ? `<dt>Открывает</dt><dd>${users.map(u => tzA(u.id)).join(', ')}</dd>` : ''}
+      <dt>Выполнений на пользователя</dt><dd>${a.max || 1}</dd>
+      <dt>Удовольствия</dt><dd>${a.pl || 0} за выполнение · всего ${plMax(a)}</dd>
+      <dt>Баллы</dt><dd>${esc(ptsText(a))}</dd>
+      <dt>Показ</dt><dd>${a.hidden ? 'скрытая: в прогрессе слот «???», пока не выполнена' : 'в списке блока и на главной'}</dd>
+      <dt>ID</dt><dd><code>${a.id}</code></dd>
+    </dl>
+    ${a.notes && a.notes.length ? `<ul class="notes">${a.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}</article>`;
+}
+function mechSection(key) {
+  const m = MECH[key]; const used = ACTS.filter(a => a.type === key);
+  return `<article class="tzcard" id="mech-${key}"><div class="hd"><h3>${esc(m.title)}</h3><code>${key}</code></div>
+    <p class="small muted">Используется: ${used.length ? used.map(a => tzA(a.id)).join(', ') : '—'}</p>
+    ${m.sections.map(([h, items]) => `<h4>${esc(h)}</h4>${ul(items.map(esc))}`).join('')}</article>`;
+}
+function screenSection(s) {
+  return `<article class="tzcard" id="scr-${s.id}"><div class="hd"><h3>${esc(s.title)}</h3>${openBtn(s.id === 'final' ? 'final' : s.route)}</div>
+    <p>${esc(s.purpose)}</p>
+    <h4>Элементы</h4>${ul(s.elements.map(esc))}
+    ${s.states.length ? `<h4>Состояния</h4>${ul(s.states.map(esc))}` : ''}
+    ${s.notes ? `<ul class="notes">${s.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}</article>`;
+}
+function tbl(head, rows) { return `<div class="tblwrap"><table class="tbl"><thead><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
+
+/* ---------- разделы ---------- */
+const TZ = [
+  { id: 'about', title: 'О документе', html: () => {
+    const qc = QUESTIONS.filter(q => q.to === 'client').length;
+    return `<div class="meta"><span>Версия ${PROJECT.version}</span><span>Обновлено ${PROJECT.updated}</span><span>Черновик для разработки</span></div>
+    <p>Техническое задание на онлайн-платформу к 33-летию МТС. Пишется для разработки (бэкенд и фронтенд); проджект и клиент могут опираться на него как на описание функционала.</p>
+    <div class="kpis"><div class="kpi"><b>${ACTS.length}</b><span>активностей в реестре</span></div><div class="kpi ${PL_MAX !== PROJECT.pleasuresTotal ? 'bad' : ''}"><b>${PL_MAX} / ${PROJECT.pleasuresTotal}</b><span>удовольствий в реестре</span></div><div class="kpi"><b>${SCREENS.length}</b><span>экранов</span></div><div class="kpi"><b>${qc} + ${QUESTIONS.length - qc}</b><span>вопросов: клиенту + нам</span></div></div>
+    <h3>Как читать</h3>${ul([
+      'Прототип и ТЗ собраны из одних данных. Реестр активностей, карточки, экраны и вопросы в ТЗ генерируются из того же описания, что и прототип: поменяли в одном месте — поменялось в обоих.',
+      'В прототипе на каждом экране есть кнопка «ТЗ по экрану» — она ведёт в нужный раздел. В ТЗ кнопка «Открыть в прототипе» ведёт обратно.',
+      'Прототип — вайрфрейм, не дизайн. Серые штрихованные блоки — заглушки контента, тексты рабочие. Финальный визуал — по KV и UI-китам МТС.',
+      'Фиолетовые кнопки «Демо: …» и панель над прототипом не являются частью сайта и в разработку не идут: они меняют дату, имитируют модератора, заполняют прогресс. «Демо: пропустить регистрацию» на экранах гостя сразу входит участником, без заполнения формы.',
+    ])}
+    <div class="legend"><b>Статусы проработки</b>${Object.entries(STATUS).map(([k, s]) => `<div>${sb(k)} — ${esc(s.desc)}</div>`).join('')}</div>
+    <h3>Источники</h3>${ul(PROJECT.sources.map(esc))}`; } },
+
+  { id: 'summary', title: 'Проект коротко', html: () => `
+    ${ul([
+      '<b>Что делаем:</b> онлайн-платформу с заданиями для сотрудников к 33-летию МТС и страницу онлайн-эфира 28.10.',
+      '<b>Концепция:</b> «33 года — все 33 удовольствия». Сотрудник собирает 33 «удовольствия» — отметки о выполнении заданий. Визуально это торт из пяти частей, который «допекается» по ходу кампании. Эфир — «34-е удовольствие», которое нельзя получить на платформе.',
+      '<b>Аудитория:</b> сотрудники МТС и дочерних компаний. По тендеру — до 20 000 уникальных участников.',
+      '<b>Устройства:</b> ПК и мобильный браузер, адаптивная вёрстка.',
+      '<b>Не делаем:</b> SSO и корпоративную авторизацию (регистрация по корпоративной почте), CMS (только админ-панель), магазин призов, офлайн-часть.',
+    ])}
+    <h3>Структура торта</h3>
+    ${tbl(['Блок', 'Раздел торта', 'Смысл', 'Удовольствий'], BLOCKS.map(b => [esc(b.name), b.section ? '«' + esc(b.section) + '»' : '— (вне торта)', esc(b.tagline), String(blockStats(b.id).max)]))}
+    <p class="small muted">В первой версии было 6 блоков; «Работа» и «Обучение» объединены, добавлен «Работаем вместе». Структура — на подтверждении у клиента.</p>` },
+
+  { id: 'timeline', title: 'Сроки и таймлайн', html: () => `
+    <div class="callout"><b>Рабочий период: ${dm(PROJECT.start)} – ${dm(PROJECT.end)}</b>, эфир — ${dm(PROJECT.stream)}. В презентации было 14–28.10; новый период на согласовании у клиента.</div>
+    ${ul([
+      '<b>Неделя до эфира — «готовим торт».</b> Открываются базовые активности.',
+      '<b>28.10 — «задуваем свечу».</b> Эфир — кульминация; после него открываются основные активности.',
+      '<b>Две недели после — «едим торт».</b> Обновления контента, сюрпризы, розыгрыши.',
+      '<b>Минимум к запуску:</b> регистрация, 2–3 активности, встроенный плеер эфира.',
+    ])}
+    ${gantt()}` },
+
+  { id: 'principles', title: 'Ключевые решения', html: () => ul([
+    '<b>Две сущности.</b> Удовольствия — отметки о выполнении (ачивки), всего 33, от результата не зависят. Баллы — для рейтинга, зависят от сложности задания и результата. Количество того и другого настраивается у каждой активности.',
+    '<b>Всё, за что начисляем, — активность.</b> Включая скрытые сюрпризы, бонус недели и эфир.',
+    '<b>Вместо игровых периодов — даты.</b> У каждой активности дата «от» и необязательная дата «до», плюс зависимость «сначала пройди X».',
+    '<b>Прошедшее не закрываем.</b> Пришедший позже проходит всё по порядку. Исключение — голосования по главам ИИ-истории.',
+    '<b>Обновление контента — новая активность</b> того же типа (квиз, выпуск 2), а не несколько квизов внутри одной.',
+    '<b>«Запуски» не закладываем</b> — повторных кампаний на тех же пользователях не будет.',
+    '<b>Универсальность.</b> Типы механик настраиваются через админку, а не пишутся под конкретную активность — с расчётом на переиспользование в следующих проектах.',
+    '<b>Фото и видео от пользователей — один бэкенд</b> с разными обработчиками файлов.',
+    '<b>Лайки:</b> автору номера баллы за полученные лайки не начисляем.',
+    '<b>Заходы:</b> ежедневных бонусов нет, максимум — бонус раз в неделю.',
+  ]) },
+
+  { id: 'model', title: 'Модель данных', html: () => `
+    <p>Основные сущности. Поля — минимально необходимые, разработка может расширять.</p>
+    ${tbl(['Сущность', 'Ключевые поля', 'Комментарий'], [
+      ['Пользователь', 'имя, фамилия, email (уникальный), хэш пароля, регион, компания, роль (участник / модератор / админ), дата регистрации, блокировка', 'Регион и компания — из справочников.'],
+      ['Блок', 'название, раздел торта, подзаголовок, порядок, показывать на торте', '5 блоков торта + «Общее и сюрпризы» + «Эфир».'],
+      ['Активность', 'блок, тип механики, режим, название, описание, дата «от», дата «до» (необяз.), зависимость (id), лимит выполнений, удовольствий за выполнение, правило баллов + значение, скрытая, порядок, настройки механики (JSON)', 'Ядро. Настройки механики: вопросы квиза, видео, заготовки АПОЖ, главы истории и т.п.'],
+      ['Выполнение', 'пользователь, активность, № попытки, статус (в процессе / на модерации / засчитано / отклонено), результат (счёт, ответы), даты', 'Засчитанные выполнения ≤ лимита.'],
+      ['Журнал начислений', 'пользователь, активность, выполнение, удовольствия ±, баллы ±, множитель, источник (авто / модератор / админ), дата', 'Баланс и рейтинг — сумма журнала. Ручные корректировки — тоже записи.'],
+      ['Бустер (счастливый час)', 'активность, начало, конец, множитель', 'Умножает только баллы.'],
+      ['Материал (UGC)', 'автор, активность, тип файла, файл(ы), превью, текст, номинация, согласия, статус модерации, счётчик лайков', 'Истории, номера талант-шоу, аудио АПОЖ, благодарности.'],
+      ['Лайк', 'пользователь, материал, дата', 'Уникальная пара.'],
+      ['Благодарность', 'автор, получатель (пользователь или текст), текст, вид сладости, статус модерации', ''],
+      ['Выдача АПОЖ', 'пользователь, запись/заготовка, варианты ответа, ответ', 'Кому что уже выдано.'],
+      ['Голос', 'пользователь, активность-глава, вариант', 'Один голос на главу.'],
+      ['Справочники', 'домены почты, регионы, компании, номинации, волонтёрские проекты, песни АПОЖ', 'Редактируются в админке.'],
+    ])}` },
+
+  { id: 'logic', title: 'Доступность и начисления', html: () => `
+    <h3>Статус активности для пользователя</h3>
+    <p>Считается на сервере в таком порядке — первое сработавшее правило:</p>
+    <ol><li>Засчитано выполнений = лимит → «Выполнено».</li><li>Кампания закончилась → «Платформа завершена».</li><li>Сегодня раньше даты «от» → «Скоро».</li><li>Есть дата «до», и она прошла → «Завершено».</li><li>Зависимость не выполнена → «Закрыто».</li><li>Есть материал на модерации и нет засчитанных → «На модерации».</li><li>Засчитано больше 0, но меньше лимита → «В процессе».</li><li>Иначе → «Доступно».</li></ol>
+    ${tbl(['Статус', 'Что видит пользователь'], Object.entries(STATES).map(([k, s]) => [`<span class="chip st-${k}">${s.label}</span>`, esc(s.desc)]))}
+    <h3>Начисления</h3>${ul([
+      'Удовольствия = «удовольствий за выполнение» × засчитанные выполнения (не больше лимита).',
+      'Баллы — по правилу активности: фиксированные; по верным ответам (квиз); за рубеж, лучший результат (игра); бонус (сюрприз); кодовое слово (эфир).',
+      'Пользовательский контент засчитывается после одобрения модератором (рабочий вариант). Отклонённый не засчитывается, попытка возвращается.',
+      'Счастливый час: ×2 баллов (не удовольствий) за указанную активность, если выполнение отправлено в окне бустера — даже если одобрено позже.',
+      'Любое начисление — запись в журнал. Повторный запрос или двойной клик не должен начислять дважды.',
+      'Время — московское. Даты «от» и «до» включительные: с 00:00 до 23:59.',
+      'Прогресс: удовольствия по блокам и всего; флаг «собрал все 33» — для розыгрыша.',
+    ])}` },
+
+  { id: 'registry', title: 'Реестр активностей', html: () => `
+    <p>Черновое распределение 33 удовольствий: цифры из презентации, скорректированные по итогам созвонов. Итоговую таблицу утверждаем отдельно — все правки делаются в реестре, и прототип обновится вместе с ним.</p>${registry()}` },
+
+  { id: 'acts', title: 'Активности подробно', kids: () => ACTS.map(a => ({ id: 'act-' + a.id, t: shortT(a) })),
+    html: () => BLOCKS.map(b => { const acts = ACTS.filter(a => a.block === b.id); return acts.length ? `<h3>${esc(blockName(b.id))}</h3>${acts.map(actCard).join('')}` : ''; }).join('') },
+
+  { id: 'mech', title: 'Механики', kids: () => Object.keys(MECH).map(k => ({ id: 'mech-' + k, t: MECH[k].short })),
+    html: () => `<p>Универсальные типы активностей. Одна механика — один набор фронта, бэка и настроек в админке; конкретные активности отличаются только настройками и контентом.</p>${Object.keys(MECH).map(mechSection).join('')}` },
+
+  { id: 'surprises', title: 'Сюрпризы и счастливые часы', html: () => `
+    <p>Из презентации: внутри блоков периодически всплывают неанонсированные задания, чтобы было ощущение живой игры, а не расписанного по часам плана.</p>
+    <h3>Счастливый час (бустер)</h3>${ul([
+      'В заданное окно — ×2 баллов за конкретную активность. На главной и на странице активности — баннер с обратным отсчётом.',
+      'Без оповещения механика не работает: если все знают расписание, час перестаёт быть «счастливым». Варианты: email-рассылка (~2 часа работы) или длинное окно («счастливые 4 часа»), чтобы заходящие успевали увидеть.',
+      'Похожий функционал уже есть из проекта ПСБ («Золотой час») — переиспользуем.',
+    ])}
+    ${tbl(['Активность', 'Дата', 'Окно', 'Множитель', 'Комментарий'], BOOSTERS.map(b => [tzA(b.act), dm(b.date), `${b.from}–${b.to}`, '×' + b.mult, esc(b.note || 'пример')]))}
+    <h3>Задания-сюрпризы</h3>${ul([
+      `${tzA('candle')} — спрятанная иконка, бонус первым N нашедшим. ${sb(A.candle.status)}`,
+      `${tzA('surprise3')} — механика не выбрана. ${sb(A.surprise3.status)}`,
+      '«Тайный ингредиент» из презентации снят: по сути это тот же счастливый час, а 15 минут без причины — слишком жёстко.',
+      `${tzA('visit')} — баллы за первый заход в неделю вместо серийного множителя. ${sb(A.visit.status)}`,
+    ])}` },
+
+  { id: 'screens', title: 'Экраны', kids: () => SCREENS.map(s => ({ id: 'scr-' + s.id, t: s.title })),
+    html: () => `<h3>Общие элементы</h3>${ul([
+      'Шапка: логотип, навигация, чип прогресса «N / 33 · баллы» (ведёт в «Мой прогресс»), аватар (профиль). На мобайле — бургер-меню.',
+      'Уведомление о начислении (тост): «+1 удовольствие · +10 баллов — название активности», с пометкой «×2 счастливый час», если действует бустер.',
+      'Модальные окна: находка свечки, «Все 33 собраны».',
+      'Баннеры: счастливый час, эфир (анонс / «в эфире сегодня»).',
+      'Подвал: правила, FAQ, техподдержка, политика обработки ПДн.',
+    ])}${SCREENS.map(screenSection).join('')}` },
+
+  { id: 'auth', title: 'Регистрация и профиль', html: () => `
+    ${tbl(['Поле', 'Тип', 'Обязательное', 'Меняется в профиле', 'Проверки'], [
+      ['Имя', 'текст', 'да', 'да', 'не пусто'],
+      ['Фамилия', 'текст', 'да', 'да', 'не пусто'],
+      ['Корпоративная почта', 'email', 'да', 'нет', 'домен из белого списка; уникальность'],
+      ['Пароль / повтор', 'пароль', 'да', 'через «Сменить пароль»', 'требования к сложности — определить; совпадение'],
+      ['Регион', 'справочник', 'да', 'да', '—'],
+      ['Компания', 'справочник', 'да', 'да', 'МТС и дочерние компании'],
+      ['Согласия', 'чекбоксы', 'да', 'нет', 'правила участия, обработка персональных данных'],
+    ])}
+    ${ul([
+      'Белый список доменов — в админке. Запрашиваем у клиента полный список сразу: раньше домены досылали по одному.',
+      'Подтверждение почты кодом — решаем на старте (давний спор: надёжность против лишнего шага для пользователя).',
+      'Восстановление пароля — по ссылке из письма. На неизвестную почту отвечаем тем же экраном, не раскрывая, есть ли аккаунт.',
+      'После регистрации: начисление за «Регистрацию» (если согласуют копирайт) и бонус недели.',
+      'Редактирование профиля закладываем, если не добавляет заметных часов. Почту менять нельзя.',
+      'SSO не делаем.',
+    ])}` },
+
+  { id: 'stream', title: 'Онлайн-эфир', html: () => `
+    ${ul([
+      `Ток-шоу «Без галстука», ${dm(PROJECT.stream)}. Ведущий и 20 гостей: 5 блоков по 4 человека — 3 сотрудника с платформы и 1 топ-менеджер. Рубрики: «Золотые цитаты», «Фото-кринж», «Байки из офиса».`,
+      'Страница эфира: до — обратный отсчёт, анонс, «Добавить в календарь» (.ics); в день эфира — встроенный плеер и чат (если есть у провайдера — по тендеру нужен текстовый чат); после — запись.',
+      'Плеер: встраиваем готовый плеер клиента, не разрабатываем. Провайдер — уточнить.',
+      '<b>Не забыть:</b> забрать у клиента продовый токен плеера. На прошлом проекте выдали тестовый, а прод заменить забыли.',
+      `Вовлечение: ${tzA('st_watch')} и ${tzA('st_code')}. Альтернатива кодовому слову — вопросы под плеером, ответы на которые есть только в эфире.`,
+      'Эфир — «34-е удовольствие»: удовольствий на платформе не даёт, только баллы.',
+      'Пиковая нагрузка — в момент эфира.',
+    ])}` },
+
+  { id: 'rating', title: 'Баллы, рейтинг, призы', html: () => `
+    <h3>Шкала баллов (из презентации)</h3>
+    ${tbl(['Баллы', 'Уровень', 'Примеры'], [['10', 'простые', 'благодарность, просмотр видео-разминки'], ['20', 'средние', 'выпуск квиза, рубеж в сайдскроллере, роль в АПОЖ'], ['30', 'сложные и творческие', 'талант-шоу, «Секретный рецепт»']])}
+    <p>Конкретные значения по активностям — в <a data-tz="registry">реестре</a>. Серийный множитель «несколько дней подряд» из презентации не делаем.</p>
+    <h3>Рейтинг</h3>${ul(['Сумма баллов из журнала начислений. При равенстве выше тот, кто набрал раньше (рабочий вариант).', 'Экран: топ участников + строка «Ты» с местом.', 'Рейтинг кэшируем (пересчёт раз в N минут), чтобы не считать на каждый запрос при 20 000 пользователей (рабочий вариант).'])}
+    <h3>Призы и розыгрыши</h3>${ul(['Два розыгрыша: по баллам (топ или случайно среди топ-N) и среди собравших все 33 удовольствия. Условия — на согласовании.', 'Магазина призов нет.', 'В админке — выгрузки для розыгрышей: топ по баллам, список собравших 33.'])}` },
+
+  { id: 'notify', title: 'Уведомления и рассылки', html: () => `
+    <h3>На платформе</h3>${ul(['Тост о начислении.', 'Баннер счастливого часа с обратным отсчётом.', 'Баннер эфира.', 'Статусы «Скоро / Доступно / На модерации» на карточках.'])}
+    <h3>Email</h3>${ul(['Обязательные: восстановление пароля; код подтверждения почты (если включим); приглашение коллеги в волонтёрский проект.', 'Возможные (на согласовании): анонсы обновлений раз в неделю, счастливый час, напоминание об эфире.', 'Отправитель, шаблоны и тексты — согласовать с клиентом.'])}` },
+
+  { id: 'admin', title: 'Админ-панель', html: () => `
+    <p>Без кликабельного прототипа. Роли: <b>администратор</b> — всё; <b>модератор</b> — только очереди модерации.</p>
+    ${tbl(['Раздел', 'Что умеет'], [
+      ['Активности', 'Список по блокам; создание и редактирование: тип механики, название, описание, даты «от/до», зависимость, лимит выполнений, удовольствия, правило баллов, скрытая, порядок. Контент механики: вопросы квиза, видео, заготовки и песни АПОЖ, главы истории.'],
+      ['Модерация', 'Очереди: истории «Секретного рецепта», номера талант-шоу, благодарности, при необходимости — записи АПОЖ. Одобрить, отклонить, скрыть опубликованное. Фильтры по статусу и дате.'],
+      ['Пользователи', 'Поиск, карточка: профиль, выполнения, журнал начислений. Ручная корректировка баллов (с комментарием), блокировка.'],
+      ['Счастливые часы', 'Расписание: активность, окно, множитель.'],
+      ['Сюрпризы', 'Свечка: окно, N первых, бонус; журнал нашедших.'],
+      ['ИИ-история', 'Главы: текст, картинка, варианты, окно голосования; итоги голосования; подозреваемые для «Кто виновник?».'],
+      ['Эфир', 'Код плеера и токен, дата и время, кодовое слово и окно «прямого эфира».'],
+      ['Справочники', 'Домены почты, регионы, компании, номинации, волонтёрские проекты, песни.'],
+      ['Выгрузки (CSV/XLSX)', 'Участники; журнал начислений; рейтинг; собравшие 33; записавшиеся в волонтёры и приглашённые; согласия на показ на МТС ТВ; материалы UGC.'],
+    ])}` },
+
+  { id: 'nfr', title: 'Нефункциональные требования', html: () => ul([
+    '<b>Нагрузка:</b> до 20 000 уникальных участников за кампанию (по тендеру). Пики — старт, эфир, счастливые часы, свечка.',
+    '<b>Устройства:</b> ПК и мобильные браузеры, адаптив; минимальная ширина — 360 px (рабочий вариант).',
+    '<b>Медиа:</b> фото — ресайз и превью на сервере; видео — отдельный обработчик: перекодирование и превью-кадр; аудио — сжатие на клиенте перед отправкой, реверс на бэке. Лимиты размеров и длительности — определить.',
+    '<b>Ленты и галереи:</b> не грузим всё сразу — пачками или с пагинацией, старые элементы выгружаем. Иначе на 100–200 материалах начнёт тормозить.',
+    '<b>Конкурентность:</b> «первые N» у свечки — атомарный счётчик; начисления идемпотентны.',
+    '<b>ИБ:</b> соответствие требованиям ИБ МТС (документ запрашиваем у клиента). HTTPS, хранение персональных данных по требованиям клиента.',
+    '<b>Инфраструктура:</b> новый домен (варианты — на согласование клиенту), хостинг и сервер — решить на старте. Если ИИ через зарубежную модель — нужен прокси-сервер; при ручной генерации глав не нужен.',
+    '<b>Время:</b> все даты и окна — по Москве.',
+  ]) },
+
+  { id: 'start', title: 'Старт проекта', html: () => `
+    <h3>Запросить у клиента</h3>${ul([
+      'Все актуальные Figma UI-киты, гайды и ссылки разом, с доступами. Уточнить, ориентируемся только на них или есть что-то ещё.',
+      'KV: финальный или вариант из презентации.',
+      'Полный список доменов корпоративной почты; справочники регионов и компаний.',
+      'Провайдер плеера и продовый токен.',
+      'Список волонтёрских проектов и фондов.',
+      'Контент: вопросы и факты для квиза, ролики разминок (или решение, что снимаем мы), номинации талант-шоу.',
+      'Призы и правила розыгрышей; текст правил участия.',
+      'Требования ИБ.',
+    ])}
+    <h3>Сделать или решить сразу</h3>${ul([
+      'Доска задач в YouGile; всё складываем туда, чат — по минимуму.',
+      'Варианты домена → на согласование клиенту.',
+      'Хостинг и сервер; нужен ли прокси для ИИ.',
+      'Подтверждение почты кодом: да или нет.',
+      'Итоговая таблица 33 удовольствий и баллов.',
+      'Финальное состояние платформы после окончания.',
+    ])}` },
+
+  { id: 'questions', title: 'Открытые вопросы', html: () => {
+    const li = q => `<li>${esc(q.text)} ${q.ref ? `<a data-tz="${q.ref}">→ раздел</a>` : ''}</li>`;
+    const pend = ACTS.filter(a => a.status !== 'ok');
+    return `<h3>К клиенту</h3><ol class="qlist">${QUESTIONS.filter(q => q.to === 'client').map(li).join('')}</ol>
+      <h3>Внутри команды</h3><ol class="qlist">${QUESTIONS.filter(q => q.to === 'team').map(li).join('')}</ol>
+      <h3>Активности с незакрытыми вопросами</h3>${tbl(['Активность', 'Статус', 'Что открыто'], pend.map(a => [tzA(a.id), sb(a.status), esc((a.notes || [])[0] || '')]))}`; } },
+
+  { id: 'changelog', title: 'История изменений', html: () => tbl(['Версия', 'Дата', 'Что изменилось'], CHANGELOG.map(c => [c.v, c.date, ul(c.items.map(esc))])) },
+];
+
+/* ---------- рендер ТЗ ---------- */
+function renderTZ() {
+  const doc = document.getElementById('tzdoc');
+  doc.innerHTML = `<div class="tzin"><h1>ТЗ: ${esc(PROJECT.doc)}</h1>${TZ.map((s, i) => `<section id="${s.id}"><h2><span class="n">${i + 1}</span>${esc(s.title)}</h2>${s.html()}</section>`).join('')}</div>`;
+  const nav = document.getElementById('tznav');
+  nav.innerHTML = `<input class="search" id="tzsearch" placeholder="Поиск по разделам">` + TZ.map((s, i) => {
+    const link = `<a data-tz="${s.id}" data-sec="${s.id}"><span class="n">${i + 1}</span>${esc(s.title)}</a>`;
+    if (!s.kids) return link;
+    return `<details data-det="${s.id}"><summary>${link}</summary><div class="kids">${s.kids().map(k => `<a data-tz="${k.id}" data-sec="${k.id}">${esc(k.t)}</a>`).join('')}</div></details>`;
+  }).join('');
+  document.getElementById('tzsearch').addEventListener('input', e => {
+    const q = e.target.value.trim().toLowerCase();
+    nav.querySelectorAll('a[data-tz]').forEach(a => { a.style.display = !q || a.textContent.toLowerCase().includes(q) ? '' : 'none'; });
+    nav.querySelectorAll('details').forEach(d => { d.open = !!q; });
+  });
+}
+function tzGo(id) {
+  const el = document.getElementById(id); if (!el) return;
+  const det = document.querySelector(`#tznav details[data-det="${id.split('-')[0] === 'act' ? 'acts' : id.startsWith('mech-') ? 'mech' : id.startsWith('scr-') ? 'screens' : ''}"]`);
+  if (det) det.open = true;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setHash('tz/' + id);
+}
+function tzSpy() {
+  const doc = document.getElementById('tzdoc'); const top = doc.getBoundingClientRect().top + 90;
+  let cur = null;
+  document.querySelectorAll('#tzdoc section, #tzdoc .tzcard').forEach(el => { if (el.getBoundingClientRect().top <= top) cur = el.id; });
+  document.querySelectorAll('#tznav a').forEach(a => a.classList.toggle('on', a.dataset.sec === cur));
+}
+
+/* =====================================================================
+   ОБВЯЗКА: вкладки, демо-панель, ссылки ТЗ ↔ прототип, адрес в URL
+   ===================================================================== */
+function setHash(h) { try { history.replaceState(null, '', '#' + h); } catch (e) { } }
+function showTab(t) {
+  document.getElementById('tab-proto').hidden = t !== 'proto';
+  document.getElementById('tab-tz').hidden = t !== 'tz';
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  if (t === 'tz') { setHash('tz'); tzSpy(); } else setHash('proto/' + S.route);
+}
+function tzAnchor() {
+  const [b, p] = S.route.split('/');
+  if (b === 'act') return 'act-' + p;
+  if (b === 'block') return 'scr-block';
+  if (b === 'home' && ended() && S.auth) return 'scr-final';
+  if (!S.auth && !PUBLIC.includes(b)) return 'scr-login';
+  return document.getElementById('scr-' + b) ? 'scr-' + b : 'screens';
+}
+function openInProto(route) {
+  if (route === 'final') { S.date = '2026-11-12'; S.auth = true; route = 'home'; }
+  const [b, p] = route.split('/');
+  if (['landing', 'register', 'login', 'recover'].includes(b)) S.auth = false;
+  else if (!PUBLIC.includes(b) && !S.auth) { S.auth = true; if (!isComplete(A.reg)) S.done.reg = 1; }
+  if (b === 'act' && A[p]) {
+    const a = A[p];
+    const fits = d => d >= a.from && (!a.to || d <= a.to) && d <= PROJECT.end;
+    if (!fits(S.date)) S.date = (DEMO_DATES.find(d => fits(d.v)) || { v: a.from }).v;
+  }
+  if (b === 'stream' && S.date < PROJECT.stream && route === 'stream') { /* показываем как есть: отсчёт до эфира */ }
+  showTab('proto'); go(route);
+}
+function syncDemo() {
+  const sel = document.getElementById('d_date');
+  const opts = DEMO_DATES.map(d => `<option value="${d.v}">${d.l}</option>`);
+  if (!DEMO_DATES.some(d => d.v === S.date)) opts.push(`<option value="${S.date}">${dm(S.date)} — из ТЗ</option>`);
+  sel.innerHTML = opts.join(''); sel.value = S.date;
+  document.querySelectorAll('#d_auth button').forEach(b => b.classList.toggle('on', (b.dataset.v === '1') === S.auth));
+  document.querySelectorAll('#d_view button').forEach(b => b.classList.toggle('on', b.dataset.v === S.view));
+  document.getElementById('d_hh').classList.toggle('on', S.hh);
+  document.getElementById('d_candle').classList.toggle('on', S.candle && !S.candleFound);
+}
+function buildScreenSelect() {
+  const base = [['landing', 'Лендинг (гость)'], ['register', 'Регистрация'], ['login', 'Вход'], ['recover', 'Восстановление пароля'], ['home', 'Главная'], ['progress', 'Мой прогресс'], ['rating', 'Рейтинг'], ['prizes', 'Призы'], ['stream', 'Эфир'], ['rules', 'Правила'], ['faq', 'FAQ'], ['profile', 'Профиль'], ['final', 'Финальное состояние']];
+  let h = `<option value="">— перейти к экрану —</option><optgroup label="Экраны">${base.map(([r, t]) => `<option value="${r}">${t}</option>`).join('')}</optgroup>`;
+  BLOCKS.forEach(b => {
+    const acts = ACTS.filter(a => a.block === b.id && !['system', 'visit'].includes(a.type)); if (!acts.length) return;
+    h += `<optgroup label="${esc(b.name)}"><option value="block/${b.id}">Страница блока</option>${acts.map(a => `<option value="act/${a.id}">${esc(shortT(a))}</option>`).join('')}</optgroup>`;
+  });
+  document.getElementById('d_screen').innerHTML = h;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  buildScreenSelect(); renderTZ();
+  // вкладки
+  document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+  // демо-панель
+  document.getElementById('d_date').addEventListener('change', e => setDate(e.target.value));
+  document.getElementById('d_auth').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.v === '1') { if (!S.auth) { S.auth = true; if (!isComplete(A.reg)) award('reg', 0); checkVisit(); go('home'); } }
+    else { S.auth = false; go('landing'); }
+  });
+  document.getElementById('d_view').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S.view = b.dataset.v; render(); });
+  document.getElementById('d_hh').addEventListener('click', () => {
+    if (!S.auth) { toast('Счастливый час виден участникам — переключись на «Участник»'); return; }
+    S.hh = !S.hh; render(); if (S.hh && !activeBooster()) toast('Сейчас нет доступной активности для бустера — смени дату');
+  });
+  document.getElementById('d_candle').addEventListener('click', () => {
+    if (S.candleFound) { toast('Свечка уже найдена. «Сбросить» — чтобы спрятать снова'); return; }
+    if (!S.auth) { S.auth = true; if (!isComplete(A.reg)) S.done.reg = 1; S.route = 'home'; }
+    S.candle = !S.candle; S.candlePos = null; render(); if (S.candle) toast('Свечка спрятана где-то на странице');
+  });
+  document.getElementById('d_fill').addEventListener('click', demoFill);
+  document.getElementById('d_reset').addEventListener('click', () => { resetProgress(); S.hh = false; S.candle = false; if (S.auth) S.done.reg = 1; toast('Прогресс сброшен'); render(); });
+  document.getElementById('d_screen').addEventListener('change', e => { if (e.target.value) openInProto(e.target.value); e.target.value = ''; });
+  // клики внутри прототипа
+  const handler = e => {
+    const act = e.target.closest('[data-act]');
+    if (act && ACTIONS[act.dataset.act]) { if (act.disabled) return; e.preventDefault(); ACTIONS[act.dataset.act](act); return; }
+    const g = e.target.closest('[data-go]');
+    if (g) { if (g.disabled) return; e.preventDefault(); go(g.dataset.go); }
+  };
+  document.getElementById('frame').addEventListener('click', handler);
+  document.getElementById('overlay').addEventListener('click', e => { if (e.target.id === 'overlay') closeModal(); });
+  document.getElementById('tzbtn').addEventListener('click', () => { showTab('tz'); setTimeout(() => tzGo(tzAnchor()), 30); });
+  // ТЗ: ссылки
+  document.getElementById('tab-tz').addEventListener('click', e => {
+    const o = e.target.closest('[data-open]'); if (o) { e.preventDefault(); openInProto(o.dataset.open); return; }
+    const t = e.target.closest('[data-tz]'); if (t) { e.preventDefault(); tzGo(t.dataset.tz); if (window.innerWidth <= 860) document.getElementById('tznav').classList.remove('on'); }
+  });
+  document.getElementById('tzdoc').addEventListener('scroll', () => { clearTimeout(window.__spy); window.__spy = setTimeout(tzSpy, 60); });
+  document.getElementById('navtoggle').addEventListener('click', () => document.getElementById('tznav').classList.toggle('on'));
+  // старт по адресу
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h.startsWith('tz')) { render(); showTab('tz'); const id = h.split('/')[1]; if (id) setTimeout(() => tzGo(id), 50); }
+  else if (h.startsWith('proto/')) { openInProto(h.slice(6)); }
+  else { render(); showTab('proto'); }
+});
+
+</script>
+</body>
+</html>
