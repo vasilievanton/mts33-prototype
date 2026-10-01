@@ -480,7 +480,7 @@ h1,h2,h3{line-height:1.15;margin:0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.7',
+  version: '0.8',
   updated: '01.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
@@ -771,7 +771,7 @@ const SCREENS = [
   { id: 'register', route: 'register', title: 'Регистрация',
     purpose: 'Создание аккаунта по корпоративной почте.',
     elements: ['Поля — см. раздел «Регистрация и профиль».', 'Согласия: правила, обработка персональных данных.', 'Ссылка «Уже есть аккаунт? Войти».'],
-    states: ['Ошибки: домен почты не из списка, почта уже зарегистрирована, пароли не совпадают, пустые обязательные поля.', 'Успех → главная + начисление за регистрацию. Если включим подтверждение почты кодом — промежуточный шаг ввода кода.'] },
+    states: ['Ошибки: домен почты не из списка, почта уже зарегистрирована, пароли не совпадают, пустые обязательные поля.', 'Успех → шаг «Подтверди почту»: на почту приходит код, участник вводит его. Есть «Отправить код ещё раз». Неверный код — ошибка «Код не подошёл».', 'Код подтверждён → главная + начисление за регистрацию.'] },
   { id: 'login', route: 'login', title: 'Вход',
     purpose: 'Вход по почте и паролю.',
     elements: ['Почта, пароль, «Забыли пароль?», «Зарегистрироваться».'],
@@ -841,7 +841,7 @@ const QUESTIONS = [
   { to: 'client', text: 'Разминки «Сиять»: контент снимает клиент или мы; тренер; участие топ-менеджмента.', ref: 'act-shine1' },
   { to: 'client', text: 'Контент квиза (вопросы, факты, эксплейнеры) — от клиента или готовим мы.', ref: 'act-quiz1' },
   { to: 'client', text: 'KV: финальный или ориентируемся на вариант из презентации.', ref: 'summary' },
-  { to: 'team', text: 'Подтверждение почты кодом при регистрации: да или нет (давний спор: надёжность против лишнего шага).', ref: 'auth' },
+  { to: 'team', text: 'Код подтверждения почты: сколько действует, через сколько можно запросить повторно, сколько попыток ввода.', ref: 'auth' },
   { to: 'team', text: 'Модерация материалов: публикуем после проверки (рабочий вариант) или сразу, с возможностью снять.', ref: 'play' },
   { to: 'team', text: 'Отклонённый материал: показываем ли участнику причину отклонения.', ref: 'scr-profile' },
   { to: 'team', text: 'Отклонённый материал: можно ли исправить и отправить его же или только отправить новый.', ref: 'scr-profile' },
@@ -858,6 +858,7 @@ const QUESTIONS = [
 ];
 
 const CHANGELOG = [
+  { v: '0.8', date: '01.10.2026', items: ['Регистрация: подтверждение почты кодом из письма — решено. В прототипе после формы — шаг ввода кода (неверный код, «Отправить код ещё раз»).'] },
   { v: '0.7', date: '01.10.2026', items: ['Восстановление пароля: без ссылок и кодов — участник вводит почту, мы отправляем новый пароль на почту. Сменить его можно в профиле.'] },
   { v: '0.6', date: '01.10.2026', items: [
     'ТЗ переписано вокруг пути участника и сокращено: убраны модель данных, серверная логика, админ-панель, нефункциональные требования и стартовый чек-лист. Новые разделы — «Путь участника» и «Правила игры».',
@@ -914,7 +915,7 @@ const S = {
   route: 'landing', menu: false,
   done: {}, apts: {}, sub: {}, quiz: {}, audio: {}, vid: {}, game: {}, likes: new Set(), votes: {}, guess: null,
   vol: null, code: null, visitWeeks: new Set(), ui: { nom: 'all', batch: 0 },
-  regErr: false, loginErr: false, recovered: false,
+  regErr: false, loginErr: false, recovered: false, regStep: null, codeErr: false,
 };
 function resetProgress() {
   Object.assign(S, { done: {}, apts: {}, sub: {}, quiz: {}, audio: {}, vid: {}, game: {}, likes: new Set(), votes: {}, guess: null, vol: null, code: null, candleFound: false, visitWeeks: new Set(), ui: { nom: 'all', batch: 0 } });
@@ -1471,7 +1472,15 @@ function vRegister() {
     <label class="check"><input type="checkbox"> Принимаю правила участия</label><label class="check"><input type="checkbox"> Согласен на обработку персональных данных</label>
     <button class="btn red" style="width:100%;margin-top:6px" data-act="register">Зарегистрироваться</button>
     <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">${demoBtn('regErr', e ? 'скрыть ошибки' : 'показать ошибки')}</div>
-    <div class="note warn">Подтверждение почты кодом — решаем. Если включим, после этой формы будет шаг ввода кода из письма.</div></div></div>`;
+  </div></div>`;
+}
+function vRegCode() {
+  const e = S.codeErr;
+  return `<div class="wrap"><div class="authbox">${skipBtn()}<h1>Подтверди почту</h1><p class="muted">Мы отправили код на <b>name@mts.ru</b>. Введи его, чтобы завершить регистрацию.</p>
+    <div class="field ${e ? 'bad' : ''}"><label>Код из письма</label><input inputmode="numeric" placeholder="Код">${e ? '<span class="err">Код не подошёл. Проверь письмо или запроси новый код</span>' : '<span class="hint">Письмо не пришло — проверь папку «Спам»</span>'}</div>
+    <button class="btn red" style="width:100%" data-act="regConfirm">Подтвердить</button>
+    <p class="small"><span class="link" data-act="toast" data-v="Новый код отправлен на почту">Отправить код ещё раз</span> · <span class="link" data-act="regBack">Изменить почту</span></p>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">${demoBtn('codeErr', e ? 'скрыть ошибку' : 'показать ошибку')}</div></div></div>`;
 }
 function vLogin(msg) {
   return `<div class="wrap"><div class="authbox">${msg ? `<div class="note warn" style="margin:0 0 12px">${msg}</div>` : ''}${skipBtn()}<h1>Вход</h1><p class="muted small">Нет аккаунта? <span class="link" data-go="register">Регистрация</span></p>
@@ -1492,7 +1501,7 @@ function routeView() {
   if (!S.auth && !PUBLIC.includes(base)) return vLogin('Эта страница доступна после входа.');
   switch (base) {
     case 'landing': return vLanding();
-    case 'register': return vRegister();
+    case 'register': return S.regStep === 'code' ? vRegCode() : vRegister();
     case 'login': return vLogin();
     case 'recover': return vRecover();
     case 'home': return vHome();
@@ -1620,7 +1629,10 @@ const ACTIONS = {
   regErr() { S.regErr = !S.regErr; render(); },
   loginErr() { S.loginErr = !S.loginErr; render(); },
   skipReg() { S.auth = true; S.regErr = false; S.loginErr = false; if (!isComplete(A.reg)) award('reg', 0); checkVisit(); go(PUBLIC.includes(S.route.split('/')[0]) ? 'home' : S.route); },
-  register() { S.auth = true; S.regErr = false; if (!isComplete(A.reg)) award('reg', 0); checkVisit(); go('home'); },
+  register() { S.regErr = false; S.regStep = 'code'; S.codeErr = false; render(); },
+  regBack() { S.regStep = null; render(); },
+  codeErr() { S.codeErr = !S.codeErr; render(); },
+  regConfirm() { S.auth = true; S.regStep = null; S.codeErr = false; if (!isComplete(A.reg)) award('reg', 0); checkVisit(); go('home'); },
   login() { S.auth = true; S.loginErr = false; checkVisit(); go('home'); },
   recover() { S.recovered = true; render(); },
   logout() { S.auth = false; go('landing'); },
@@ -1771,7 +1783,7 @@ const TZ = [
   { id: 'journey', title: 'Путь участника', html: () => {
     const steps = [
       ['Узнаёт о празднике', 'Переходит по ссылке из внутренних коммуникаций МТС на лендинг: суть праздника, торт, этапы, шесть блоков, эфир, призы.', 'landing'],
-      ['Регистрируется', 'По корпоративной почте МТС или дочерней компании. Сразу получает первое удовольствие — «Регистрация».', 'register'],
+      ['Регистрируется', 'По корпоративной почте МТС или дочерней компании и подтверждает её кодом из письма. Сразу получает первое удовольствие — «Регистрация».', 'register'],
       ['Попадает на главную', 'Видит этап праздника, свой прогресс «N из 33», баллы и место, торт, шесть блоков, доступные задания и мини-рейтинг.', 'home'],
       ['Выполняет задания', 'Рассказывает историю, загружает номер, проходит квиз, делает разминку, играет, голосует в истории. Удовольствия и баллы — сразу; за истории, номера и благодарности — после проверки организаторами.', 'act/recipe'],
       ['Следит за своими материалами', 'В профиле — «Мои материалы»: на модерации, опубликовано или отклонено. Писем и пушей нет — всё видно на платформе.', 'profile'],
@@ -1837,7 +1849,7 @@ const TZ = [
     ])}
     ${ul([
       'Почта — только корпоративная: МТС и дочерние компании.',
-      'Подтверждение почты кодом — решается (надёжность против лишнего шага).',
+      'После формы — подтверждение почты: участник вводит код из письма. Без кода регистрация не завершается.',
       'Забыли пароль — присылаем новый пароль на почту, без ссылок и кодов. Сменить его на свой — в профиле.',
       'После регистрации — первое удовольствие «Регистрация» (если согласуют формулировку) и бонус недели.',
       'В профиле — данные участника и «Мои материалы».',
@@ -1861,7 +1873,7 @@ const TZ = [
   { id: 'notify', title: 'Где участник видит результат', html: () => ul([
     '<b>Уведомлений нет:</b> ни писем, ни пушей о проверке материалов, начислениях и новых заданиях.',
     '<b>Всё видно на платформе:</b> подсказка о начислении сразу после действия; статусы на карточках заданий; «Мои материалы» в профиле — на модерации, опубликовано, отклонено; баннеры счастливого часа и эфира на главной.',
-    '<b>Письма — только служебные:</b> новый пароль при восстановлении, код подтверждения почты (если включим), приглашение коллеги в волонтёрский проект.',
+    '<b>Письма — только служебные:</b> код подтверждения почты при регистрации, новый пароль при восстановлении, приглашение коллеги в волонтёрский проект.',
   ]) },
 
   { id: 'questions', title: 'Открытые вопросы', html: () => {
