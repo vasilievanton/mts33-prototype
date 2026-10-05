@@ -502,6 +502,27 @@ h1,h2,h3{line-height:1.15;margin:0}
 .ast.now{background:var(--ink);color:#fff}
 .ast.next{background:var(--ph);color:var(--muted)}
 .tbl tr.key td{background:#fff7f9}
+.actf{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:10px 0}
+.amx{min-width:980px;font-size:12.5px}
+.amx td{width:21%}
+.amx td.an{width:16%;background:#fafafb}
+.amx td.an a{text-decoration:none}
+.amx td.an a:hover b{text-decoration:underline}
+.amx td.an small{display:block;color:var(--muted)}
+.amx .op{display:block;margin-top:4px;font-size:12px}
+.amx .gp{display:inline-block;margin-top:4px;font-size:11px;font-weight:600;color:#fff;background:var(--red);border-radius:5px;padding:1px 6px}
+.amx .okk{display:inline-block;margin-top:4px;font-size:11px;font-weight:600;color:var(--ok);background:var(--ok-soft);border-radius:5px;padding:1px 6px}
+.amx .ns{display:inline-block;font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;margin-bottom:3px;white-space:nowrap}
+.amx .nt{line-height:1.35}
+.amx .nc small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.amx .nc.need .ns{background:#ececf1;color:var(--ink2)}
+.amx .nc.work .ns{background:var(--ink);color:#fff}
+.amx .nc.done .ns{background:var(--ok-soft);color:var(--ok)}
+.amx .nc.wait{background:#fff4f6}
+.amx .nc.wait .ns{background:var(--red);color:#fff}
+.amx .nc.over .ns{outline:2px solid var(--red)}
+.amx .nc.none{color:var(--muted);background:repeating-linear-gradient(45deg,#fff 0 6px,#f7f7f9 6px 12px)}
+.amx .nc.none .ns{background:transparent;padding-left:0;font-weight:600}
 @media (max-width:860px){
   .plans{grid-template-columns:1fr}
   .tl .r{grid-template-columns:150px 1fr}
@@ -578,7 +599,7 @@ h1,h2,h3{line-height:1.15;margin:0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.14',
+  version: '0.15',
   updated: '05.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
@@ -996,13 +1017,29 @@ const TIMING = {
         { id: 'proto', t: 'Прототип и ТЗ', who: 'team', from: '2026-09-30', to: '2026-10-07', note: 'Финальная версия — 07.10: структура, задания и правила начисления.' },
         { id: 'frame', t: 'Вёрстка каркаса: регистрация, вход, главная, турнирная таблица, профиль, правила', who: 'team', from: '2026-10-01', to: '2026-10-09' },
         { id: 'domains', t: 'Покупка доменов', who: 'team', from: '2026-10-07', to: '2026-10-08', note: 'Домен платформы — на нём же проходит проверка безопасности.' },
-        { id: 'mail', t: 'Создание и подключение почты', who: 'team', from: '2026-10-08', to: '2026-10-12', note: 'Адрес, с которого уходят письма участникам, и почта для вопросов.' },
-        { id: 'mailer', t: 'Сервис рассылки писем', who: 'team', from: '2026-10-08', to: '2026-10-13', note: 'Письма с кодом подтверждения почты и новым паролем.' },
       ],
       asks: [
         { row: 'frame', date: '2026-10-07', what: 'Полный список доменов корпоративной почты МТС и дочерних компаний', why: 'по нему проверяем почту при регистрации', late: 'на запуске зарегистрируются не все компании' },
         { row: 'frame', date: '2026-10-07', what: 'Справочники для регистрации: регионы и компании', why: 'поля анкеты при регистрации', late: 'на запуске — ввод вручную вместо выбора из списка' },
-        { row: 'mail', date: '2026-10-12', what: 'Кто отвечает на вопросы участников, которые приходят на почту', why: 'указываем почту на странице «Правила акции» и в подвале', late: 'на старте отвечаем только мы' },
+      ] },
+    { id: 'mail', title: 'Письма участникам',
+      desc: 'Только служебные письма — рассылок и уведомлений нет: код подтверждения при регистрации, новый пароль, приглашение коллеги в «Угостить добром». Письма с кодом должны работать уже на проверке безопасности 14.10 — сначала в простом шаблоне, потом в дизайне.',
+      rows: [
+        { id: 'mailbox', t: 'Почтовые ящики: отправитель и почта для вопросов', who: 'team', from: '2026-10-08', to: '2026-10-09', note: 'Ящики на домене платформы: с какого адреса уходят письма и куда участники пишут вопросы.' },
+        { id: 'mailDns', t: 'Настройка отправки с домена, чтобы письма не попадали в спам', who: 'team', from: '2026-10-08', to: '2026-10-12', note: 'Подпись домена отправителя (SPF, DKIM, DMARC).' },
+        { id: 'mailer', t: 'Сервис отправки писем', who: 'team', from: '2026-10-08', to: '2026-10-13', note: 'Отправка, повторная отправка кода, лимиты. До готового дизайна — письма в простом шаблоне.' },
+        { id: 'mailText', t: 'Тексты писем', who: 'team', from: '2026-10-08', to: '2026-10-09', note: 'Код подтверждения, новый пароль, приглашение коллеги. По редполитике МТС.' },
+        { id: 'mailTextOk', t: 'Согласование текстов писем', who: 'check', from: '2026-10-12', to: '2026-10-13' },
+        { id: 'mailDesign', t: 'Дизайн письма', who: 'team', from: '2026-10-12', to: '2026-10-14', note: 'Один шаблон на все письма — в стиле KV и экранов платформы.' },
+        { id: 'mailDesignOk', t: 'Согласование дизайна письма', who: 'check', from: '2026-10-15', to: '2026-10-16', note: 'Вместе с драфтами дизайна экранов.' },
+        { id: 'mailHtml', t: 'Вёрстка HTML-шаблона письма', who: 'team', from: '2026-10-16', to: '2026-10-19', note: 'Адаптив под телефон, проверка в почтовых программах: Outlook, веб-почта, телефон.' },
+        { id: 'mailTest', t: 'Проверка доставки в корпоративную почту МТС', who: 'team', from: '2026-10-13', to: '2026-10-20', note: 'Тестовые письма на адреса МТС и дочерних компаний: доходят ли, не в спаме ли. Сначала простой шаблон, потом свёрстанный.' },
+      ],
+      asks: [
+        { row: 'mailbox', date: '2026-10-12', what: 'Кто отвечает на вопросы участников, которые приходят на почту', why: 'указываем почту на странице «Правила акции» и в подвале', late: 'на старте отвечаем только мы' },
+        { row: 'mailTextOk', date: '2026-10-13', what: 'Согласованные тексты писем', why: 'письма с кодом нужны уже на проверке безопасности', late: 'на проверку уходят письма с рабочими текстами' },
+        { row: 'mailTest', date: '2026-10-14', what: 'Тестовые адреса в МТС и дочерних компаниях и, если нужно, адрес отправителя в белом списке корпоративной почты', why: 'иначе письмо с кодом может не дойти или попасть в спам — сотрудник не зарегистрируется', late: 'часть сотрудников не получит код при регистрации' },
+        { row: 'mailDesignOk', date: '2026-10-16', what: 'Согласованный дизайн письма', why: 'после согласования — вёрстка HTML-шаблона', late: 'на старте письма уходят в простом шаблоне' },
       ] },
     { id: 'kv', title: 'Ключевой визуал и дизайн',
       desc: 'Главная зависимость. Пока нет драфта KV, мы не можем рисовать экраны: от него зависят вид прогресса, главная, лендинг и герой игры. На дизайн экранов закладываем неделю от драфта KV.',
@@ -1021,7 +1058,7 @@ const TIMING = {
     { id: 'sec', title: 'Проверка безопасности',
       desc: 'Основной функционал платформы на рабочем домене отдаём специалистам МТС по безопасности минимум за три рабочих дня до старта — лучше раньше. Планируем отдать 14.10, крайний срок — 15.10.',
       rows: [
-        { id: 'handover', t: 'Отдаём основной функционал на рабочем домене', who: 'team', from: '2026-10-14', to: '2026-10-14', note: 'Регистрация, вход, главная, турнирная таблица, профиль, письма. Крайний срок — 15.10: минимум три рабочих дня проверки до старта.' },
+        { id: 'handover', t: 'Отдаём основной функционал на рабочем домене', who: 'team', from: '2026-10-14', to: '2026-10-14', note: 'Регистрация, вход, главная, турнирная таблица, профиль, письма с кодом и новым паролем. Крайний срок — 15.10: минимум три рабочих дня проверки до старта.' },
         { id: 'check', t: 'Проверка безопасности', who: 'check', from: '2026-10-15', to: '2026-10-20', note: 'Четыре рабочих дня: 15, 16, 19 и 20.10. Минимум — три.' },
         { id: 'fix', t: 'Исправляем замечания', who: 'team', from: '2026-10-16', to: '2026-10-20' },
       ],
@@ -1103,9 +1140,80 @@ const TIMING = {
       ],
       asks: [] },
   ],
+  /* Готовность по активностям (id из GROUPS). Даты открытия берутся из ACTS.
+     Для каждой — дизайн, контент, разработка, решение МТС:
+     st: none — не нужно; need — нужно сделать к дате due; wait — не хватает: ждём решения или не ясно, кто делает;
+         work — в работе; done — готово. who: team — мы, client — МТС. */
+  acts: {
+    recipe: {
+      design:  { st: 'need', who: 'team', due: '2026-10-14', t: 'Форма истории и лента' },
+      content: { st: 'need', who: 'team', due: '2026-10-15', t: 'Истории приносят участники. От нас — текст задания и 2–3 истории-примера, чтобы лента на старте не была пустой' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-19', t: 'Загрузка фото и текста, лента, проверка материалов' },
+      mts:     { st: 'none' } },
+    quiz: {
+      design:  { st: 'need', who: 'team', due: '2026-10-21', t: 'Экран вопроса и объяснения после ответа' },
+      content: { st: 'need', who: 'team', due: '2026-10-21', t: 'Вопросы, варианты и объяснения. Выпуск 1 — к 21.10, выпуск 2 — к 28.10. Пишем мы' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-27', t: 'Квиз с подсчётом баллов, два выпуска' },
+      mts:     { st: 'need', who: 'client', due: '2026-10-23', t: 'Проверить факты о МТС в вопросах. Выпуск 2 — к 30.10' } },
+    apozh: {
+      design:  { st: 'need', who: 'team', due: '2026-10-21', t: 'Плеер, запись голоса, выбор из 10 вариантов' },
+      content: { st: 'wait', who: 'team', due: '2026-10-21', t: 'Песня топ-менеджера для первого задания и стартовые песни коллег, к каждой — 10 вариантов ответа. Варианты подбираем мы; кто записывает песни — не решено' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-27', t: 'Запись голоса, переворот, две попытки, проверка записей' },
+      mts:     { st: 'wait', who: 'client', due: '2026-10-16', t: 'Кто из топ-менеджеров записывает песню, можно ли показать оригинал' } },
+    shine: {
+      design:  { st: 'need', who: 'team', due: '2026-10-14', t: 'Плеер с таймером — простой экран' },
+      content: { st: 'need', who: 'team', due: '2026-10-16', t: 'Пять роликов-разминок: 1–2 — к 16.10, 3–5 — к 23.10. Снимаем с амбассадорами спорта по нашему ТЗ' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-19', t: 'Просмотр с таймером, разминки по порядку' },
+      mts:     { st: 'wait', who: 'client', due: '2026-10-07', t: 'Контакты амбассадоров спорта и тренер' } },
+    run: {
+      design:  { st: 'need', who: 'team', due: '2026-10-14', t: 'Самый большой объём дизайна: герой, фоны, предметы. Версия 1 (тортики и подарки) — к 14.10, версия 2 (после праздника) — к 21.10' },
+      content: { st: 'none' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-19', t: 'Игра, две версии, рубежи и баллы. Версия 2 — к 27.10' },
+      mts:     { st: 'wait', who: 'client', due: '2026-10-09', t: 'Можно ли взять образ топ-менеджера для героя' } },
+    talent: {
+      design:  { st: 'need', who: 'team', due: '2026-10-14', t: 'Форма номера, галерея, лайки' },
+      content: { st: 'need', who: 'team', due: '2026-10-23', t: 'Номера приносят участники. Мастер-класс — ролик одного из талантов: договориться и снять к 23.10' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-19', t: 'Загрузка видео и фото, галерея, лайки, проверка' },
+      mts:     { st: 'wait', who: 'client', due: '2026-10-09', t: 'Лайки или голосование, список номинаций' } },
+    thanks: {
+      design:  { st: 'wait', who: 'team', due: '2026-10-21', t: 'Зависит от механики: доска или открытка' },
+      content: { st: 'none', t: 'Благодарности пишут участники' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-27', t: 'По выбранной механике' },
+      mts:     { st: 'wait', who: 'client', due: '2026-10-12', t: 'Какую механику делаем вместо доски — с учётом корпоративных «спасибо» и бейджей' } },
+    vol: {
+      design:  { st: 'need', who: 'team', due: '2026-10-14', t: 'Список акций и форма записи' },
+      content: { st: 'need', who: 'team', due: '2026-10-15', t: 'Описания акций — пишем мы по данным МТС' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-19', t: 'Запись, приглашение коллеги, подтверждение участия' },
+      mts:     { st: 'wait', who: 'client', due: '2026-10-09', t: 'Есть ли акции по всей России и как подтверждается участие' } },
+    ai: {
+      design:  { st: 'need', who: 'team', due: '2026-10-14', t: 'Экран главы с голосованием и «Кто виновник?»' },
+      content: { st: 'need', who: 'team', due: '2026-10-15', t: 'Сюжет и глава 1 — к 15.10. Главы 2–4 — по итогам голосований, раз в два дня' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-19', t: 'Голосование, главы с помощью ИИ' },
+      mts:     { st: 'wait', who: 'client', due: '2026-10-09', t: 'Одна идея из четырёх' } },
+    candle: {
+      design:  { st: 'need', who: 'team', due: '2026-10-14', t: 'Иконка свечки и окно находки' },
+      content: { st: 'none' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-23', t: 'Показ свечки, бонус первым нашедшим' },
+      mts:     { st: 'none' } },
+    surprise3: {
+      design:  { st: 'wait', who: 'team', due: '2026-10-28', t: 'Зависит от механики' },
+      content: { st: 'wait', who: 'team', due: '2026-10-28', t: 'Зависит от механики' },
+      dev:     { st: 'need', who: 'team', due: '2026-11-02', t: 'По выбранной механике' },
+      mts:     { st: 'wait', who: 'client', due: '2026-10-26', t: 'Согласовать механику — её предлагаем мы' } },
+    stream: {
+      design:  { st: 'need', who: 'team', due: '2026-10-21', t: 'Страница эфира и отсчёт до начала' },
+      content: { st: 'none', t: 'Эфир готовит провайдер трансляции' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-27', t: 'Встраиваем плеер, баллы за просмотр' },
+      mts:     { st: 'need', who: 'client', due: '2026-10-21', t: 'Код плеера и прямая ссылка для плана Б' } },
+  },
 };
 
 const CHANGELOG = [
+  { v: '0.15', date: '05.10.2026', items: [
+    'Тайминг: новый раздел «Готовность по активностям». По каждой активности — когда открывается и что для неё нужно: дизайн, контент, разработка, решение МТС, кто делает и к какой дате.',
+    'Новый этап «Письма участникам»: почтовые ящики, настройка отправки, чтобы письма не попадали в спам, тексты, дизайн письма, вёрстка HTML-шаблона, проверка доставки в корпоративную почту МТС и сроки согласований. Письма только служебные: код подтверждения, новый пароль, приглашение коллеги.',
+    'Сразу видно, где чего не хватает: например, для квиза нужны вопросы и проверка фактов, для игры — только дизайн и разработка, для АПОЖ не решено, кто записывает песни. Можно показать только активности, где чего-то не хватает.',
+  ] },
   { v: '0.14', date: '05.10.2026', items: [
     'Тайминг: переключатель «План А / План Б». Подробно расписан план А; в плане Б — условия, при которых он включается.',
     'Сроки МТС стоят ромбом на строке того, что именно согласуем: драфт KV — 07.10, драфты дизайна — 16.10, правила, тексты волн. При наведении на полосу или ромб — даты и комментарий. День запуска и день эфира выделены через всю диаграмму.',
@@ -2293,6 +2401,37 @@ function askRows(asks, today, withStage) {
   }).join('')}</div>`;
 }
 
+const NEED_COLS = [['design', 'Дизайн'], ['content', 'Контент'], ['dev', 'Разработка'], ['mts', 'Решение МТС']];
+const NEED_ST = { none: 'не нужно', need: 'нужно', wait: 'не хватает', work: 'в работе', done: 'готово' };
+let ACT_GAPS = false;
+function actsMatrix(today) {
+  const list = GROUPS.filter(g => TIMING.acts[g.id]).map(g => {
+    const n = TIMING.acts[g.id], acts = g.acts.map(id => A[id]);
+    const opens = [...new Set(acts.map(a => a.from))].sort();
+    const gaps = NEED_COLS.filter(([k]) => n[k].st === 'wait');
+    const late = NEED_COLS.filter(([k]) => n[k].due && n[k].st !== 'done' && n[k].due > opens[opens.length - 1]);
+    return { g, n, acts, opens, gaps, late };
+  });
+  const shown = ACT_GAPS ? list.filter(x => x.gaps.length) : list;
+  const cell = c => {
+    if (c.st === 'none') return `<td class="nc none"><span class="ns">${esc(NEED_ST.none)}</span>${c.t ? `<div class="nt">${esc(c.t)}</div>` : ''}</td>`;
+    const over = c.due && c.due < today && c.st !== 'done';
+    return `<td class="nc ${c.st}${over ? ' over' : ''}"><span class="ns">${NEED_ST[c.st]}${c.due ? ' · к ' + dm(c.due) : ''}</span><div class="nt">${esc(c.t)}</div><small>${c.who === 'client' ? 'МТС' : 'мы'}</small></td>`;
+  };
+  const rows = shown.map(({ g, n, opens, gaps, late }) => `<tr class="${gaps.length ? 'gap' : ''}">
+    <td class="an"><a data-tz="act-${g.acts[0]}" title="Открыть в ТЗ"><b>${esc(g.title)}</b></a><small>${esc(B[g.block].name)}</small>
+      <span class="op">открывается ${opens.map(dm).join(', ')}</span>
+      ${gaps.length ? `<span class="gp">не хватает: ${gaps.map(([, l]) => l.toLowerCase()).join(', ')}</span>` : '<span class="okk">всё понятно</span>'}
+      ${late.length ? `<span class="gp">позже открытия: ${late.map(([, l]) => l.toLowerCase()).join(', ')}</span>` : ''}</td>
+    ${NEED_COLS.map(([k]) => cell(n[k])).join('')}</tr>`).join('');
+  const nGap = list.filter(x => x.gaps.length).length;
+  return `<p>Что нужно каждой активности, чтобы открыться вовремя: где-то нужен контент (вопросы квиза, ролики разминок), где-то — только дизайн и разработка. Красным — то, чего пока не хватает: ждём решения МТС или не ясно, кто делает. Даты — к какому дню должно быть готово.</p>
+    <div class="actf"><span class="small muted">Активностей: ${list.length}, с пробелами — <b style="color:var(--red-ink)">${nGap}</b></span>
+      <div class="seg2"><button data-actf="all" class="${ACT_GAPS ? '' : 'on'}">Все</button><button data-actf="gaps" class="${ACT_GAPS ? 'on' : ''}">Где не хватает</button></div></div>
+    <div class="tblwrap"><table class="tbl amx"><thead><tr><th>Активность</th>${NEED_COLS.map(([, l]) => `<th>${l}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="small muted">Общие сроки для всех активностей: дизайн экранов согласует МТС до 16.10, тексты заданий — до 19.10 (волна 1), 23.10 (волна 2) и 30.10 (волна 3). Нажмите на название — откроется описание активности в ТЗ.</p>`;
+}
+
 let PLAN = 'a';
 function renderTiming() {
   const today = todayIso(), T = TIMING;
@@ -2355,6 +2494,8 @@ function renderTiming() {
     <div class="plgnd">${Object.entries(WHO).map(([k, v]) => `<span><i class="who ${k}"></i>${v}</span>`).join('')}<span><i class="dm"></i>Срок, к которому нужно от МТС</span><span><i class="dm key"></i>★ Ключевой срок: не успели — план Б</span><span><i class="hlk"></i>Запуск и эфир</span></div>
     ${planTimeline(today)}
     <p class="small muted">Наведите на полосу или ромб — появятся даты и комментарий. Ромб стоит на строке того, что ждём от МТС; подпись — дата, цифра после неё — сколько пунктов в этот день. Серые колонки — выходные. Нажмите на этап — откроется подробная карточка ниже.</p>
+    <h2 id="plan-acts">Готовность по активностям</h2>
+    ${actsMatrix(today)}
     <h2>Этапы</h2>
     ${cards}
     <h2>Все сроки МТС по датам</h2>
@@ -2469,6 +2610,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('tab-timing').addEventListener('click', e => {
     const pm = e.target.closest('[data-planmode]'); if (pm) { e.preventDefault(); PLAN = pm.dataset.planmode; renderTiming(); setHash(PLAN === 'b' ? 'timing/b' : 'timing'); document.getElementById('plandoc').scrollTop = 0; return; }
     const tp = e.target.closest('[data-tip]'); if (tp) { tipShow(tp); return; }
+    const af = e.target.closest('[data-actf]'); if (af) { ACT_GAPS = af.dataset.actf === 'gaps'; const y = document.getElementById('plandoc').scrollTop; renderTiming(); document.getElementById('plandoc').scrollTop = y; return; }
     const p = e.target.closest('[data-plan]'); if (p) { e.preventDefault(); const el = document.getElementById('plan-' + p.dataset.plan); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
     const t = e.target.closest('[data-tz]'); if (t) { e.preventDefault(); showTab('tz'); setTimeout(() => tzGo(t.dataset.tz), 30); }
   });

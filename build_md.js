@@ -99,6 +99,12 @@ p('## 7. Тайминг', '',
   '**Что и когда нужно от МТС**', '', '| Срок | Что нужно | Этап | Если не успеваем |', '|---|---|---|---|',
   ...asks.map(k => `| ${dm(k.date)} | ${k.key ? '★ ' : ''}${cell(k.what)} | ${cell(k.stage)} | ${cell(k.late)} |`), '');
 
+const NST = { none: '—', need: 'нужно', wait: '**не хватает**', work: 'в работе', done: 'готово' };
+const ncell = c => c.st === 'none' ? '—' : `${NST[c.st]}${c.due ? ' к ' + dm(c.due) : ''}: ${cell(c.t)}`;
+p('**Готовность по активностям**', '', '| Активность | Открывается | Дизайн | Контент | Разработка | Решение МТС |', '|---|---|---|---|---|---|',
+  ...GROUPS.filter(g => TIMING.acts[g.id]).map(g => { const n = TIMING.acts[g.id]; const o = [...new Set(g.acts.map(id => ACTS.find(a => a.id === id).from))].sort().map(dm).join(', ');
+    return `| ${g.title} | ${o} | ${ncell(n.design)} | ${ncell(n.content)} | ${ncell(n.dev)} | ${ncell(n.mts)} |`; }), '');
+
 p('## 8. Открытые вопросы', '', '**К МТС**', '', ...QUESTIONS.filter(q => q.to === 'client').map((q, i) => `${i + 1}. ${q.text}`), '',
   '**Внутри команды**', '', ...QUESTIONS.filter(q => q.to === 'team').map((q, i) => `${i + 1}. ${q.text}`), '');
 
