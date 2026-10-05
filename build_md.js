@@ -4,8 +4,8 @@ const fs = require('fs');
 const [src, out] = process.argv.slice(2);
 const html = fs.readFileSync(src, 'utf8');
 const data = html.slice(html.indexOf('const PROJECT = {'), html.indexOf('/* =====================================================================\n   ПРОТОТИП'));
-const { PROJECT, STATUS, STATES, BLOCKS, ACTS, BOOSTERS, GROUPS, MECH, QUESTIONS } =
-  new Function(data + '; return { PROJECT, STATUS, STATES, BLOCKS, ACTS, BOOSTERS, GROUPS, MECH, QUESTIONS };')();
+const { PROJECT, STATUS, STATES, BLOCKS, ACTS, BOOSTERS, GROUPS, MECH, QUESTIONS, TIMING } =
+  new Function(data + '; return { PROJECT, STATUS, STATES, BLOCKS, ACTS, BOOSTERS, GROUPS, MECH, QUESTIONS, TIMING };')();
 
 const dm = iso => iso.slice(8, 10) + '.' + iso.slice(5, 7);
 const range = (a, b) => a === b ? dm(a) : `${dm(a)}–${dm(b)}`;
@@ -92,7 +92,14 @@ p('## 6. Сюрпризы и счастливые часы', '',
   '- **Счастливый час** — о нём узнают только на платформе, поэтому окно длинное (рабочий вариант). Примеры расписания:',
   ...BOOSTERS.map(b => `  - ${dm(b.date)}, ${b.from}–${b.to} — ×${b.mult} за «${title(b.act)}»${b.note ? ' (' + b.note + ')' : ''}`), '');
 
-p('## 7. Открытые вопросы', '', '**К МТС**', '', ...QUESTIONS.filter(q => q.to === 'client').map((q, i) => `${i + 1}. ${q.text}`), '',
+const asks = TIMING.stages.flatMap(s => s.asks.map(k => ({ ...k, stage: s.title }))).sort((x, y) => x.date < y.date ? -1 : x.date > y.date ? 1 : 0);
+p('## 7. Тайминг', '',
+  `- **План А:** запуск ${dm(PROJECT.start)}, задания открываются волнами: ${TIMING.stages.filter(s => s.wave).map(s => s.title.split(' · ')[1]).join(', ')}. Нет решения по отдельному заданию — оно переезжает в следующую волну.`,
+  `- **План Б:** если хотя бы один ключевой пункт (★) не закрыт в срок — эфир ${dm(PROJECT.stream)} идёт по прямой ссылке, платформа открывается после эфира (ориентир ${dm(TIMING.planB)}).`, '',
+  '**Что и когда нужно от МТС**', '', '| Срок | Что нужно | Этап | Если не успеваем |', '|---|---|---|---|',
+  ...asks.map(k => `| ${dm(k.date)} | ${k.key ? '★ ' : ''}${cell(k.what)} | ${cell(k.stage)} | ${cell(k.late)} |`), '');
+
+p('## 8. Открытые вопросы', '', '**К МТС**', '', ...QUESTIONS.filter(q => q.to === 'client').map((q, i) => `${i + 1}. ${q.text}`), '',
   '**Внутри команды**', '', ...QUESTIONS.filter(q => q.to === 'team').map((q, i) => `${i + 1}. ${q.text}`), '');
 
 fs.writeFileSync(out, L.join('\n'));

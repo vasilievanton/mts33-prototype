@@ -8,7 +8,7 @@
 <!--
   Кликабельный прототип + ТЗ в одном файле. Версия — в PROJECT.version.
   Как вносить правки: данные (блоки, активности, механики, экраны, вопросы) — в объектах
-  PROJECT / BLOCKS / ACTS / MECH / SCREENS / QUESTIONS; обе вкладки строятся из них.
+  PROJECT / BLOCKS / ACTS / MECH / SCREENS / QUESTIONS / TIMING; вкладки строятся из них.
   Любая правка прототипа = правка данных/текста ТЗ + запись в CHANGELOG
   (она видна на вкладке «История изменений»). Правила работы — в README.md.
 -->
@@ -338,7 +338,7 @@ h1,h2,h3{line-height:1.15;margin:0}
 @container (max-width:420px){ .gal{grid-template-columns:1fr} }
 
 /* ---------- TZ tab ---------- */
-#tab-tz,#tab-log{flex:1;min-height:0;display:flex;background:#fff}
+#tab-tz,#tab-log,#tab-timing{flex:1;min-height:0;display:flex;background:#fff}
 .logv{border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:14px 0}
 .tzin .logv h3{margin:0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
 .logv h3 .d{color:var(--muted);font-weight:400;font-size:14px}
@@ -412,6 +412,92 @@ h1,h2,h3{line-height:1.15;margin:0}
 .qlist a{color:var(--muted);font-size:12px;cursor:pointer}
 .callout{border-left:3px solid var(--red);background:#fff7f9;padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0}
 .navtoggle{display:none}
+
+/* ---------- Timing tab ---------- */
+.tzin.wide{max-width:1180px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.plan{border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.plan h3{margin:0 0 6px!important;font-size:17px}
+.plan ul{margin:6px 0 0;padding-left:18px;font-size:14px}
+.plan.a{border-color:var(--ok);background:var(--ok-soft)}
+.plan.b{border-color:var(--red);background:#fff7f9}
+.plan .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:2px 8px;margin-bottom:6px}
+.plan.a .tag{background:var(--ok);color:#fff}
+.plan.b .tag{background:var(--red);color:#fff}
+.tlw{overflow-x:auto;margin:12px 0;border:1px solid var(--line2);border-radius:12px}
+.tl{min-width:900px;font-size:12px}
+.tl .r{display:grid;grid-template-columns:260px 1fr;border-bottom:1px solid var(--line2)}
+.tl .r:last-child{border-bottom:0}
+.tl .l{padding:6px 10px;border-right:1px solid var(--line2);line-height:1.25;display:flex;align-items:center;gap:7px;min-width:0;position:sticky;left:0;z-index:5;background:#fff}
+.tl .t{position:relative;min-height:28px;overflow:hidden}
+.tl .hd{background:#fafafb}
+.tl .hd .l{background:#fafafb}
+.tl .hd .l{font-weight:600}
+.tl .hd .t{height:62px}
+.tl .stg .l{font-weight:700;background:#f6f6f8;cursor:pointer}
+.tl .stg .l:hover{text-decoration:underline}
+.tl .stg .t{background:#f6f6f8;min-height:30px}
+.tl .scn .l{font-weight:600}
+.tl .ask .l{color:var(--warn);font-weight:600}
+.tl .ask .t{min-height:40px}
+.tl .we{position:absolute;top:0;bottom:0;background:#f3f3f6}
+.tl .vl{position:absolute;top:0;bottom:0;width:0;border-left:2px solid var(--red);z-index:1}
+.tl .vl.today{border-left:2px dashed var(--ink)}
+.tl .vl.gate{border-left:2px dashed var(--red)}
+.tl .vl.end{border-left-color:#9b9ba6}
+.tl .tick{position:absolute;bottom:4px;font-size:10px;color:var(--muted);white-space:nowrap;padding-left:3px;border-left:1px solid var(--line)}
+.tl .flag{position:absolute;font-size:10.5px;font-weight:700;white-space:nowrap;padding:1px 5px;border-radius:4px;color:#fff;background:var(--red);z-index:3}
+.tl .flag.today{background:var(--ink)}
+.tl .flag.end{background:#6b6b76}
+.tl .flag.gate{background:#fff;color:var(--red-ink);border:1px solid var(--red)}
+.tl .bar{position:absolute;top:8px;height:13px;border-radius:4px;z-index:2;min-width:6px}
+.who{display:inline-block;width:12px;height:12px;border-radius:3px;flex:none;vertical-align:-1px}
+.bar.team,.who.team{background:#55555f}
+.bar.client,.who.client{background:#f1b35b}
+.bar.check,.who.check{background:repeating-linear-gradient(45deg,#f1b35b 0 4px,#fde6c4 4px 8px);border:1px solid #e19a3c}
+.bar.live,.who.live{background:#ffb3c2;border:1px solid var(--red)}
+.bar.planb,.who.planb{background:repeating-linear-gradient(45deg,#ffd0da 0 5px,#fff 5px 10px);border:1px dashed var(--red)}
+.tl .dmd{position:absolute;top:8px;width:13px;height:13px;margin-left:-6.5px;transform:rotate(45deg);background:#f1b35b;border:2px solid #fff;box-shadow:0 0 0 1px #e19a3c;z-index:3;cursor:pointer}
+.tl .dmd.key{background:var(--red);box-shadow:0 0 0 1px var(--red-ink)}
+.tl .dmd.got{background:var(--ok);box-shadow:0 0 0 1px var(--ok)}
+.tl .dl{position:absolute;top:24px;font-size:10px;font-weight:600;color:var(--ink2);transform:translateX(-50%);white-space:nowrap;z-index:3}
+.tl .dl.up{top:-1px}
+.tl .ask .dmd{top:14px}
+.tl .ask .dl{top:29px}
+.tl .ask .dl.up{top:0}
+.plgnd{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink2);margin:10px 0}
+.plgnd span{display:inline-flex;align-items:center;gap:6px}
+.plgnd .dm{width:10px;height:10px;transform:rotate(45deg);background:#f1b35b;display:inline-block}
+.plgnd .dm.key{background:var(--red)}
+.plc{border-left:4px solid var(--line)}
+.plc.st-now{border-left-color:var(--ink)}
+.plc.st-done{border-left-color:var(--ok)}
+.plc h3 .n{color:var(--red);margin-right:8px}
+.plc ul.rows{list-style:none;padding-left:0}
+.plc ul.rows li{display:flex;gap:8px;align-items:baseline}
+.plc ul.rows .d{color:var(--muted);white-space:nowrap;margin-left:auto;padding-left:10px}
+.plc .chips a{cursor:pointer;text-decoration:none}
+.plc .chips a:hover{border-color:var(--ink)}
+.asks{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.askr{display:grid;grid-template-columns:96px 1fr auto;gap:4px 12px;align-items:start;border:1px solid var(--line2);border-radius:10px;padding:8px 12px;font-size:13.5px}
+.askr.key{border-color:#f3b3c1;background:#fff7f9}
+.askr .d{font-weight:700;white-space:nowrap}
+.askr .d small{display:block;font-weight:400;color:var(--muted)}
+.askr .why{color:var(--muted);font-size:12.5px}
+.askr .late{color:var(--red-ink);font-size:12.5px}
+.ast{font-size:11px;font-weight:600;border-radius:6px;padding:1px 7px;white-space:nowrap;background:var(--warn-soft);color:var(--warn)}
+.ast.got{background:var(--ok-soft);color:var(--ok)}
+.ast.over{background:var(--red);color:#fff}
+.ast.now{background:var(--ink);color:#fff}
+.ast.next{background:var(--ph);color:var(--muted)}
+.tbl tr.key td{background:#fff7f9}
+@media (max-width:860px){
+  .plans{grid-template-columns:1fr}
+  .tl .r{grid-template-columns:150px 1fr}
+  .tl{min-width:820px}
+  .askr{grid-template-columns:1fr auto}
+  .askr .d{grid-column:1/-1}
+}
 @media (max-width:860px){
   .tznav{position:absolute;z-index:60;top:52px;bottom:0;left:0;transform:translateX(-100%);transition:transform .2s;box-shadow:0 10px 40px rgba(0,0,0,.2)}
   .tznav.on{transform:none}
@@ -428,7 +514,7 @@ h1,h2,h3{line-height:1.15;margin:0}
 <body>
 <header class="chrome">
   <div class="brand"><span class="mtsbox">МТС</span><span>33 удовольствия</span><span class="ver"></span></div>
-  <nav class="tabs"><button data-tab="proto" class="on">Прототип</button><button data-tab="tz"><span class="lg">Техническое задание</span><span class="sm">ТЗ</span></button><button data-tab="log"><span class="lg">История изменений</span><span class="sm">История</span></button></nav>
+  <nav class="tabs"><button data-tab="proto" class="on">Прототип</button><button data-tab="tz"><span class="lg">Техническое задание</span><span class="sm">ТЗ</span></button><button data-tab="timing">Тайминг</button><button data-tab="log"><span class="lg">История изменений</span><span class="sm">История</span></button></nav>
 </header>
 
 <section id="tab-proto">
@@ -454,6 +540,10 @@ h1,h2,h3{line-height:1.15;margin:0}
   </div>
 </section>
 
+<section id="tab-timing" hidden>
+  <main class="tzdoc" id="plandoc"></main>
+</section>
+
 <section id="tab-log" hidden>
   <main class="tzdoc" id="logdoc"></main>
 </section>
@@ -476,8 +566,8 @@ h1,h2,h3{line-height:1.15;margin:0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.12',
-  updated: '01.10.2026',
+  version: '0.13',
+  updated: '05.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
   stream: '2026-10-28',
@@ -838,6 +928,7 @@ const QUESTIONS = [
   { to: 'client', text: 'Подтвердить структуру: шесть разделов, в разделе — активности, в активности — задания. «Работу» и «Обучение» объединили, добавили «Работаем вместе» — это отличается от первой версии.', ref: 'summary' },
   { to: 'client', text: 'Что ещё МТС хочет показать на платформе или в эфире: достижения волонтёров, награды лучшим сотрудникам, новое по спорту. МТС вернётся с идеями через несколько дней — распределим по блокам.', ref: 'summary' },
   { to: 'client', text: 'Раздел видео-поздравлений топ-менеджмента (был в тендере): нужен ли на платформе. Сейчас топ-менеджеры есть в эфире и в АПОЖ.', ref: 'summary' },
+  { to: 'client', text: 'Если ключевые решения не придут в срок и запуск перенесётся после эфира: сохраняем ли дату окончания 11.11 или продлеваем период. Сроки — на вкладке «Тайминг».', ref: 'launch' },
   { to: 'client', text: 'Встреча со специалистами МТС по безопасности: дата и формат проверки — полный пентест или проверка верхнего уровня; когда и в каком виде отдаём платформу.', ref: 'launch' },
   { to: 'client', text: 'Полный актуальный список доменов корпоративной почты МТС и дочерних компаний — сразу весь.', ref: 'auth' },
   { to: 'client', text: 'Справочники для регистрации: регионы, компании.', ref: 'auth' },
@@ -872,7 +963,142 @@ const QUESTIONS = [
   { to: 'team', text: 'Итоговая таблица 33 удовольствий и баллов по активностям. Сейчас в реестре черновое распределение.', ref: 'registry' },
 ];
 
+/* ---------------------------------------------------------------------
+   ТАЙМИНГ ПРОЕКТА — вкладка «Тайминг».
+   stages — этапы: строки диаграммы (rows) и сроки, к которым нужно что-то от МТС (asks).
+   who: team — делаем мы; client — готовит МТС; check — согласует или проверяет МТС; live — открыто участникам.
+   asks: key — ключевой пункт: без него запуск 21.10 не держим (план Б);
+         late — что будет, если не успели; got — дата, когда получили (заполнять по факту).
+   wave — задания волны берутся из ACTS по дате from.
+   --------------------------------------------------------------------- */
+const TIMING = {
+  from: '2026-09-28',
+  to: '2026-11-15',
+  gate: '2026-10-09',
+  planB: '2026-11-02',
+  stages: [
+    { id: 'base', title: 'Каркас платформы',
+      desc: 'Не зависит от решений МТС — делаем уже сейчас. Это основа, на которую потом ложатся дизайн и задания.',
+      rows: [
+        { t: 'Прототип и ТЗ', who: 'team', from: '2026-09-30', to: '2026-10-05' },
+        { t: 'Вёрстка каркаса: регистрация, вход, главная, турнирная таблица, профиль, правила', who: 'team', from: '2026-10-01', to: '2026-10-13' },
+        { t: 'Начисление удовольствий и баллов, проверка материалов', who: 'team', from: '2026-10-05', to: '2026-10-16' },
+        { t: 'Подключение доменов почты и справочников', who: 'team', from: '2026-10-08', to: '2026-10-13' },
+      ],
+      asks: [
+        { date: '2026-10-07', what: 'Полный список доменов корпоративной почты МТС и дочерних компаний', why: 'по нему проверяем почту при регистрации', late: 'на запуске зарегистрируются не все компании' },
+        { date: '2026-10-07', what: 'Справочники для регистрации: регионы и компании', why: 'поля анкеты при регистрации', late: 'на запуске — ввод вручную вместо выбора из списка' },
+        { date: '2026-10-12', what: 'Почта для вопросов участников и кто отвечает на письма', why: 'указываем на странице «Правила акции» и в подвале', late: 'запуск без адреса для вопросов' },
+      ] },
+    { id: 'kv', title: 'Ключевой визуал и дизайн',
+      desc: 'Главная зависимость. Пока нет KV, мы не можем рисовать экраны: от него зависят вид прогресса, главная, лендинг и герой игры.',
+      rows: [
+        { t: 'Новый KV', who: 'client', from: '2026-10-05', to: '2026-10-08' },
+        { t: 'Дизайн экранов платформы по KV', who: 'team', from: '2026-10-09', to: '2026-10-13' },
+        { t: 'Согласование макетов', who: 'check', from: '2026-10-14', to: '2026-10-15' },
+        { t: 'Вёрстка дизайна поверх каркаса', who: 'team', from: '2026-10-14', to: '2026-10-20' },
+      ],
+      asks: [
+        { date: '2026-10-06', what: 'Гайдбук МТС, правила коммуникации, исходники 3D', why: 'основа для дизайна экранов', late: 'дизайн экранов сдвигается на столько же дней' },
+        { date: '2026-10-08', key: true, what: 'Утверждённый KV — можно на уровне идеи или эскиза', why: 'без KV не начать дизайн экранов', late: 'дизайн не успевает к 21.10 — план Б' },
+        { date: '2026-10-08', what: 'Названия разделов вместо «Работа и обучение» и других', why: 'нужны в макетах и текстах', late: 'запускаемся с текущими названиями' },
+        { date: '2026-10-15', key: true, what: 'Согласованные макеты: лендинг, главная, раздел, активность', why: 'после согласования — вёрстка дизайна', late: 'вёрстка не успевает к 21.10 — план Б' },
+      ] },
+    { id: 'sec', title: 'Проверка безопасности',
+      desc: 'Специалисты МТС проверяют платформу до запуска. В прошлый раз проверка заняла около пяти рабочих дней, поэтому отдаём платформу 13.10.',
+      rows: [
+        { t: 'Встреча со специалистами МТС по безопасности', who: 'client', from: '2026-10-07', to: '2026-10-09' },
+        { t: 'Передаём платформу на проверку', who: 'team', from: '2026-10-13', to: '2026-10-13' },
+        { t: 'Проверка — около пяти рабочих дней', who: 'check', from: '2026-10-14', to: '2026-10-20' },
+        { t: 'Исправляем замечания', who: 'team', from: '2026-10-16', to: '2026-10-20' },
+      ],
+      asks: [
+        { date: '2026-10-09', key: true, what: 'Встреча по безопасности: дата и формат проверки — полный пентест или проверка верхнего уровня', why: 'проверка должна закончиться до 21.10', late: 'не успеваем пройти проверку — план Б' },
+        { date: '2026-10-20', key: true, what: 'Результат проверки безопасности', why: 'без него платформу не открываем', late: 'запуск переносится — план Б' },
+      ] },
+    { id: 'w1', title: 'Волна 1 · запуск 21.10', wave: ['2026-10-01', '2026-10-27'],
+      desc: 'Каркас в дизайне и задания, которые открываются в первую неделю. Если по отдельному заданию решение не пришло — оно переезжает в волну 2, а запуск не двигаем.',
+      rows: [
+        { t: 'Итоговый список заданий и баллов', who: 'client', from: '2026-10-05', to: '2026-10-09' },
+        { t: 'Разработка заданий волны 1', who: 'team', from: '2026-10-07', to: '2026-10-19' },
+        { t: 'Съёмка разминок 1–2', who: 'client', from: '2026-10-09', to: '2026-10-16' },
+        { t: 'Тексты заданий и глав истории', who: 'team', from: '2026-10-12', to: '2026-10-15' },
+        { t: 'Согласование текстов', who: 'check', from: '2026-10-16', to: '2026-10-19' },
+        { t: 'Открыто участникам', who: 'live', from: '2026-10-21', to: '2026-11-11' },
+      ],
+      asks: [
+        { date: '2026-10-07', what: 'Контакты амбассадоров спорта и тренер для разминок', why: 'разминки снимают на месте по нашему ТЗ — нужна неделя', late: 'разминки 1–2 переезжают в волну 2' },
+        { date: '2026-10-09', key: true, what: 'Итоговая таблица заданий, удовольствий и баллов', why: 'по ней делаем задания и правила акции', late: 'задания и правила не готовы к 21.10 — план Б' },
+        { date: '2026-10-09', what: 'ИИ-активность: одна идея из четырёх', why: 'история стартует в день запуска, главы идут до эфира', late: 'история переезжает в волну 2' },
+        { date: '2026-10-09', what: 'Волонтёрство: есть ли акции по всей России и как подтверждается участие', why: 'без акций задание не наполнить', late: '«Угостить добром» переезжает в волну 2' },
+        { date: '2026-10-09', what: 'Талант-шоу: лайки или голосование, список номинаций', why: 'от этого зависит экран галереи', late: 'запускаем с лайками и рабочими номинациями' },
+        { date: '2026-10-09', what: 'Можно ли использовать образ топ-менеджера как героя игры', why: 'рисуем героя «Праздничного забега»', late: 'герой — нейтральный персонаж' },
+        { date: '2026-10-16', what: 'Ролики разминок 1–2', why: 'монтаж и загрузка до запуска', late: 'разминки 1–2 переезжают в волну 2' },
+        { date: '2026-10-19', what: 'Согласованные тексты заданий волны 1', why: 'без согласования текст не публикуем', late: 'задание без согласованного текста 21.10 не открываем' },
+      ] },
+    { id: 'comms', title: 'Правила, призы и анонсы',
+      desc: 'Без правил акции платформу не открыть, а правила не заполнить без заданий и призов. Анонсы во внутренних каналах МТС согласуются минимум за пять дней до публикации.',
+      rows: [
+        { t: 'Призы, количество, порог розыгрыша', who: 'client', from: '2026-10-05', to: '2026-10-12' },
+        { t: 'Правила акции по шаблону МТС', who: 'team', from: '2026-10-12', to: '2026-10-14' },
+        { t: 'Согласование правил', who: 'check', from: '2026-10-15', to: '2026-10-16' },
+        { t: 'Тексты анонса запуска', who: 'team', from: '2026-10-09', to: '2026-10-12' },
+        { t: 'Согласование анонса запуска', who: 'check', from: '2026-10-13', to: '2026-10-16' },
+        { t: 'Анонс запуска во внутренних каналах', who: 'client', from: '2026-10-21', to: '2026-10-21' },
+        { t: 'Анонс эфира: тексты и согласование', who: 'check', from: '2026-10-19', to: '2026-10-23' },
+      ],
+      asks: [
+        { date: '2026-10-09', what: 'Шаблон правил участия МТС', why: 'по нему пишем правила акции', late: 'правила сдвигаются на столько же дней' },
+        { date: '2026-10-09', what: 'Каналы внутренних коммуникаций и тайминги анонсов', why: 'планируем анонсы с запасом на согласование', late: 'анонс выходит позже запуска' },
+        { date: '2026-10-12', key: true, what: 'Призы: список, количество, порог розыгрыша; кто налоговый агент', why: 'без призов не заполнить правила акции', late: 'правила не готовы к 21.10 — план Б' },
+        { date: '2026-10-16', key: true, what: 'Согласованные правила акции', why: 'без правил платформу не открываем', late: 'запуск переносится — план Б' },
+        { date: '2026-10-16', what: 'Согласованный анонс запуска', why: 'за пять дней до публикации 21.10', late: 'анонс выходит позже — в первые дни мало участников' },
+        { date: '2026-10-23', what: 'Согласованный анонс эфира', why: 'за пять дней до эфира 28.10', late: 'анонс эфира без приглашения на платформу' },
+      ] },
+    { id: 'w2', title: 'Волна 2 · эфир 28.10', wave: ['2026-10-28', '2026-11-02'],
+      desc: 'Задания, которые открываются в день эфира, и сам эфир. Разработка идёт после запуска, параллельно с работой платформы. Не успели по заданию — оно переезжает в волну 3.',
+      rows: [
+        { t: 'Контент от МТС: квиз, песни, разминки', who: 'client', from: '2026-10-09', to: '2026-10-20' },
+        { t: 'Разработка заданий волны 2', who: 'team', from: '2026-10-14', to: '2026-10-27' },
+        { t: 'Код плеера и прямая ссылка на эфир', who: 'client', from: '2026-10-19', to: '2026-10-21' },
+        { t: 'Эфир', who: 'live', from: '2026-10-28', to: '2026-10-28' },
+        { t: 'Открыто участникам', who: 'live', from: '2026-10-28', to: '2026-11-11' },
+      ],
+      asks: [
+        { date: '2026-10-12', what: 'Благодарности: какую механику делаем вместо доски — с учётом корпоративных «спасибо» и бейджей', why: 'задание открывается в день эфира', late: '«Настоящие сладости» переезжают в волну 3' },
+        { date: '2026-10-16', what: 'АПОЖ: записи песен топ-менеджеров и согласие показать оригинал', why: 'переворачиваем записи и подбираем варианты ответа', late: 'АПОЖ переезжает в волну 3' },
+        { date: '2026-10-16', what: 'Квиз, выпуск 1: вопросы и факты — от МТС или согласование наших', why: 'вёрстка выпуска и объяснений к ответам', late: 'выпуск 1 переезжает в волну 3' },
+        { date: '2026-10-16', what: 'Мастер-класс в талант-шоу: кто ведёт и в каком формате', why: 'съёмка и монтаж до эфира', late: 'мастер-класс переезжает в волну 3' },
+        { date: '2026-10-20', what: 'Ролики разминок 3–5', why: 'монтаж и загрузка до 28.10', late: 'разминки 3–5 открываются позже' },
+        { date: '2026-10-21', what: 'Код плеера провайдера трансляции и прямая ссылка для плана Б', why: 'встраиваем эфир в платформу', late: 'эфир — только по прямой ссылке' },
+      ] },
+    { id: 'w3', title: 'Волна 3 · 03–04.11', wave: ['2026-11-03', '2026-11-11'],
+      desc: 'Последние задания — чтобы в последние две недели было зачем возвращаться.',
+      rows: [
+        { t: 'Разработка заданий волны 3', who: 'team', from: '2026-10-26', to: '2026-11-02' },
+        { t: 'Открыто участникам', who: 'live', from: '2026-11-03', to: '2026-11-11' },
+      ],
+      asks: [
+        { date: '2026-10-26', what: 'Квиз, выпуск 2: вопросы и факты', why: 'вёрстка выпуска', late: 'выпуск 2 открывается позже' },
+        { date: '2026-10-26', what: 'Согласование механики сюрприза №3', why: 'сюрприз открывается 03.11', late: 'сюрприз открывается позже' },
+      ] },
+    { id: 'run', title: 'Работа платформы и итоги',
+      desc: 'Пока платформа открыта — проверяем материалы участников и отвечаем на вопросы. После 11.11 подводим итоги.',
+      rows: [
+        { t: 'Проверка материалов и ответы на вопросы', who: 'team', from: '2026-10-21', to: '2026-11-11' },
+        { t: 'Итоги: турнирная таблица и список для розыгрыша', who: 'team', from: '2026-11-12', to: '2026-11-13' },
+        { t: 'Розыгрыш и вручение призов', who: 'client', from: '2026-11-12', to: '2026-11-13' },
+      ],
+      asks: [] },
+  ],
+};
+
 const CHANGELOG = [
+  { v: '0.13', date: '05.10.2026', items: [
+    'Новая вкладка «Тайминг» (адрес …/#timing): этапы подготовки на диаграмме по датам и что и к какому дню нужно от МТС. Ключевые пункты отмечены ★.',
+    'Запуск идёт волнами: 21.10 — каркас и первые задания, 28.10 — задания к эфиру, 03–04.11 — последние задания. Если по отдельному заданию нет решения, оно переезжает в следующую волну.',
+    'План Б: если ключевые решения МТС (KV, итоговая таблица заданий, проверка безопасности, призы и правила) не пришли в срок, платформа открывается после эфира, а эфир 28.10 идёт по прямой ссылке.',
+  ] },
   { v: '0.12', date: '01.10.2026', items: [
     'Убраны этапы «Готовим торт → Задуваем свечу → Едим торт» и торт: на лендинге вместо торта — место под KV, на главной торта нет.',
     'Прогресс на главной больше не показываем — только в шапке, возле аватара («N / 33 · баллы», ведёт в «Мой прогресс»). Пункт «Мой прогресс» убран из меню.',
@@ -1789,6 +2015,7 @@ const TZ = [
 
   { id: 'launch', title: 'Подготовка к запуску', html: () => `
     ${ul([
+      `<b>График.</b> Этапы подготовки, волны запуска заданий и что и к какому дню нужно от МТС — на вкладке <a data-tabgo="timing">«Тайминг»</a>. Если ключевые решения не приходят в срок, работает план Б: платформа открывается после эфира, эфир ${dm(PROJECT.stream)} — по прямой ссылке.`,
       '<b>Проверка безопасности.</b> В план подготовки сразу ставим встречу со специалистами МТС по безопасности: рассказываем, как устроена платформа, и договариваемся, когда и в каком виде отдаём её на проверку — полный пентест или проверка верхнего уровня. По опыту прошлого проекта на проверку ушло около пяти дней. Для запуска 21.10 часть платформы надо показать раньше; точные даты сдачи — после встречи.',
       '<b>Если проверка не успеет</b> — эфир 28.10 всё равно проходит по прямой ссылке провайдера (см. <a data-tz="stream">«Онлайн-эфир»</a>).',
       '<b>Согласования.</b> Решения со стороны МТС приходят одним финальным ответом: сначала внутри МТС, потом к нам. Общие вопросы обсуждаем в общем чате.',
@@ -1968,6 +2195,136 @@ function tzSpy() {
 }
 
 /* =====================================================================
+   ТАЙМИНГ. Вкладка строится из TIMING; задания волн — из ACTS
+   ===================================================================== */
+const WHO = { team: 'Делаем мы', client: 'Готовит МТС', check: 'Согласует или проверяет МТС', live: 'Открыто участникам' };
+const WD = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+const isoOf = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const isoAdd = (iso, n) => { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return isoOf(d); };
+const todayIso = () => isoOf(new Date());
+const dmw = iso => `${dm(iso)}, ${WD[new Date(iso + 'T12:00:00').getDay()]}`;
+const rangeT = (a, b) => a === b ? dm(a) : `${dm(a)}–${dm(b)}`;
+const waveActs = s => s.wave ? ACTS.filter(a => a.from >= s.wave[0] && a.from <= s.wave[1] && !['system', 'visit'].includes(a.type)) : [];
+const allAsks = () => TIMING.stages.flatMap(s => s.asks.map(k => ({ ...k, stage: s })));
+function askState(k, today) {
+  if (k.got) return ['got', 'получено ' + dm(k.got)];
+  if (k.date < today) return ['over', 'просрочено'];
+  return ['wait', dayDiff(today, k.date) === 0 ? 'срок сегодня' : 'ждём'];
+}
+function stageState(s, today) {
+  const from = s.rows.reduce((m, r) => r.from < m ? r.from : m, '9999'), to = s.rows.reduce((m, r) => r.to > m ? r.to : m, '');
+  if (to < today) return ['done', 'завершён'];
+  if (from <= today) return ['now', 'идёт'];
+  return ['next', 'с ' + dm(from)];
+}
+
+function planTimeline(today) {
+  const T = TIMING, days = dayDiff(T.from, T.to) + 1;
+  const x = iso => dayDiff(T.from, iso) / days * 100;
+  const xc = iso => (dayDiff(T.from, iso) + .5) / days * 100;
+  const inR = iso => iso >= T.from && iso <= T.to;
+  let we = '';
+  for (let i = 0; i < days; i++) { const wd = new Date(isoAdd(T.from, i) + 'T12:00:00').getDay(); if (wd === 0 || wd === 6) we += `<i class="we" style="left:${i / days * 100}%;width:${100 / days}%"></i>`; }
+  const marks = [[today, 'today', 'сегодня'], [T.gate, 'gate', '★ решения МТС'], [PROJECT.start, 'launch', 'запуск'], [PROJECT.stream, 'stream', 'эфир'], [PROJECT.end, 'end', 'финиш']]
+    .filter(m => inR(m[0])).sort((a, b) => a[0] < b[0] ? -1 : 1);
+  const lines = we + marks.map(([d, c]) => `<i class="vl ${c}" style="left:${xc(d)}%"></i>`).join('');
+  // подписи над диаграммой — в несколько ярусов, чтобы близкие даты не налезали
+  const last = [];
+  const flags = marks.map(([d, c, l]) => {
+    let lv = 0; while (last[lv] && dayDiff(last[lv], d) < 8) lv++;
+    last[lv] = d;
+    return `<span class="flag ${c}" style="left:calc(${xc(d)}% - 1px);top:${3 + lv * 17}px">${l} ${dm(d)}</span>`;
+  }).join('');
+  let ticks = '';
+  for (let i = 0; i < days; i++) { const iso = isoAdd(T.from, i); if (new Date(iso + 'T12:00:00').getDay() === 1) ticks += `<span class="tick" style="left:${x(iso)}%">пн ${dm(iso)}</span>`; }
+  const bar = (from, to, cls, title) => {
+    const a = from < T.from ? T.from : from, b = to > T.to ? T.to : to;
+    return `<i class="bar ${cls}" style="left:${x(a)}%;width:${(dayDiff(a, b) + 1) / days * 100}%" title="${esc(title)}: ${rangeT(from, to)}"></i>`;
+  };
+  const row = (cls, label, inner, attr = '') => `<div class="r ${cls}"><div class="l" ${attr}>${label}</div><div class="t">${lines}${inner}</div></div>`;
+
+  let h = row('hd', 'Этапы и сроки', flags + ticks);
+  h += row('scn', '<span class="who live"></span>План А: запуск 21.10', bar(PROJECT.start, PROJECT.end, 'live', 'Платформа открыта'));
+  h += row('scn', '<span class="who planb"></span>План Б: после эфира', bar(PROJECT.stream, PROJECT.stream, 'live', 'Эфир по прямой ссылке') + bar(T.planB, PROJECT.end, 'planb', 'Платформа открыта'));
+  TIMING.stages.forEach((s, i) => {
+    h += row('stg', `${i + 1}. ${esc(s.title)}`, '', `data-plan="${s.id}"`);
+    s.rows.forEach(r => { h += row('', `<span class="who ${r.who}" title="${WHO[r.who]}"></span><span>${esc(r.t)}</span>`, bar(r.from, r.to, r.who, r.t)); });
+    if (!s.asks.length) return;
+    const by = {};
+    s.asks.forEach(k => { (by[k.date] = by[k.date] || []).push(k); });
+    const ds = Object.keys(by).sort();
+    h += row('ask', '◆ Ждём от МТС', ds.map((d, j) => {
+      const ks = by[d], key = ks.some(k => k.key), got = ks.every(k => k.got);
+      const tip = ks.map(k => `${k.key ? '★ ' : ''}${k.what}`).join('\n');
+      const up = j % 2 && dayDiff(ds[j - 1], d) < 5;
+      return `<i class="dmd${key ? ' key' : ''}${got ? ' got' : ''}" style="left:${xc(d)}%" data-plan="${s.id}" title="${esc(dm(d) + '\n' + tip)}"></i><span class="dl${up ? ' up' : ''}" style="left:${xc(d)}%">${dm(d)}${ks.length > 1 ? ' · ' + ks.length : ''}</span>`;
+    }).join(''));
+  });
+  return `<div class="tlw"><div class="tl">${h}</div></div>`;
+}
+
+function askRows(asks, today, withStage) {
+  return `<div class="asks">${asks.map(k => {
+    const [c, l] = askState(k, today);
+    return `<div class="askr${k.key ? ' key' : ''}"><div class="d">${dm(k.date)}<small>${WD[new Date(k.date + 'T12:00:00').getDay()]}${withStage ? ' · ' + esc(k.stage.title) : ''}</small></div><div><b>${k.key ? '★ ' : ''}${esc(k.what)}</b><div class="why">Зачем: ${esc(k.why)}</div><div class="late">Если не успеваем: ${esc(k.late)}</div></div><span class="ast ${c}">${l}</span></div>`;
+  }).join('')}</div>`;
+}
+
+function renderTiming() {
+  const today = todayIso(), T = TIMING;
+  const asks = allAsks().sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+  const keys = asks.filter(k => k.key), keysOpen = keys.filter(k => !k.got);
+  const open = asks.filter(k => !k.got && k.date >= today);
+  const over = asks.filter(k => !k.got && k.date < today);
+  const toLaunch = dayDiff(today, PROJECT.start);
+  const nextKey = keysOpen.find(k => k.date >= today);
+  const w = TIMING.stages.filter(s => s.wave);
+  const cards = TIMING.stages.map((s, i) => {
+    const [sc, sl] = stageState(s, today);
+    const acts = waveActs(s);
+    return `<div class="tzcard plc st-${sc}" id="plan-${s.id}"><div class="hd"><h3><span class="n">${i + 1}</span>${esc(s.title)}</h3><span class="ast ${sc}">${sl}</span></div>
+      <p>${esc(s.desc)}</p>
+      ${acts.length ? `<h4>Задания волны · ${acts.length}</h4><div class="chips">${acts.map(a => `<a class="chip" data-tz="act-${a.id}" title="Открыть в ТЗ">${esc(shortT(a))} · ${dm(a.from)}</a>`).join('')}</div>` : ''}
+      <h4>План</h4><ul class="rows">${s.rows.map(r => `<li><span class="who ${r.who}" title="${WHO[r.who]}"></span><span>${esc(r.t)}</span><span class="d">${rangeT(r.from, r.to)}</span></li>`).join('')}</ul>
+      ${s.asks.length ? `<h4>Нужно от МТС · ${s.asks.length}</h4>${askRows([...s.asks].sort((a, b) => a.date < b.date ? -1 : 1).map(k => ({ ...k, stage: s })), today, false)}` : ''}
+    </div>`;
+  }).join('');
+
+  document.getElementById('plandoc').innerHTML = `<div class="tzin wide">
+    <h1>Тайминг проекта</h1>
+    <div class="meta"><span>Версия ${PROJECT.version}</span><span>Обновлено ${PROJECT.updated}</span><span>Запуск ${dmw(PROJECT.start)}</span><span>Эфир ${dmw(PROJECT.stream)}</span><span>Финиш ${dmw(PROJECT.end)}</span></div>
+    <p>Каркас платформы — регистрацию, вход, главную, турнирную таблицу — делаем уже сейчас: он не зависит от решений МТС. Дальше двигаться можем, только когда МТС согласует ключевой визуал, итоговый список заданий, проверку безопасности, призы и правила. Здесь — что и к какому дню нужно от МТС и что будет, если не успеваем.</p>
+    <div class="kpis">
+      <div class="kpi"><b>${toLaunch > 0 ? toLaunch + ' ' + plural(toLaunch, 'день', 'дня', 'дней') : toLaunch === 0 ? 'сегодня' : 'запущено'}</b><span>до запуска ${dm(PROJECT.start)}</span></div>
+      <div class="kpi bad"><b>${keysOpen.length} из ${keys.length}</b><span>ключевых решений ★ ждём от МТС</span></div>
+      <div class="kpi"><b>${open.length}</b><span>${plural(open.length, 'пункт', 'пункта', 'пунктов')} ждём от МТС всего${over.length ? ` · <b style="display:inline;font-size:12px;color:var(--red-ink)">просрочено: ${over.length}</b>` : ''}</span></div>
+      <div class="kpi"><b>${nextKey ? dm(nextKey.date) : '—'}</b><span>${nextKey ? 'ближайший ★: ' + esc(nextKey.what.split(' — ')[0].split(':')[0]) : 'ключевые сроки прошли'}</span></div>
+    </div>
+    <div class="plans">
+      <div class="plan a"><span class="tag">План А</span><h3>Запуск ${dmw(PROJECT.start)}</h3><ul>
+        <li>МТС закрывает все ключевые пункты ★ в срок: основные — до ${dmw(T.gate)}, последний — ${dm(keys[keys.length - 1].date)}.</li>
+        <li>Платформа открывается волнами: ${w.map(s => `<a class="link" data-plan="${s.id}">${esc(s.title.split(' · ')[1])}</a>`).join(', ')}. Разработка продолжается и после запуска.</li>
+        <li>Нет решения по отдельному заданию — оно переезжает в следующую волну. Запуск не двигаем.</li>
+      </ul></div>
+      <div class="plan b"><span class="tag">План Б</span><h3>Запуск после эфира</h3><ul>
+        <li>Включается, если хотя бы один пункт ★ не закрыт в срок. Небольшой сдвиг не спасает: дизайн, проверка безопасности и согласование анонсов занимают по несколько рабочих дней каждый, и запуск попадает на неделю эфира.</li>
+        <li>Эфир ${dm(PROJECT.stream)} проходит по прямой ссылке провайдера трансляции.</li>
+        <li>Платформа открывается после эфира, ориентир — ${dmw(T.planB)}: сразу с заданиями волн 1 и 2.</li>
+        <li>Дату окончания (сейчас ${dm(PROJECT.end)}) и график заданий пересматриваем вместе с МТС.</li>
+      </ul></div>
+    </div>
+    <h2>Диаграмма</h2>
+    <div class="plgnd">${Object.entries(WHO).map(([k, v]) => `<span><i class="who ${k}"></i>${v}</span>`).join('')}<span><i class="who planb"></i>План Б</span><span><i class="dm"></i>Срок, к которому нужно от МТС</span><span><i class="dm key"></i>★ Ключевой срок: не успели — план Б</span></div>
+    ${planTimeline(today)}
+    <p class="small muted">Серые колонки — выходные. Ромбы — сроки, к которым нужно что-то от МТС; цифра после даты — сколько пунктов в этот день. Нажмите на этап или ромб — откроется подробная карточка ниже. Длительности этапов — наша оценка: точные даты проверки безопасности станут известны после встречи.</p>
+    <h2>Этапы</h2>
+    ${cards}
+    <h2>Все сроки МТС по датам</h2>
+    ${askRows(asks, today, true)}
+  </div>`;
+}
+
+/* =====================================================================
    ОБВЯЗКА: вкладки, демо-панель, ссылки ТЗ ↔ прототип, адрес в URL
    ===================================================================== */
 function setHash(h) { try { history.replaceState(null, '', '#' + h); } catch (e) { } }
@@ -1975,8 +2332,9 @@ function showTab(t) {
   document.getElementById('tab-proto').hidden = t !== 'proto';
   document.getElementById('tab-tz').hidden = t !== 'tz';
   document.getElementById('tab-log').hidden = t !== 'log';
+  document.getElementById('tab-timing').hidden = t !== 'timing';
   document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
-  if (t === 'tz') { setHash('tz'); tzSpy(); } else if (t === 'log') setHash('log'); else setHash('proto/' + S.route);
+  if (t === 'tz') { setHash('tz'); tzSpy(); } else if (t === 'log') setHash('log'); else if (t === 'timing') setHash('timing'); else setHash('proto/' + S.route);
 }
 function tzAnchor() {
   const [b, p] = S.route.split('/');
@@ -2020,7 +2378,7 @@ function buildScreenSelect() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  buildScreenSelect(); renderTZ(); renderLog();
+  buildScreenSelect(); renderTZ(); renderLog(); renderTiming();
   // вкладки
   document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
   // демо-панель
@@ -2056,13 +2414,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // ТЗ: ссылки
   document.getElementById('tab-tz').addEventListener('click', e => {
     const o = e.target.closest('[data-open]'); if (o) { e.preventDefault(); openInProto(o.dataset.open); return; }
+    const tg = e.target.closest('[data-tabgo]'); if (tg) { e.preventDefault(); showTab(tg.dataset.tabgo); return; }
     const t = e.target.closest('[data-tz]'); if (t) { e.preventDefault(); tzGo(t.dataset.tz); if (window.innerWidth <= 860) document.getElementById('tznav').classList.remove('on'); }
+  });
+  // Тайминг: этап → карточка, задание → ТЗ
+  document.getElementById('tab-timing').addEventListener('click', e => {
+    const p = e.target.closest('[data-plan]'); if (p) { e.preventDefault(); const el = document.getElementById('plan-' + p.dataset.plan); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+    const t = e.target.closest('[data-tz]'); if (t) { e.preventDefault(); showTab('tz'); setTimeout(() => tzGo(t.dataset.tz), 30); }
   });
   document.getElementById('tzdoc').addEventListener('scroll', () => { clearTimeout(window.__spy); window.__spy = setTimeout(tzSpy, 60); });
   document.getElementById('navtoggle').addEventListener('click', () => document.getElementById('tznav').classList.toggle('on'));
   // старт по адресу
   const h = decodeURIComponent(location.hash.slice(1));
   if (h === 'log') { render(); showTab('log'); }
+  else if (h === 'timing') { render(); showTab('timing'); }
   else if (h.startsWith('tz')) { render(); showTab('tz'); const id = h.split('/')[1]; if (id) setTimeout(() => tzGo(id), 50); }
   else if (h.startsWith('proto/')) { openInProto(h.slice(6)); }
   else { render(); showTab('proto'); }
