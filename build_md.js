@@ -92,7 +92,7 @@ p('## 6. Сюрпризы и счастливые часы', '',
   '- **Счастливый час** — о нём узнают только на платформе, поэтому окно длинное (рабочий вариант). Примеры расписания:',
   ...BOOSTERS.map(b => `  - ${dm(b.date)}, ${b.from}–${b.to} — ×${b.mult} за «${title(b.act)}»${b.note ? ' (' + b.note + ')' : ''}`), '');
 
-TIMING.stages.forEach(s => { if (s.group) { const g = GROUPS.find(x => x.id === s.group); s.opens = [...new Set(g.acts.map(id => ACTS.find(x => x.id === id).from))].sort(); s.title = `${g.title} · ${s.opens.length > 3 ? dm(s.opens[0]) + '–' + dm(s.opens[s.opens.length - 1]) : s.opens.map(dm).join(', ')}`; } });
+TIMING.stages.forEach(s => { if (s.group) { const g = GROUPS.find(x => x.id === s.group); s.opens = [...new Set(g.acts.map(id => ACTS.find(x => x.id === id).from))].sort(); s.title = `${g.title} (${g.kind}) · ${s.opens.length > 3 ? dm(s.opens[0]) + '–' + dm(s.opens[s.opens.length - 1]) : s.opens.map(dm).join(', ')}`; } });
 const asks = TIMING.stages.flatMap(s => s.asks.map(k => ({ ...k, stage: s.title }))).sort((x, y) => x.date < y.date ? -1 : x.date > y.date ? 1 : 0);
 p('## 7. Тайминг', '',
   `- **План А:** запуск ${dm(PROJECT.start)}; активности открываются по своим датам: ${TIMING.stages.filter(s => s.group).map(s => s.title).join('; ')}. Нет решения по отдельной активности — она открывается позже, запуск не двигаем.`,
