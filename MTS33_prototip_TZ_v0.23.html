@@ -616,7 +616,7 @@ ul.pll li{margin:3px 0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.22',
+  version: '0.23',
   updated: '07.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
@@ -678,7 +678,6 @@ const GROUPS = [
   { id: 'reg',    block: 'common', title: 'Регистрация', kind: 'регистрация',              desc: 'Удовольствие за регистрацию на платформе.', acts: ['reg'] },
   { id: 'candle', block: 'common', title: 'Пропавшая свечка', kind: 'найди спрятанное',         desc: 'Спрятанная иконка свечи.', acts: ['candle'] },
   { id: 'captcha', block: 'common', title: 'Я не робот', kind: 'шуточная капча',               desc: 'Шуточная капча: найди картинки, которые нарисовал ИИ.', acts: ['captcha'] },
-  { id: 'visit',  block: 'common', title: 'Бонус недели', kind: 'бонус за заход',             desc: 'Баллы за первый заход в неделю.', acts: ['visit'] },
   { id: 'stream', block: 'stream', title: 'Онлайн-эфир', kind: 'страница эфира',              desc: 'Баллы за эфир — по выгрузке зрителей от провайдера трансляции.', acts: ['st_watch'] },
 ];
 
@@ -701,9 +700,6 @@ const ACTS = [
   { id: 'captcha', block: 'common', title: 'Я не робот', sub: 'Капча-шутка', type: 'captcha', hidden: true, from: '2026-11-03', max: 1, pl: 1, pts: { kind: 'fixed', v: 0 }, status: 'client',
     desc: 'Внезапное окно «Подтверди, что ты не робот»: в сетке из девяти картинок нужно отметить те, что нарисовал ИИ.',
     notes: ['Показываем один раз каждому участнику — при заходе на платформу с 03.11 (дата — допущение).', 'Легенда: все 33 удовольствия хотят и роботы — докажи, что ты человек.', 'В сетке всегда 9 картинок (3 × 3), сколько из них ИИ-картинок — случайно. Картинки берём случайно из пула: 20 реальных фото и 10 ИИ-картинок.', 'Реальные фото — с бесплатного фотобанка или недорогого стока с правами на использование. Не обязательно люди: собака, капля, десерт.', 'В ИИ-картинках — нарочитые артефакты: шесть пальцев, рот под клювом. Задача — пошутить, а не обмануть.', 'Удовольствие засчитываем в любом случае; если ошибся — шутка «Похоже, ты немного робот». Баллы — решить.'] },
-  { id: 'visit', block: 'common', title: 'Бонус недели', type: 'visit', from: '2026-10-21', max: 3, pl: 0, pts: { kind: 'fixed', v: 10 }, status: 'client',
-    desc: 'Баллы за первый заход на платформу в течение календарной недели.',
-    notes: ['Заменяет серийный множитель «несколько дней подряд» из презентации: контент обновляется не каждый день, гнать людей на платформу ежедневно незачем.'] },
 
   // ---------- Работа и обучение («Начинка») ----------
   { id: 'recipe', block: 'work', title: 'Секретный рецепт', sub: 'Кадр в истории', type: 'ugc_photo', from: '2026-10-21', max: 2, pl: 1, pts: { kind: 'fixed', v: 30 }, status: 'ok',
@@ -910,9 +906,6 @@ const MECH = {
   captcha: { short: 'Капча-шутка', title: 'Капча «Я не робот»', sections: [
     ['Пользователь', ['Один раз за кампанию при заходе на платформу появляется окно «Подтверди, что ты не робот: отметь картинки, которые нарисовал ИИ».', 'Легенда: все 33 удовольствия хотят и роботы — докажи, что ты человек.', 'В сетке всегда 9 картинок (3 × 3); сколько из них ИИ-картинок, решает случай. Отметил → «Проверить» → результат.', 'Удовольствие — в любом случае. Ошибся — шутка «Похоже, ты немного робот».']],
     ['Картинки', ['Пул: 20 реальных фото и 10 ИИ-картинок, в сетку берём случайно.', 'Реальные фото — с бесплатного фотобанка или недорогого стока с правами. Не обязательно люди: собака, капля, десерт.', 'В ИИ-картинках — нарочитые артефакты: шесть пальцев, рот под клювом. Задача — пошутить, а не обмануть.']],
-  ]},
-  visit: { short: 'Бонус за заход', title: 'Бонус за заход', sections: [
-    ['Как работает', ['Первый заход на платформу в календарной неделе → +10 баллов и подсказка на платформе. Удовольствий нет.', 'Серийный множитель из презентации не делаем.']],
   ]},
   stream: { short: 'Эфир', title: 'Эфир: баллы по выгрузке', sections: [
     ['Страница эфира', ['Анонс, обратный отсчёт и кнопка перехода к трансляции. Трансляция, чат, квизы и опросы — на платформе провайдера трансляции; у нас интерактивов нет.', 'Встраиваем ли плеер — по ответу МТС.']],
@@ -1309,6 +1302,7 @@ const TIMING = {
 };
 
 const CHANGELOG = [
+  { v: '0.23', date: '07.10.2026', items: ['«Бонус недели» убран из прототипа и ТЗ: бонусов за заходы на платформу нет, множителя за серию дней — тоже.'] },
   { v: '0.22', date: '07.10.2026', items: ['Решено: множителя за серию дней подряд нет — вместо него бонус недели. Вопрос убран из открытых.'] },
   { v: '0.21', date: '07.10.2026', items: [
     'АПОЖ — по презентации, вариант 2: разгон (угадать три песни топ-менеджеров), выбор роли «Спеть» или «Отгадать», смена роли 04.11. Отгадывание песен коллег открывается 31.10. Все записи проверяем. Три удовольствия, по 20 баллов за каждое.',
@@ -1424,11 +1418,11 @@ const S = {
   date: DEMO_DATES[0].v, auth: false, view: 'desktop', hh: false, candle: false, candleFound: false, candlePos: null,
   route: 'landing', menu: false,
   done: {}, apts: {}, sub: {}, quiz: {}, audio: {}, vid: {}, game: {}, likes: new Set(), votes: {}, guess: null,
-  code: null, visitWeeks: new Set(), ui: { nom: 'all', batch: 0, quizView: 'cards' }, shine: new Set(), captcha: null, apozhRole: null,
+  code: null,  ui: { nom: 'all', batch: 0, quizView: 'cards' }, shine: new Set(), captcha: null, apozhRole: null,
   regErr: false, loginErr: false, recovered: false,
 };
 function resetProgress() {
-  Object.assign(S, { done: {}, apts: {}, sub: {}, quiz: {}, audio: {}, vid: {}, game: {}, likes: new Set(), votes: {}, guess: null, code: null, candleFound: false, visitWeeks: new Set(), ui: { nom: 'all', batch: 0, quizView: S.ui.quizView || 'cards' }, shine: new Set(), captcha: null, apozhRole: null });
+  Object.assign(S, { done: {}, apts: {}, sub: {}, quiz: {}, audio: {}, vid: {}, game: {}, likes: new Set(), votes: {}, guess: null, code: null, candleFound: false,  ui: { nom: 'all', batch: 0, quizView: S.ui.quizView || 'cards' }, shine: new Set(), captcha: null, apozhRole: null });
 }
 
 /* ---------- логика доступности и начислений (описана в ТЗ, раздел «Доступность и начисления») ---------- */
@@ -1453,7 +1447,7 @@ const PL_MAX = ACTS.reduce((s, a) => s + plMax(a), 0);
 const totalPl = () => ACTS.reduce((s, a) => s + plGot(a), 0);
 const totalPts = () => Object.values(S.apts).reduce((s, v) => s + v, 0);
 function blockStats(bid) { let got = 0, max = 0; ACTS.filter(a => a.block === bid).forEach(a => { got += plGot(a); max += plMax(a); }); return { got, max }; }
-const listable = a => !a.hidden && !['system', 'visit'].includes(a.type) && a.block !== 'stream';
+const listable = a => !a.hidden && a.type !== 'system' && a.block !== 'stream';
 const myPlace = () => Math.max(11, 3140 - totalPts() * 7);
 
 function activeBooster() {
@@ -1475,12 +1469,6 @@ function award(id, pts, opt = {}) {
   if (mult > 1) parts.push('×2 счастливый час');
   if (parts.length) toast(`<b>${parts.join(' · ')}</b> — ${esc(a.title)}`);
   if (before < PL_MAX && totalPl() === PL_MAX) setTimeout(() => modal(`<div class="ph round" style="width:70px;height:70px;margin:0 auto">33</div><h3>Все ${PL_MAX} удовольствия собраны!</h3><p>Поздравляем! Баллы продолжают идти в турнирную таблицу.</p><button class="btn red" data-act="closeModal">Ура!</button>`), 500);
-}
-function checkVisit() {
-  if (!S.auth || ended() || S.date < PROJECT.start) return;
-  const w = Math.floor(dayDiff(PROJECT.start, S.date) / 7);
-  if (S.visitWeeks.has(w) || isComplete(A.visit)) return;
-  S.visitWeeks.add(w); award('visit', A.visit.pts.v);
 }
 
 /* ---------- подписи ---------- */
@@ -1505,7 +1493,7 @@ function stateChip(a) {
 }
 const sBadge = a => `<span class="sbadge ${a.status}" title="Статус проработки в ТЗ">${STATUS[a.status].label}</span>`;
 const plChip = a => plMax(a) ? `<span class="chip pl">${esc(plLabel(a))}</span>` : '';
-const ICO = { ugc_photo: 'фото', ugc_video: 'видео', like: '♥', quiz: 'квиз', audio: 'аудио', video_view: '▶', game: 'игра', captcha: 'робот', story: 'ИИ', stream: 'эфир', find: '?', tbd: '?', system: '✓', visit: '+' };
+const ICO = { ugc_photo: 'фото', ugc_video: 'видео', like: '♥', quiz: 'квиз', audio: 'аудио', video_view: '▶', game: 'игра', captcha: 'робот', story: 'ИИ', stream: 'эфир', find: '?', tbd: '?', system: '✓' };
 
 /* ---------- таймеры (чистятся при каждой перерисовке) ---------- */
 let TIMERS = [];
@@ -1586,7 +1574,7 @@ function grow(g) {
 }
 
 /* ---------- разделы, турнирная таблица ---------- */
-const blockGroups = id => GROUPS.filter(g => g.block === id && !(id === 'common' && g.id === 'visit'));
+const blockGroups = id => GROUPS.filter(g => g.block === id);
 function blockTiles() {
   return `<div class="agrid">${BLOCKS.filter(b => !['stream', 'common'].includes(b.id)).map(b => { const n = blockGroups(b.id).length;
     return `<div class="acard" data-go="block/${b.id}"><div class="top"><div class="ph ico">${esc(b.name[0])}</div><div><div class="t">${esc(b.name)}</div><div class="s">${esc(b.tagline)}</div></div></div><div class="d">${esc(b.desc)}</div><div class="bot"><span class="chip">${n + ' ' + plural(n, 'активность', 'активности', 'активностей')}</span></div></div>`; }).join('')}</div>`;
@@ -1653,7 +1641,6 @@ function vBlock(id) {
     <h1>${esc(b.name)}</h1><div class="muted">${esc(b.tagline)}. ${esc(b.desc)}</div></div>
     ${hhBanner()}
     <div class="alist" style="margin-top:16px">${blockGroups(id).map(grow).join('')}</div>
-    ${id === 'common' ? `<div class="note warn">Бонус недели: +${A.visit.pts.v} баллов за первый заход в каждую неделю (на согласовании). Эфир — «34-е удовольствие», удовольствий на платформе не даёт.</div>` : ''}
   </div>`;
 }
 
@@ -1682,7 +1669,6 @@ const bodyStub = a => `<div class="panel center"><h3>${esc(a.title)}</h3><p clas
 /* ---------- тела активностей по типам механик ---------- */
 const BODY = {
   system: a => `<div class="panel center"><h3>${isComplete(a) ? 'Готово ✓' : 'Начисляется автоматически'}</h3><p class="muted">${esc(a.desc)}</p></div>`,
-  visit: a => `<div class="panel center"><h3>Бонус недели</h3><p class="muted">${esc(a.desc)} Получено: ${cnt(a)} из ${a.max}.</p></div>`,
   tbd: a => `<div class="panel center"><h3>Механика в работе</h3><p class="muted">${esc(a.desc)}</p><p><span class="chip pl">резерв: ${esc(plLabel(a))}</span></p></div>`,
   captcha(a) {
     if (isComplete(a)) return `<div class="panel center"><h3>Капча пройдена ✓</h3><p class="muted">Ты доказал, что не робот${S.captcha && S.captcha.ok === false ? ' — ну, почти' : ''}. Капчу показываем один раз.</p></div>`;
@@ -1867,7 +1853,7 @@ function plRows() {
 function plList() {
   return plRows().map(({ b, groups, max }) => `<h4 style="margin:14px 0 4px">${esc(b.name)} — ${max} ${wPl(max)}</h4><ul class="pll">${groups.map(({ g, acts }) => { const n = acts.reduce((s, a) => s + plMax(a), 0);
     return `<li><b>${esc(g.title)}</b> — ${n}${acts.length > 1 ? ': ' + acts.map(a => `${esc(tabT(a))} — ${plMax(a)}`).join(', ') : ' · ' + esc(plFor(acts[0]))}</li>`; }).join('')}</ul>`).join('')
-    + `<p class="small muted" style="margin-top:10px">Всего ${PL_MAX} ${wPl(PL_MAX)}. Эфир и бонус недели — без удовольствий, только баллы.</p>`;
+    + `<p class="small muted" style="margin-top:10px">Всего ${PL_MAX} ${wPl(PL_MAX)}. Эфир — без удовольствий, только баллы.</p>`;
 }
 function player(label) { return `<div class="player"><button class="pbtn" data-act="toast" data-v="Воспроизведение аудио">▶</button><div class="grow"><div class="small"><b>${esc(label)}</b></div><div class="wave"></div></div><span class="small muted timer">0:08</span></div>`; }
 function ugcForm(a, st, o) {
@@ -2130,8 +2116,8 @@ const ACTIONS = {
   setDate(el) { setDate(el.dataset.v); },
   regErr() { S.regErr = !S.regErr; render(); },
   loginErr() { S.loginErr = !S.loginErr; render(); },
-  skipReg() { S.auth = true; S.regErr = false; S.loginErr = false; if (!isComplete(A.reg)) award('reg', 0); checkVisit(); go(PUBLIC.includes(S.route.split('/')[0]) ? 'home' : S.route); },
-  register() { S.regErr = false; S.auth = true; if (!isComplete(A.reg)) award('reg', 0); checkVisit(); go('home'); },
+  skipReg() { S.auth = true; S.regErr = false; S.loginErr = false; if (!isComplete(A.reg)) award('reg', 0); go(PUBLIC.includes(S.route.split('/')[0]) ? 'home' : S.route); },
+  register() { S.regErr = false; S.auth = true; if (!isComplete(A.reg)) award('reg', 0); go('home'); },
   quizView() { S.ui.quizView = S.ui.quizView === 'single' ? 'cards' : 'single'; render(); },
   modalGo(el) { closeModal(); go(el.dataset.v); },
   shinePlay(el) {
@@ -2156,17 +2142,17 @@ const ACTIONS = {
     award('captcha', A.captcha.pts.v); render();
   },
   stImport() { award('st_watch', A.st_watch.pts.v); render(); },
-  login() { S.auth = true; S.loginErr = false; checkVisit(); go('home'); },
+  login() { S.auth = true; S.loginErr = false; go('home'); },
   recover() { S.recovered = true; render(); },
   logout() { S.auth = false; go('landing'); },
 };
-function setDate(v) { S.date = v; checkVisit(); render(); }
+function setDate(v) { S.date = v; render(); }
 
 /* ---------- демо: заполнить прогресс ---------- */
 function demoFill() {
   if (!S.auth) { S.auth = true; award('reg', 0); }
   ACTS.forEach(a => {
-    if (a.hidden || a.block === 'stream' || a.type === 'visit' || a.type === 'tbd' || !canDo(a) || Math.random() < .35) return;
+    if (a.hidden || a.block === 'stream' || a.type === 'tbd' || !canDo(a) || Math.random() < .35) return;
     const n = a.max > 1 ? 1 + Math.floor(Math.random() * a.max) : 1; S.done[a.id] = n;
     const p = a.pts; S.apts[a.id] = p.kind === 'fixed' ? p.v * n : p.kind === 'score' ? Math.round(p.v * .75) : p.kind === 'result' ? p.v * 2 : p.kind === 'tries' ? p.v * n : 0;
     if (a.id === 'shine') for (let i = 1; i <= n; i++) S.shine.add(i);
@@ -2178,7 +2164,7 @@ function demoFill() {
     if (a.id === 'aiguess') S.guess = 1;
     if (a.id === 'talent_like') S.likes.add('t1');
   });
-  checkVisit(); toast('Демо-прогресс заполнен'); go('home');
+  toast('Демо-прогресс заполнен'); go('home');
 }
 
 /* =====================================================================
@@ -2300,7 +2286,7 @@ const TZ = [
       ...groups.flatMap(({ g, acts }) => acts.map((a, i) => `<tr><td>${i ? '' : `<b>${esc(g.title)}</b>`}</td><td>${tzA(a.id)}</td><td>${esc(plFor(a))}</td><td class="num">${plMax(a)}</td></tr>`))]).join('');
     return `<p>Все ${PROJECT.pleasuresTotal} удовольствия — по разделам и активностям. Та же таблица есть в прототипе на странице «Правила акции». Баллы — в <a data-tz="registry">реестре</a> и на экране «Турнирная таблица».</p>
     <div class="tblwrap"><table class="tbl"><thead><tr><th>Активность</th><th>Задание</th><th>За что</th><th class="num">Удовольствий</th></tr></thead><tbody>${rows}<tr class="tot"><td colspan="3">Всего${PL_MAX === PROJECT.pleasuresTotal ? '' : ' — не сходится с ' + PROJECT.pleasuresTotal + '!'}</td><td class="num">${PL_MAX} / ${PROJECT.pleasuresTotal}</td></tr></tbody></table></div>
-    <p class="small muted">Без удовольствий, только баллы: эфир, бонус недели, «Записать свою песню», главы истории и «Кто виновник?». «Добро» — резерв на 10 удовольствий, механика в работе.</p>`; } },
+    <p class="small muted">Без удовольствий, только баллы: эфир, главы истории и «Кто виновник?». «Добро» — резерв на 10 удовольствий, механика в работе.</p>`; } },
 
   { id: 'timeline', title: 'Сроки и этапы', html: () => `
     <div class="callout"><b>Праздник на платформе: ${dm(PROJECT.start)} – ${dm(PROJECT.end)}</b>, эфир — ${dm(PROJECT.stream)}. Неделя до эфира и две после — подтверждено на встрече с МТС 01.10 (в презентации было 14–28.10).</div>
@@ -2333,7 +2319,7 @@ const TZ = [
       ['Выбирает раздел и активность', 'В разделе — карточки активностей. Внутри активности — её задания: например, «Работаем вместе» → «Тайна пропавшего торта» → главы. Открывается первое невыполненное.', 'block/team'],
       ['Выполняет задания', 'Рассказывает историю, загружает номер, проходит квиз, делает разминку, играет, голосует в истории. Удовольствия и баллы — сразу; за истории, номера и записанные песни — после проверки организаторами.', 'act/recipe'],
       ['Следит за своими материалами', 'В профиле — «Мои материалы»: на модерации, опубликовано или отклонено. Писем и пушей нет — всё видно на платформе.', 'profile'],
-      ['Возвращается', 'Раз в неделю — новый выпуск квиза, раз в три дня — новая глава истории, разминки — по мере готовности. Бонус недели, счастливые часы, спрятанная свечка, капча «Я не робот». Пропущенное остаётся доступным.', 'home'],
+      ['Возвращается', 'Раз в неделю — новый выпуск квиза, раз в три дня — новая глава истории, разминки — по мере готовности. Счастливый час, спрятанная свечка, капча «Я не робот». Пропущенное остаётся доступным.', 'home'],
       ['Смотрит эфир 28.10', 'Ток-шоу «Без галстука»: со страницы эфира переходит к трансляции на платформе провайдера, там же квизы и опросы. Баллы за эфир — если МТС передаст выгрузку зрителей. Запись — после эфира.', 'stream'],
       ['Две недели после эфира', 'Основные задания и новые выпуски. По клику на прогресс в шапке — «Мой прогресс»: что осталось и переход сразу к непройденному.', 'progress'],
       ['Собирает все 33 и следит за турнирной таблицей', 'Топ-10 получают призы; среди набравших порог разыгрываем 50 призов, среди всех участников — 100.', 'rating'],
@@ -2352,7 +2338,7 @@ const TZ = [
       '<b>Баллы зависят от задания:</b> 10, 20, 30 или 50. Одни только удовольствия не выявят победителей — собрать все 33 может каждый, поэтому нужен рейтинг по баллам.',
       '<b>Баллы — за первое прохождение</b> (как правило; встреча 01.10). Переиграть ради баллов нельзя. Исключение на решении — игра, где сейчас в рейтинг идёт лучший результат.',
       '<b>Счастливый час</b> — у каждого свой, раз в неделю: ×2 баллов за любые задания. Удовольствия не умножаются.',
-      '<b>Бонус за заход</b> — раз в неделю; ежедневных бонусов нет.',
+      '<b>Бонусов за заходы на платформу нет</b> — ни ежедневных, ни еженедельных. Множителя за серию дней подряд из презентации тоже нет (решено).',
       '<b>Лайки:</b> за поддержку своего номера автор баллов не получает.',
     ])}
     <h3>Статусы заданий</h3>
@@ -2379,7 +2365,6 @@ const TZ = [
       `${tzA('candle')} — 24.10 «день свечки»: иконка появляется у всех, бонус — первым N нашедшим. Кто не нашёл или пришёл позже — свечка появляется при следующем заходе, без бонуса, но с удовольствием. ${sb(A.candle.status)}`,
       `${tzA('captcha')} — шуточная капча: один раз каждому участнику, в сетке 9 картинок, найти ИИ-картинки. ${sb(A.captcha.status)}`,
       '«Тайный ингредиент» из презентации снят: по сути это тот же счастливый час, а 15 минут без причины — слишком жёстко.',
-      `${tzA('visit')} — баллы за первый заход в неделю. Множитель за серию дней подряд из презентации не делаем — решено: контент обновляется не каждый день. ${sb(A.visit.status)}`,
     ])}` },
 
   { id: 'screens', title: 'Экраны', kids: () => SCREENS.map(s => ({ id: 'scr-' + s.id, t: s.title })),
@@ -2419,7 +2404,7 @@ const TZ = [
       'Почта — только корпоративная: МТС и дочерние компании.',
       'Подтверждения почты кодом нет — после формы участник сразу попадает на главную.',
       'Забыли пароль — присылаем новый пароль на почту, без ссылок и кодов. Сменить его на свой — в профиле.',
-      'После регистрации — первое удовольствие «Регистрация» (если согласуют формулировку) и бонус недели.',
+      'После регистрации — первое удовольствие «Регистрация» (если согласуют формулировку).',
       'В профиле — данные участника и «Мои материалы».',
     ])}` },
 
@@ -2742,7 +2727,7 @@ function buildScreenSelect() {
   const base = [['landing', 'Лендинг (гость)'], ['register', 'Регистрация'], ['login', 'Вход'], ['recover', 'Восстановление пароля'], ['home', 'Главная'], ['progress', 'Мой прогресс'], ['rating', 'Турнирная таблица'], ['stream', 'Эфир'], ['rules', 'Правила акции'], ['profile', 'Профиль'], ['final', 'Финальное состояние']];
   let h = `<option value="">— перейти к экрану —</option><optgroup label="Экраны">${base.map(([r, t]) => `<option value="${r}">${t}</option>`).join('')}</optgroup>`;
   BLOCKS.forEach(b => {
-    const acts = ACTS.filter(a => a.block === b.id && !['system', 'visit'].includes(a.type)); if (!acts.length) return;
+    const acts = ACTS.filter(a => a.block === b.id && a.type !== 'system'); if (!acts.length) return;
     h += `<optgroup label="${esc(b.name)}">${b.id === 'common' ? '' : `<option value="block/${b.id}">Страница блока</option>`}${acts.map(a => `<option value="act/${a.id}">${esc(shortT(a))}</option>`).join('')}</optgroup>`;
   });
   document.getElementById('d_screen').innerHTML = h;
@@ -2756,7 +2741,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('d_date').addEventListener('change', e => setDate(e.target.value));
   document.getElementById('d_auth').addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
-    if (b.dataset.v === '1') { if (!S.auth) { S.auth = true; if (!isComplete(A.reg)) award('reg', 0); checkVisit(); go('home'); } }
+    if (b.dataset.v === '1') { if (!S.auth) { S.auth = true; if (!isComplete(A.reg)) award('reg', 0); go('home'); } }
     else { S.auth = false; go('landing'); }
   });
   document.getElementById('d_view').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S.view = b.dataset.v; render(); });
