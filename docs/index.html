@@ -617,7 +617,7 @@ ul.pll li{margin:3px 0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.18',
+  version: '0.19',
   updated: '07.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
@@ -1315,6 +1315,7 @@ const TIMING = {
 };
 
 const CHANGELOG = [
+  { v: '0.19', date: '07.10.2026', items: ['Тайминг: описание плана А сокращено — если все сроки соблюдены, запускаемся 21.10; тайминг жёсткий, если что-то не успеваем — сдвигаем запуск.'] },
   { v: '0.18', date: '07.10.2026', items: ['Тайминг: рядом с названием каждой активности — коротко, что это за механика, например «Дегустация фактов (квиз)». Названия могут поменяться, механика — нет.', 'Дизайн экранов уже идёт и без KV — с 05.10. Драфт KV нужен для финального стиля и больше не ключевой срок для плана Б; ключевой — согласование драфтов дизайна 16.10.'] },
   { v: '0.17', date: '07.10.2026', items: ['Тайминг: гайдбук МТС, правила коммуникации и исходники 3D получены 07.10.'] },
   { v: '0.16', date: '07.10.2026', items: [
@@ -2609,7 +2610,6 @@ function renderTiming() {
   const over = asks.filter(k => !k.got && k.date < today);
   const toLaunch = dayDiff(today, PROJECT.start);
   const nextKey = keysOpen.find(k => k.date >= today);
-  const w = TIMING.stages.filter(s => s.group);
   const sw = `<div class="plsw" role="tablist">
     <button data-planmode="a" class="${PLAN === 'a' ? 'on' : ''}"><b>План А</b><span>запуск ${dm(PROJECT.start)}</span></button>
     <button data-planmode="b" class="${PLAN === 'b' ? 'on' : ''}"><b>План Б</b><span>запуск после эфира</span></button>
@@ -2652,12 +2652,8 @@ function renderTiming() {
       <div class="kpi"><b>${open.length}</b><span>${plural(open.length, 'пункт', 'пункта', 'пунктов')} ждём от МТС всего${over.length ? ` · <b style="display:inline;font-size:12px;color:var(--red-ink)">просрочено: ${over.length}</b>` : ''}</span></div>
       <div class="kpi"><b>${nextKey ? dm(nextKey.date) : '—'}</b><span>${nextKey ? 'ближайший ★: ' + esc(nextKey.what.split(' — ')[0].split(':')[0]) : 'ключевые сроки прошли'}</span></div>
     </div>
-    <div class="plan a"><span class="tag">План А</span><h3>Запуск ${dmw(PROJECT.start)}</h3><ul>
-      <li>МТС закрывает все ключевые пункты ★ в срок: первый — ${dmw(keys[0].date)}, последний — ${dmw(keys[keys.length - 1].date)}.</li>
-      <li>21.10 открывается каркас и первые активности, остальные — по своим датам: ${w.map(s => `<a class="link" data-plan="${s.id}">${esc(G[s.group].title)}</a> (${esc(G[s.group].kind)}) — ${s.when}`).join('; ')}. Разработка продолжается и после запуска.</li>
-      <li>Нет решения по отдельной активности — она открывается позже. Запуск не двигаем.</li>
-      <li>Не закрыт хотя бы один пункт ★ — <a class="link" data-planmode="b">план Б</a>.</li>
-    </ul></div>
+    <div class="plan a"><span class="tag">План А</span><h3>Запуск ${dmw(PROJECT.start)}</h3>
+      <p style="margin:0">Если все сроки соблюдены — запускаемся ${dm(PROJECT.start)}. Тайминг жёсткий: если что-то не успеваем, сдвигаем запуск — <a class="link" data-planmode="b">план Б</a>.</p></div>
     <h2>Диаграмма</h2>
     <div class="plgnd">${Object.entries(WHO).map(([k, v]) => `<span><i class="who ${k}"></i>${v}</span>`).join('')}<span><i class="dm"></i>Срок, к которому нужно от МТС</span><span><i class="dm key"></i>★ Ключевой срок: не успели — план Б</span><span><i class="hlk"></i>Запуск и эфир</span></div>
     ${planTimeline(today)}
