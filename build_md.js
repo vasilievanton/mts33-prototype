@@ -4,8 +4,8 @@ const fs = require('fs');
 const [src, out] = process.argv.slice(2);
 const html = fs.readFileSync(src, 'utf8');
 const data = html.slice(html.indexOf('const PROJECT = {'), html.indexOf('/* =====================================================================\n   ПРОТОТИП'));
-const { PROJECT, STATUS, STATES, BLOCKS, ACTS, BOOSTERS, GROUPS, MECH, QUESTIONS, TIMING } =
-  new Function(data + '; return { PROJECT, STATUS, STATES, BLOCKS, ACTS, BOOSTERS, GROUPS, MECH, QUESTIONS, TIMING };')();
+const { PROJECT, STATUS, STATES, BLOCKS, ACTS, HAPPY, GROUPS, MECH, QUESTIONS, TIMING } =
+  new Function(data + '; return { PROJECT, STATUS, STATES, BLOCKS, ACTS, HAPPY, GROUPS, MECH, QUESTIONS, TIMING };')();
 
 const dm = iso => iso.slice(8, 10) + '.' + iso.slice(5, 7);
 const range = (a, b) => a === b ? dm(a) : `${dm(a)}–${dm(b)}`;
@@ -89,8 +89,7 @@ p('## 5. Модули платформы', '',
 
 p('## 6. Сюрпризы и счастливые часы', '',
   ...ACTS.filter(a => a.block === 'common' && a.id !== 'reg').map(a => `- **${a.title}** — ${a.desc[0].toLowerCase() + a.desc.slice(1)} ${(a.notes || []).join(' ')}`),
-  '- **Счастливый час** — о нём узнают только на платформе, поэтому окно длинное (рабочий вариант). Примеры расписания:',
-  ...BOOSTERS.map(b => `  - ${dm(b.date)}, ${b.from}–${b.to} — ×${b.mult} за «${title(b.act)}»${b.note ? ' (' + b.note + ')' : ''}`), '');
+  `- **Счастливый час** — у каждого свой, раз в неделю: случайный рабочий день и час с ${HAPPY.from} до ${HAPPY.to} по часовому поясу региона из регистрации. ×${HAPPY.mult} к баллам за любые задания. Узнаёт только на платформе — баннер.`, '');
 
 TIMING.stages.forEach(s => { if (s.group) { const g = GROUPS.find(x => x.id === s.group); s.opens = [...new Set(g.acts.map(id => ACTS.find(x => x.id === id).from))].sort(); s.title = `${g.title} (${g.kind}) · ${s.opens.length > 3 ? dm(s.opens[0]) + '–' + dm(s.opens[s.opens.length - 1]) : s.opens.map(dm).join(', ')}`; } });
 const asks = TIMING.stages.flatMap(s => s.asks.map(k => ({ ...k, stage: s.title }))).sort((x, y) => x.date < y.date ? -1 : x.date > y.date ? 1 : 0);
