@@ -521,6 +521,14 @@ h1,h2,h3{line-height:1.15;margin:0}
 .lkbar{height:10px;border-radius:6px;background:var(--ph2);overflow:hidden;margin:6px 0}
 .lkbar i{display:block;height:100%;background:var(--red)}
 .lkt td{vertical-align:top}
+.pitem.lnk{cursor:pointer;border-radius:8px;margin:0 -6px;padding:7px 6px 6px}
+.pitem.lnk:hover{background:#f6f6f8}
+.pitem .pt{display:flex;justify-content:space-between;gap:8px}
+.pitem .pt .go{font-weight:700}
+.pitem .pm{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mini{display:inline-flex;gap:3px}
+.mini i{width:10px;height:10px;border-radius:50%;border:1.5px solid #b9b9c3;display:block}
+.mini i.on{background:var(--red);border-color:var(--red)}
 .lkw{overflow-x:auto}
 .lktabs{overflow-x:auto;flex-wrap:nowrap}
 .lktabs button{white-space:nowrap}
@@ -631,7 +639,7 @@ ul.pll li{margin:3px 0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.24',
+  version: '0.25',
   updated: '07.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
@@ -982,13 +990,13 @@ const SCREENS = [
     purpose: 'Всё о своём участии в одном месте: сколько собрано, где ещё заработать, история начислений, материалы и данные. Открывается из прогресса в шапке и по аватару.',
     elements: [
       'Сводка: удовольствия «N из 33» с полосой прогресса, баллы, место в турнирной таблице, сколько удовольствий ещё можно собрать.',
-      'Вкладка «Мой прогресс» — таблица по разделам и заданиям: удовольствия «собрано из возможных», баллы — сколько получено и сколько можно получить, за что начисляют, статус и ссылка «Перейти» к невыполненному. Скрытые сюрпризы — «???», пока не найдены; у них нет перехода.',
-      'Вкладка «История начислений» — каждое начисление: дата, задание, удовольствия, баллы, отметка «×2 счастливый час». Новые сверху.',
+      'Вкладка «Мой прогресс» — карточки по разделам. В карточке: удовольствия раздела «собрано из возможных» и баллы, точки-удовольствия (закрашенные — собраны). Ниже — все задания раздела: название, мини-точки и «N из M удовольствий», баллы «получено из возможных» (у игры — без потолка), за что начисляют, статус. Нажатие на задание открывает его страницу. Скрытые сюрпризы — «???», без перехода. Внизу — плашка эфира с баллами за эфир.',
+      'Вкладка «История начислений» — каждое начисление: дата, задание (ссылка на него), удовольствия, баллы, отметка «×2 счастливый час». Новые сверху.',
       'Вкладка «Мои материалы»: истории, номера и песни со статусом — на проверке, опубликовано, отклонено. Отклонённый можно заменить новым: лимит он не занимает. Уведомлений нет — результат проверки участник видит здесь и на странице задания.',
       'Вкладка «Данные»: имя, фамилия, регион, компания — редактируются; почта — только просмотр; смена пароля, выход.',
     ],
     states: ['Новичок: в истории пусто — «Выполни первое задание».', 'Сохранено / ошибка валидации в данных.'],
-    notes: ['В референсе из презентации только кружочки без подписей — так неудобно: непонятно, что осталось пройти. Поэтому — таблица с названиями, цифрами и переходом.'] },
+    notes: ['В референсе из презентации только кружочки без подписей — так неудобно: непонятно, что осталось пройти. Поэтому кружочки дополнены названиями, цифрами и переходом к заданию.'] },
   { id: 'final', route: 'home', title: 'Финальное состояние (после 11.11)',
     purpose: 'Как выглядит платформа, когда всё закончилось. Продумать заранее, а не в процессе.',
     elements: ['Главная: «Праздник завершён», личный итог (удовольствия, баллы, место), итоги розыгрышей — в блоке призов, ссылка на запись эфира.', 'Все активности — только просмотр: ленты, номера талант-шоу, главы истории.', 'Регистрация закрыта.'],
@@ -1323,6 +1331,7 @@ const TIMING = {
 };
 
 const CHANGELOG = [
+  { v: '0.25', date: '07.10.2026', items: ['Личный кабинет, «Мой прогресс»: вместо таблицы снова карточки по разделам с точками-удовольствиями. У каждого задания — удовольствия и баллы «сколько из скольких», за что начисляют и статус; нажатие открывает задание. В истории начислений названия заданий — тоже ссылки.'] },
   { v: '0.24', date: '07.10.2026', items: [
     'Талант-шоу: номинаций нет. Вместо лайков — раунды «Выбери лучший»: три случайных номера коллег, выбираешь один, отменить нельзя, сразу следующий раунд. Своего номера в раунде нет, первыми показываем номера с наименьшим числом показов.',
     'Удовольствие — за первый раунд, баллы — 10 за раунд, не больше двух в день и пяти за праздник. Автор баллов за выборы не получает, но видит статистику своего номера. Лента номеров — только для просмотра.',
@@ -2002,21 +2011,27 @@ function lkSummary() {
     <div class="lkbig"><div class="small muted">Место</div><div class="num">${totalPts() ? myPlace() : '—'}</div><div class="small"><span class="link" data-go="rating">Турнирная таблица →</span></div></div></div>`;
 }
 function lkProgress() {
-  const rows = BLOCKS.flatMap(b => {
-    const acts = ACTS.filter(a => a.block === b.id && (plMax(a) || ptsCap(a) !== 0)); if (!acts.length) return [];
+  const cols = BLOCKS.filter(b => b.id !== 'stream');
+  const dots = (got, max, q) => Array.from({ length: max }, (_, i) => `<i class="${i < got ? 'on' : ''} ${q ? 'q' : ''}"></i>`).join('');
+  return `<div class="pgrid" style="margin-top:14px">${cols.map(b => {
+    const acts = ACTS.filter(a => a.block === b.id);
     const st = blockStats(b.id); const bp = acts.reduce((n, a) => n + (S.apts[a.id] || 0), 0);
-    return [`<tr class="grp"><td>${esc(b.name)}</td><td>${st.max ? st.got + ' из ' + st.max : '—'}</td><td>${bp}</td><td class="hm"></td><td></td></tr>`, ...acts.map(a => {
-      const secret = a.hidden && !isComplete(a); const s = actState(a); const cap = ptsCap(a); const gotP = S.apts[a.id] || 0;
-      const how = secret ? 'Появится неожиданно' : `${plMax(a) ? esc(plFor(a)) : 'без удовольствий'} · ${esc(ptsLabel(a))}`;
-      const go = secret || a.block === 'common' || ['done', 'soon', 'ended'].includes(s) ? '' : `<span class="link" data-go="${a.block === 'stream' ? 'stream' : 'act/' + a.id}">Перейти →</span>`;
-      return `<tr><td>${secret ? '??? Секретное задание' : esc(lkName(a))}<div class="small muted">${how}</div></td><td class="${plMax(a) && plGot(a) >= plMax(a) ? 'okc' : ''}">${plMax(a) ? plGot(a) + ' из ' + plMax(a) : '—'}</td><td>${gotP}${cap ? ' из ' + cap : cap === null ? ' · без потолка' : ''}</td><td class="hm">${secret ? '' : stateChip(a)}</td><td>${go}</td></tr>`; })];
-  });
-  return `<div class="lkw"><table class="rtable lkt"><thead><tr><th>Задание</th><th>Удовольствия</th><th>Баллы</th><th class="hm">Статус</th><th></th></tr></thead><tbody>${rows.join('')}</tbody></table></div>
-    <p class="small muted">В свой счастливый час баллы за любые задания удваиваются. Удовольствия не умножаются.</p>`;
+    return `<div class="pcol"><h3>${esc(b.name)}</h3><div class="sub">Удовольствия: <b>${st.got} из ${st.max}</b> · баллы: <b>${bp}</b></div><div class="slots">${acts.map(a => dots(plGot(a), plMax(a), a.hidden && !isComplete(a))).join('')}</div>
+      <div class="plist">${acts.map(a => {
+        const secret = a.hidden && !isComplete(a); const cap = ptsCap(a); const gotP = S.apts[a.id] || 0;
+        const link = !secret && a.block !== 'common';
+        const pts = cap ? `${gotP} из ${cap} ${wPts(cap)}` : cap === null ? `${gotP} ${wPts(gotP)} · без потолка` : `${gotP} ${wPts(gotP)}`;
+        return `<div class="pitem ${link ? 'lnk' : ''}" ${link ? `data-go="${a.block === 'stream' ? 'stream' : 'act/' + a.id}"` : ''}>
+          <div class="pt"><b>${secret ? '??? Секретное задание' : esc(lkName(a))}</b>${link ? '<span class="go">→</span>' : ''}</div>
+          ${secret ? '<div class="small muted">Появится неожиданно</div>' : `<div class="pm">${plMax(a) ? `<span class="mini">${dots(plGot(a), plMax(a))}</span><span>${plGot(a)} из ${plMax(a)} ${wPl(plMax(a))}</span>` : '<span class="muted">без удовольствий</span>'}</div><div class="pm">${pts}</div>
+          <div class="small muted">${plMax(a) ? esc(plFor(a)) + ' · ' : ''}${esc(ptsLabel(a))}</div><div class="pa">${stateChip(a)}</div>`}</div>`; }).join('')}</div></div>`;
+  }).join('')}</div>
+  <div class="banner info" style="margin-top:14px"><b>Эфир ${dm(PROJECT.stream)}</b><span class="grow">34-е удовольствие — его нельзя получить на платформе. Баллы за эфир: ${S.apts.st_watch || 0} из ${A.st_watch.pts.v} — если МТС передаст выгрузку зрителей.</span><button class="btn sm ghost" data-go="stream">К эфиру</button></div>
+  <p class="small muted">Нажми на задание — откроется его страница. В свой счастливый час баллы за любые задания удваиваются, удовольствия не умножаются.</p>`;
 }
 function lkLog() {
   if (!S.log.length) return `<div class="panel center"><h3>Пока пусто</h3><p class="muted">Выполни первое задание — здесь появятся все начисления.</p><button class="btn red" data-go="home">К разделам</button></div>`;
-  return `<div class="lkw"><table class="rtable lkt"><thead><tr><th>Дата</th><th>За что</th><th>Удовольствия</th><th>Баллы</th></tr></thead><tbody>${S.log.slice().reverse().map(e => `<tr><td>${dm(e.date)}</td><td>${esc(lkName(A[e.id]))}</td><td>${e.pl ? '+' + e.pl : '—'}</td><td>${e.pts ? '+' + e.pts : '—'}${e.hh ? ' <span class="chip hh">×2 счастливый час</span>' : ''}</td></tr>`).join('')}</tbody></table></div>
+  return `<div class="lkw"><table class="rtable lkt"><thead><tr><th>Дата</th><th>За что</th><th>Удовольствия</th><th>Баллы</th></tr></thead><tbody>${S.log.slice().reverse().map(e => `<tr><td>${dm(e.date)}</td><td>${A[e.id].block === 'common' ? esc(lkName(A[e.id])) : `<span class="link" data-go="${A[e.id].block === 'stream' ? 'stream' : 'act/' + e.id}">${esc(lkName(A[e.id]))}</span>`}</td><td>${e.pl ? '+' + e.pl : '—'}</td><td>${e.pts ? '+' + e.pts : '—'}${e.hh ? ' <span class="chip hh">×2 счастливый час</span>' : ''}</td></tr>`).join('')}</tbody></table></div>
     <p class="small muted">Итого: ${totalPl()} ${wPl(totalPl())} и ${totalPts()} ${wPts(totalPts())}. Баллы за истории, номера и песни приходят после проверки.</p>`;
 }
 function lkData() {
