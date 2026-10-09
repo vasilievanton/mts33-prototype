@@ -5,6 +5,9 @@ set -e
 cd "$(dirname "$0")"
 latest=$(ls MTS33_prototip_TZ_v*.html | sort -V | tail -1)
 mkdir -p docs
+# Локальные аудиозадания первого задания АПОЖ.
+mkdir -p docs/assets/apozh
+cp assets/apozh/*.wav docs/assets/apozh/
 sed 's|<head>|<head>\n<meta name="robots" content="noindex">|' "$latest" > docs/index.html
 for v in 0.2 0.3 0.4 $(ls MTS33_prototip_TZ_v*.html | sed -E 's/.*_v([0-9.]+)\.html/\1/'); do
   cat > "docs/MTS33_prototip_TZ_v$v.html" <<HTML
