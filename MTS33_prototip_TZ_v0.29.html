@@ -179,6 +179,84 @@ h1,h2,h3{line-height:1.15;margin:0}
 .acard .bot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;flex-wrap:wrap}
 .acard.dim{opacity:.72}
 .acard.secret{border-style:dashed}
+/* АПОЖ: обзор и последовательные игровые экраны. */
+.apozh-page{max-width:860px;padding-top:24px;padding-bottom:32px}
+.apozh-page h1{font-size:30px;line-height:1.2;margin:8px 0 10px}
+.apozh-page h2{font-size:25px;line-height:1.25;margin:0 0 12px}
+.apozh-page p{margin:0 0 16px;color:var(--ink2)}
+.apozh-page .pg-h{padding-top:0;padding-bottom:20px}
+.apozh-summary{margin-top:22px;font-size:14px}
+.apozh-progress{height:5px;background:var(--line2);border-radius:9px;margin-top:10px;overflow:hidden}
+.apozh-progress i{display:block;height:100%;background:var(--red)}
+.apozh-list{display:grid;gap:12px}
+.apozh-row{display:flex;gap:16px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:20px;background:white}
+.apozh-number{width:36px;height:36px;border-radius:50%;background:var(--line2);display:grid;place-items:center;flex:none;font-size:16px;font-weight:700}
+.apozh-row.apozh-open{border-left:3px solid var(--red)}
+.apozh-row.apozh-open .apozh-number{background:#fff0f3;color:var(--red)}
+.apozh-row.apozh-done .apozh-number{background:#eaf5ed;color:#24783b}
+.apozh-row.apozh-soon,.apozh-row.apozh-locked,.apozh-row.apozh-ended{background:#fafafa}
+.apozh-row-copy{min-width:0;flex:1}
+.apozh-row h2{font-size:17px;margin-bottom:6px}
+.apozh-row p{font-size:14px;margin-bottom:7px}
+.apozh-row-meta{display:flex;gap:8px 16px;flex-wrap:wrap;font-size:12px;margin-top:9px}
+.apozh-row-meta b{font-weight:600;color:var(--ink2)}
+.apozh-row .apozh-primary{margin:0;min-width:120px;flex:none}
+.apozh-endnote{margin-top:18px!important}
+.apozh-game-nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:20px}
+.apozh-link{border:0;background:transparent;font:inherit;color:var(--ink2);text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:10px 0;min-height:44px}
+.apozh-link:hover{color:var(--red)}
+.apozh-game-head{margin-bottom:20px}
+.apozh-game-head h1{font-size:20px;margin:0 0 6px}
+.apozh-game-head .muted{font-size:13px}
+.apozh-scene{border:1px solid var(--line);border-radius:20px;padding:28px;background:white}
+.apozh-scene>p{max-width:590px}
+.apozh-primary{min-height:48px;margin-top:20px;padding:13px 24px;font-size:16px}
+.apozh-actions{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;margin-top:20px}
+.apozh-actions .apozh-primary{margin-top:0}
+.apozh-player{display:flex;align-items:center;gap:16px;padding:20px;background:#f5f5f7;border-radius:16px;margin-top:20px;min-width:0}
+.apozh-play{width:60px;height:60px;flex:none;border:0;border-radius:50%;background:var(--ink);color:white;font-size:23px;cursor:pointer}
+.apozh-player.playing .apozh-play{background:var(--red)}
+.apozh-audio-copy{flex:1;min-width:0;font-size:14px}
+.apozh-wave{display:flex;align-items:center;gap:3px;height:42px;margin-top:8px;overflow:hidden}
+.apozh-wave i{flex:1;min-width:2px;max-width:8px;background:#b8b8c0;border-radius:4px}
+.apozh-player.playing .apozh-wave i{background:var(--red);animation:apozh-wave .75s ease-in-out infinite alternate}
+.apozh-player.playing .apozh-wave i:nth-child(3n){animation-delay:.2s}
+.apozh-player.playing .apozh-wave i:nth-child(3n+1){animation-delay:.4s}
+@keyframes apozh-wave{to{transform:scaleY(.4)}}
+@media(prefers-reduced-motion:reduce){.apozh-player.playing .apozh-wave i{animation:none}}
+.apozh-player progress{display:block;width:100%;height:4px;accent-color:var(--red);margin:4px 0 8px}
+.apozh-audio-time{white-space:nowrap;align-self:flex-end}
+.apozh-demo-note{font-size:11px;margin:8px 0 0!important;color:var(--muted)!important}
+.apozh-record-area{display:grid;justify-items:center;gap:14px;margin:26px 0}
+.apozh-record-time{font-size:28px;font-variant-numeric:tabular-nums}
+.apozh-rec{width:100px;height:100px;border-radius:50%;border:8px solid #ffe5eb;background:var(--red);color:white;font-size:34px;cursor:pointer}
+.apozh-rec.recording{box-shadow:0 0 0 8px #fff0f3}
+.apozh-record-done,.apozh-success,.apozh-result-mark{font-size:40px;color:var(--red)}
+.apozh-lines{padding:18px;background:#f5f5f7;border-radius:12px;margin-top:20px}
+.apozh-lines p{margin:8px 0 0;line-height:1.8}
+.apozh-answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:20px}
+.apozh-option{min-height:48px;background:white;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:left;cursor:pointer;font:inherit;overflow-wrap:anywhere}
+.apozh-option.selected{background:#fff0f3;border-color:var(--red);box-shadow:inset 0 0 0 1px var(--red)}
+.apozh-option:focus-visible,.apozh-play:focus-visible,.apozh-rec:focus-visible,.apozh-link:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.apozh-roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:22px}
+.apozh-role{border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column}
+.apozh-role:last-child{background:#f7f7f9}
+.apozh-role h3{font-size:20px;margin:10px 0}
+.apozh-role p{font-size:14px;flex:1}
+.apozh-role .apozh-primary{width:100%}
+.apozh-role-icon{font-size:28px;color:var(--red);font-weight:bold}
+.apozh-intro-icon{font-size:40px;color:var(--red);margin-bottom:20px}
+.apozh-reward{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0;color:var(--red)}
+.apozh-demo-control{margin-top:18px}
+@container(max-width:600px){
+ .apozh-page{padding:20px 16px 28px}.apozh-page h1{font-size:25px}.apozh-page h2{font-size:22px}
+ .apozh-row{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;padding:16px}.apozh-number{width:28px;height:28px;font-size:14px;align-self:start}
+ .apozh-row h2{font-size:16px}.apozh-row .apozh-primary{grid-column:1/-1;width:100%}
+ .apozh-game-head h1{font-size:18px}.apozh-scene{padding:20px 16px}.apozh-answers,.apozh-roles{grid-template-columns:1fr}
+ .apozh-primary{width:100%}.apozh-actions{flex-direction:column;align-items:stretch}.apozh-actions .btn{width:100%;min-height:48px}.apozh-actions .apozh-link{text-align:center}
+ .apozh-player{padding:16px 12px;gap:12px;flex-wrap:wrap}.apozh-play{width:54px;height:54px}.apozh-audio-time{width:100%;text-align:right}.apozh-audio-copy{font-size:13px}
+ .apozh-game-nav{margin-bottom:14px}.apozh-game-nav .apozh-link{font-size:13px}.apozh-row-meta{font-size:12px}.apozh-record-area{margin:20px 0}
+}
 .alist{display:flex;flex-direction:column;gap:10px}
 .arow{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
 .arow:hover{border-color:var(--ink2)}
@@ -638,7 +716,7 @@ ul.pll li{margin:3px 0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.27',
+  version: '0.29',
   updated: '08.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
@@ -738,13 +816,13 @@ const ACTS = [
     notes: ['Открывается 05.11 после прохождения выпуска 2.'] },
   { id: 'apozh_top', block: 'work', title: 'Какой праздник без песен: разгон', sub: 'АПОЖ', type: 'audio', mode: 'top', from: '2026-10-28', max: 1, pl: 1, pts: { kind: 'fixed', v: 20 }, status: 'client',
     desc: 'Угадать три песни, которые спели топ-менеджеры: послушать перевёрнутый фрагмент, повторить его голосом, услышать свою запись в правильную сторону и выбрать песню из 10 вариантов.',
-    notes: ['Механика — по презентации; МТС одобрил её на встрече 01.10.', 'Первые 3–6 песен записывают топ-менеджеры, их угадывают все. Для разгона участник угадывает три из них.', 'Удовольствие и 20 баллов — за прохождение разгона, даже если не угадал. Баллы не зависят от правильности: так «Спеть» и «Отгадать» весят одинаково.', 'После ответа — кто пел и оригинал без переворота, если топ-менеджер согласен.'] },
+    notes: ['Путь в прототипе: обзор заданий → знакомство → слушать → записать → послушать себя → выбрать и подтвердить ответ → результат. Три песни, без одновременных вкладок заданий и шагов.', 'Механика — по презентации; МТС одобрил её на встрече 01.10.', 'Первые 3–6 песен записывают топ-менеджеры, их угадывают все. Для разгона участник угадывает три из них.', 'Удовольствие и 20 баллов — за прохождение разгона, даже если не угадал. Баллы не зависят от правильности: так «Спеть» и «Отгадать» весят одинаково.', 'После ответа — кто пел и оригинал без переворота, если топ-менеджер согласен.'] },
   { id: 'apozh_r1', block: 'work', title: 'Какой праздник без песен: роль — спеть или отгадать', sub: 'АПОЖ', type: 'audio', mode: 'role', from: '2026-10-28', dep: 'apozh_top', max: 1, pl: 1, pts: { kind: 'fixed', v: 20 }, status: 'client',
     desc: 'После разгона участник выбирает роль. «Спеть»: выбрать один из 10 треков, получить 2–4 строчки и записать их. «Отгадать»: угадать три песни коллег — тем же способом, что и в разгоне.',
-    notes: ['«Спеть»: больше 2–4 строчек не нужно — угадывают по созвучиям. Запись проверяют организаторы; одобренная попадает в угадывание. Удовольствие и 20 баллов — после одобрения.', '«Отгадать»: пока копятся записи коллег, участник видит заглушку «Возвращайся через три дня» — угадывание открывается 31.10. Удовольствие и 20 баллов — за три песни, даже если не угадал.', 'Модерируем все записи (вариант 2 из презентации): каждую одобряем или отклоняем по техническим условиям — чётко слышно, без шумов, спето то, что просили. Все одобренные идут в угадывание. Проверка — списком на одном экране, с кнопкой воспроизведения и «подходит / не подходит». Ограничения мест на «Спеть» нет.', 'Песни коллег выдаются по одной и случайно; в первую очередь — те, что угадывали реже всего.'] },
+    notes: ['Путь в прототипе: выбор роли → общие экраны записи или угадывания. Ответ выбирают и подтверждают отдельно; запись отправляют после прослушивания.', '«Спеть»: больше 2–4 строчек не нужно — угадывают по созвучиям. Запись проверяют организаторы; одобренная попадает в угадывание. Удовольствие и 20 баллов — после одобрения.', '«Отгадать»: пока копятся записи коллег, участник видит заглушку «Возвращайся через три дня» — угадывание открывается 31.10. Удовольствие и 20 баллов — за три песни, даже если не угадал.', 'Модерируем все записи (вариант 2 из презентации): каждую одобряем или отклоняем по техническим условиям — чётко слышно, без шумов, спето то, что просили. Все одобренные идут в угадывание. Проверка — списком на одном экране, с кнопкой воспроизведения и «подходит / не подходит». Ограничения мест на «Спеть» нет.', 'Песни коллег выдаются по одной и случайно; в первую очередь — те, что угадывали реже всего.'] },
   { id: 'apozh_r2', block: 'work', title: 'Какой праздник без песен: смена роли', sub: 'АПОЖ', type: 'audio', mode: 'swap', from: '2026-11-04', dep: 'apozh_r1', max: 1, pl: 1, pts: { kind: 'fixed', v: 20 }, status: 'client',
     desc: 'Третье обновление: роль меняется — кто пел, идёт отгадывать, кто отгадывал, может спеть.',
-    notes: ['Открывается 04.11 (дата — допущение). Удовольствие и 20 баллов — как за первую роль.'] },
+    notes: ['Короткий экран объясняет другую роль; дальше — те же экраны записи или угадывания, что во втором задании.', 'Открывается 04.11 (дата — допущение). Удовольствие и 20 баллов — как за первую роль.'] },
 
   // ---------- Спорт («Форма») ----------
   { id: 'shine', block: 'sport', title: 'Сиять', sub: 'Видео-разминки', type: 'video_view', mode: 'series', from: '2026-10-21', max: 5, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'client',
@@ -905,6 +983,7 @@ const MECH = {
     ['Состояния', ['Продумать в дизайне, что видит участник, если пропала сеть, он вернулся к незаконченному выпуску или выпуск уже пройден.']],
   ]},
   audio: { short: 'АПОЖ (аудио)', title: 'АПОЖ — угадай песню задом наперёд', sections: [
+    ['Путь участника', ['Вход в АПОЖ открывает обзор: «Какой праздник без песен?», «Слушай, пой и угадывай песни вместе с коллегами», прогресс «N из 3 заданий выполнено» и три компактные строки. В строке — название, короткое описание, доступность, одно удовольствие и 20 баллов, статус и действие «Начать», «Продолжить» или «Подробнее». Все открытые этапы доступны до конца акции по порядку.', 'Начало задания открывает отдельный игровой экран: «Все задания», название, прогресс, одно основное действие и небольшая ссылка «Как играть?». Список заданий и вкладки шагов скрыты. Возврат к обзору сохраняет продвижение.', 'Угадывание: короткое знакомство при первом входе → прослушивание перевёрнутой песни → запись с таймером и ручной остановкой → прослушивание своей записи, перевёрнутой обратно → выбор одного из десяти ответов и подтверждение «Ответить» → результат и следующая песня. Переход после прослушивания доступен после включения плеера. Правильность ответа не влияет на баллы.', 'Запись в прототипе имитируется. Можно послушать и перезаписать до отправки; если нет доступа к микрофону — понятная подсказка. Роль «Спеть»: выбрать трек → строчки → запись → прослушивание → отправка одной итоговой записи на проверку. После отправки — ожидание; начисление только после одобрения.', 'Угадывание коллег использует те же экраны, до 31.10 — «Песни коллег появятся 31 октября». Третье задание коротко объясняет противоположную роль и открывает те же игровые экраны. На телефоне основные кнопки на всю ширину, варианты в одну колонку, плеер и запись без горизонтальной прокрутки.']],
     ['Разгон', ['Первые 3–6 песен записывают топ-менеджеры, их угадывают все. Участник угадывает три.', 'Как угадывают: платформа даёт перевёрнутый трек → участник записывает своё подражание этим звукам → после «Готово» платформа переворачивает уже его запись и даёт послушать → участник выбирает песню из 10 вариантов.', 'После ответа — кто пел и оригинал без переворота (если топ-менеджер согласен).']],
     ['Выбор роли', ['«Спеть»: участник выбирает один из 10 треков, ему открываются 2–4 строчки, он записывает их прямо на сайте. Больше не нужно — угадывают по созвучиям.', '«Отгадать»: сначала заглушка «Возвращайся через три дня», пока копятся записи коллег; с 31.10 — три песни коллег тем же способом, что в разгоне.', 'В третьем обновлении (04.11) роль можно сменить: спевший идёт отгадывать, и наоборот.']],
     ['Удовольствия и баллы', ['Три удовольствия: разгон, первая роль, вторая роль. За каждое — 20 баллов.', 'Баллы не зависят от того, угадал ли участник: запись и угадывание весят одинаково (решено 07.10). За «Спеть» начисляем после одобрения записи.']],
@@ -971,7 +1050,7 @@ const SCREENS = [
     states: [] },
   { id: 'activity', route: 'act/ai1', title: 'Страница активности',
     purpose: 'Активность и её задания. Например, «Дегустация фактов» — три выпуска.',
-    elements: ['Хлебные крошки: Главная / раздел / активность.', 'Название и описание активности.', 'Вкладки заданий — если в активности их несколько: «Глава 1», «Глава 2»… У каждой — отметка: выполнено ✓, откроется ДД.ММ, закрыто. Открывается первое доступное невыполненное задание.', 'Заголовок задания и чипы: удовольствия, баллы, даты, статус.', 'Плашка счастливого часа, если на задание действует бустер.', 'Тело — по типу механики (см. «Как устроены задания»).'],
+    elements: ['Хлебные крошки: Главная / раздел / активность.', 'Название и описание активности.', 'Вкладки заданий — если в активности их несколько: «Глава 1», «Глава 2»… У каждой — отметка: выполнено ✓, откроется ДД.ММ, закрыто. Открывается первое доступное невыполненное задание. В АПОЖ вход открывает компактный вертикальный список трёх заданий с общим прогрессом. «Начать» или «Продолжить» открывает отдельный игровой режим; «Все задания» возвращает в список без потери продвижения. Будущие и заблокированные задания открывают описание без игровых действий.', 'Заголовок задания и чипы: удовольствия, баллы, даты, статус. В АПОЖ обзор показывает общий заголовок, подзаголовок и прогресс; игровой режим — только название текущего задания, прогресс песни и одно действие, без общей навигации по заданиям и шагам.', 'Плашка счастливого часа, если на задание действует бустер.', 'Тело — по типу механики (см. «Как устроены задания»).'],
     states: ['«Скоро» — плашка «Откроется ДД.ММ» и описание.', '«Закрыто» — «Сначала пройди «…»» со ссылкой.', '«Завершено» или «Платформа завершена» — только просмотр.'] },
   { id: 'rating', route: 'rating', title: 'Турнирная таблица',
     purpose: 'Рейтинг участников по баллам. Только общий — еженедельных рейтингов нет.',
@@ -1006,6 +1085,7 @@ const SCREENS = [
    ОТКРЫТЫЕ ВОПРОСЫ
    --------------------------------------------------------------------- */
 const QUESTIONS = [
+  { to: 'team', text: 'АПОЖ: что видит участник после отклонения записи и может ли отправить её повторно? До согласования нового сценария в прототипе остаётся ожидание проверки и одобрение в демо.', ref: 'mech-audio' },
   { to: 'client', text: 'Визуальный образ вместо торта как главного элемента (встреча 01.10): «33 удовольствия» остаются, торт — часть праздника или финальный аккорд. Новый KV готовят дизайнеры ивент-агентства с дизайнером МТС; от него зависят оформление и названия разделов.', ref: 'summary' },
   { to: 'client', text: 'Названия блоков: «Работа и обучение» звучит непразднично — нужны более праздничные названия. Насколько играем «сладкими» названиями — решаем вместе с новым KV.', ref: 'summary' },
   { to: 'client', text: 'Подтвердить структуру: шесть разделов, в разделе — активности, в активности — задания. «Работу» и «Обучение» объединили, добавили «Работаем вместе» — это отличается от первой версии.', ref: 'summary' },
@@ -1330,6 +1410,8 @@ const TIMING = {
 };
 
 const CHANGELOG = [
+  { v: '0.29', date: '08.10.2026', items: ['АПОЖ: общий список трёх заданий и отдельный игровой режим — одно действие на экране.', 'Переработаны прослушивание, запись, выбор ответа, роли и результаты; баллы, порядок, сроки и модерация сохранены.'] },
+  { v: '0.28', date: '08.10.2026', items: ['АПОЖ: вместо вкладок — три последовательные карточки заданий с описанием, датой, статусом и действием. Игровые механики, баллы и даты не менялись.'] },
   { v: '0.27', date: '08.10.2026', items: ['Правила работы в репозитории уточнены: каждую правку синхронно проверяем в прототипе, ТЗ и тайминге, а перед каждым пушем добавляем запись в историю изменений.'] },
   { v: '0.26', date: '08.10.2026', items: ['Из футера убрана ссылка «Полные правила (PDF)». Ссылка на PDF остаётся на странице «Правила акции».'] },
   { v: '0.25', date: '07.10.2026', items: ['Личный кабинет, «Мой прогресс»: вместо таблицы снова карточки по разделам с точками-удовольствиями. У каждого задания — удовольствия и баллы «сколько из скольких», за что начисляют и статус; нажатие открывает задание. В истории начислений названия заданий — тоже ссылки.'] },
@@ -1687,6 +1769,7 @@ function vBlock(id) {
 function vAct(id) {
   const a = A[id]; if (!a) return v404();
   const b = B[a.block]; const st = actState(a);
+  if (groupOf(a)?.id === 'apozh') return apozhPage(a, st);
   const g = groupOf(a); const multi = g && g.acts.length > 1; const plates = g && g.id === 'quiz';
   const chips = `<div class="chips">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span>${stateChip(a)}</div>`;
   const crumbs = `<div class="crumbs"><a data-go="home">Главная</a> / ${a.block === 'stream' ? '<a data-go="stream">Эфир</a>' : a.block === 'common' ? esc(b.name) : `<a data-go="block/${b.id}">${esc(b.name)}</a>`}${multi ? ' / ' + esc(g.title) : ''}</div>`;
@@ -1704,8 +1787,69 @@ function vAct(id) {
 }
 const ro = st => ['ended', 'closed', 'done'].includes(st);
 const bodyStub = a => `<div class="panel center"><h3>${esc(a.title)}</h3><p class="muted">${esc(a.desc)}</p></div>`;
+// АПОЖ: один общий обзор и одно действие на игровом экране.
+const APOZH_UI = {
+  apozh_top: { title: 'Угадай песни руководителей', desc: 'Три песни задом наперёд — узнаешь оригиналы?', date: 'С 28 октября' },
+  apozh_r1: { title: 'Спой или отгадай', desc: 'Спой несколько строчек или угадай записи коллег.', date: 'Угадывание с 31 октября' },
+  apozh_r2: { title: 'Попробуй другую роль', desc: 'Если раньше пел, теперь отгадывай. Если отгадывал — попробуй спеть.', date: 'С 4 ноября' },
+};
+function apozhState(a) { return S.audio[a.id] = S.audio[a.id] || (a.mode === 'top' ? { i: 0, step: 0 } : {}); }
+function apozhButton(a, label, action, extra = '', disabled = false, tone = 'red') {
+  return `<button class="btn ${tone} apozh-primary" data-act="${action}" data-id="${a.id}" ${extra} ${disabled ? 'disabled' : ''}>${label}</button>`;
+}
+function apozhOverview() {
+  const tasks = gActs(G.apozh); const done = tasks.filter(isComplete).length;
+  return `<div class="wrap apozh-page apozh-overview"><div class="pg-h"><div class="crumbs"><a data-go="block/work">Работа и обучение</a></div><h1>Какой праздник без песен?</h1><p class="muted">Слушай, пой и угадывай песни вместе с коллегами</p><div class="apozh-summary"><b>${done} из 3 заданий выполнено</b><div class="apozh-progress" aria-label="Выполнено ${done} из 3"><i style="width:${done / 3 * 100}%"></i></div></div></div>
+    <div class="apozh-list">${tasks.map((a, i) => {
+      const st = actState(a); const s = S.audio[a.id]; const pending = s && s.step === 'sent' && !isComplete(a);
+      const status = st === 'done' ? '✓ Выполнено' : st === 'soon' ? 'Откроется ' + dm(a.from) : st === 'locked' ? 'Сначала выполни задание ' + i : st === 'ended' ? 'Акция завершена' : pending ? 'На проверке' : 'Доступно';
+      const availability = st === 'soon' ? a.mode === 'top' ? '' : a.mode === 'role' ? 'После первого задания · угадывание с 31 октября' : 'После второго задания' : APOZH_UI[a.id].date;
+      const started = s && (s.started || s.track !== undefined || s.i > 0 || s.step === 'sent') || a.mode === 'role' && S.apozhRole;
+      const button = st === 'done' || st === 'ended' ? 'Посмотреть' : pending ? 'Проверить статус' : canDo(a) ? started ? 'Продолжить' : 'Начать' : 'Подробнее';
+      return `<article class="apozh-row apozh-${st} ${pending ? 'apozh-pending' : ''}"><div class="apozh-number" aria-hidden="true">${st === 'done' ? '✓' : i + 1}</div><div class="apozh-row-copy"><h2>Задание ${i + 1}. ${APOZH_UI[a.id].title}</h2><p>${APOZH_UI[a.id].desc}</p>${availability ? `<div class="small muted">${availability}</div>` : ''}<div class="apozh-row-meta"><span>1 удовольствие · 20 баллов</span><b>${status}</b></div></div>${apozhButton(a, button, 'apozhEnter', '', false, canDo(a) && !pending ? 'red' : 'ghost')}</article>`;
+    }).join('')}</div><p class="small muted apozh-endnote">Открытые задания можно пройти по порядку до ${dm(PROJECT.end)}.</p></div>`;
+}
+function apozhPage(a, st) {
+  if (S.ui.apozhGame !== a.id) return apozhOverview();
+  const s = apozhState(a); const other = S.apozhRole === 'sing' ? 'guess' : 'sing';
+  const guessing = a.mode === 'top' || (a.mode === 'swap' ? other : S.apozhRole) === 'guess';
+  if (!guessing && S.apozhRole && canDo(a) && s.step === undefined) s.step = 'pick';
+  const progress = isComplete(a) ? 'Задание выполнено' : guessing && s.started && !s.res ? `Песня ${(s.i || 0) + 1} из 3` : guessing && s.res ? `Песня ${(s.i || 0) + 1} из 3` : s.step === 'sent' ? 'Ожидаем одобрения' : !guessing && s.step === 'pick' ? 'Выбор песни · 1 из 3' : !guessing && s.step === 'lines' ? 'Запись · 2 из 3' : !guessing && s.step === 'listen' ? 'Прослушивание и отправка · 3 из 3' : '1 удовольствие · 20 баллов';
+  let body;
+  if (['soon', 'locked', 'ended', 'closed'].includes(st) && !isComplete(a)) {
+    const title = st === 'soon' ? 'Задание откроется ' + dm(a.from) : st === 'locked' ? 'Сначала выполни предыдущее задание' : 'Праздник завершён';
+    body = `<div class="apozh-scene"><h2>${title}</h2><p>${APOZH_UI[a.id].desc}</p><p class="muted">${st === 'ended' ? 'Теперь задания доступны только для просмотра.' : 'Открытые задания доступны до ' + dm(PROJECT.end) + ' — по порядку.'}</p>${st === 'locked' ? apozhButton(A[a.dep], 'К предыдущему заданию', 'apozhEnter') : ''}</div>`;
+  } else body = BODY.audio(a, st);
+  return `<div class="wrap apozh-page apozh-game"><div class="apozh-game-nav"><button class="apozh-link" data-act="apozhAll">← Все задания</button><button class="apozh-link" data-act="apozhHelp">Как играть?</button></div><div class="apozh-game-head"><h1>${APOZH_UI[a.id].title}</h1><div class="muted" aria-live="polite">${progress}</div></div>${hhBanner(a.id)}${body}</div>`;
+}
+function apozhPlayer(a, key, label) {
+  const s = apozhState(a); const p = (s.players = s.players || {})[key] = s.players[key] || { time: 0, heard: false, playing: false };
+  return `<div class="apozh-player ${p.playing ? 'playing' : ''}" data-audio-id="${a.id}" data-audio-key="${key}"><button class="apozh-play" data-act="apozhPlay" data-id="${a.id}" data-key="${key}" aria-label="${p.playing ? 'Приостановить' : 'Воспроизвести'}: ${esc(label)}">${p.playing ? '❚❚' : '▶'}</button><div class="apozh-audio-copy"><b>${esc(label)}</b><div class="apozh-wave" aria-hidden="true">${Array.from({ length: 30 }, (_, i) => `<i style="height:${10 + (i * 17 % 29)}px"></i>`).join('')}</div><progress max="8" value="${p.time}" aria-label="Прогресс воспроизведения"></progress><span class="small muted apozh-audio-state">${p.playing ? 'Воспроизводится' : p.heard ? 'Можно послушать ещё раз' : 'Нажми ▶, чтобы послушать'}</span></div><span class="apozh-audio-time small">0:${String(Math.floor(p.time)).padStart(2, '0')} / 0:08</span></div><p class="apozh-demo-note">Демо: аудио и запись имитируются</p>`;
+}
+function apozhRecord(a, sing) {
+  const s = apozhState(a);
+  if (s.micHelp) return `<div class="apozh-scene"><h2>Не получается включить микрофон?</h2><p>Нажми на значок слева от адреса сайта и разреши доступ к микрофону. Затем вернись к записи.</p><p class="muted">В этом прототипе запись имитируется — разрешение не требуется.</p>${apozhButton(a, 'Вернуться к записи', 'apozhMicBack')}</div>`;
+  const title = s.rec ? 'Идёт запись' : s.recDone ? 'Запись готова' : sing ? 'Спой эти строчки' : 'Теперь твоя очередь!';
+  const lines = sing ? `<div class="apozh-lines"><b>${esc(SONGS[s.track])}</b><p>Строчка песни 1<br>Строчка песни 2<br>Строчка песни 3</p></div>` : '';
+  return `<div class="apozh-scene apozh-record-scene"><h2>${title}</h2><p>${sing ? 'Без музыки, просто голосом. Запиши только эти строчки.' : 'Повтори звуки, которые услышал. Не старайся петь красиво — здесь главное повторить мелодию.'}</p>${lines}<div class="apozh-record-area"><div class="apozh-record-time" id="apozhRecording" data-id="${a.id}" aria-live="off">${apozhTime(s.rec ? Math.floor((Date.now() - s.recStarted) / 1000) : s.recSeconds || 0)}</div>${!s.recDone || s.rec ? `<button class="apozh-rec ${s.rec ? 'recording' : ''}" data-act="apozhRec" data-id="${a.id}" aria-label="${s.rec ? 'Остановить запись' : 'Начать запись'}">${s.rec ? '■' : '●'}</button><div>${s.rec ? 'Остановить запись' : 'Начать запись'}</div>` : '<div class="apozh-record-done">✓</div>'}</div>${s.recDone && !s.rec ? `<div class="apozh-actions">${apozhButton(a, 'Продолжить', 'apozhStep', `data-v="${sing ? 'listen' : '2'}"`)}<button class="btn ghost" data-act="apozhPreview" data-id="${a.id}">Прослушать</button><button class="apozh-link" data-act="apozhRedo" data-id="${a.id}">Перезаписать</button></div>${s.preview ? apozhPlayer(a, 'raw', 'Твоя запись — до переворота') : ''}` : '<p class="small muted">Нажми на кнопку, запиши голос и останови запись.</p>'}<button class="apozh-link" data-act="apozhMicHelp" data-id="${a.id}">Нет доступа к микрофону?</button></div>`;
+}
+function apozhRender() { render(); document.getElementById('scroll').scrollTop = 0; }
+function apozhTime(seconds) { return Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0'); }
+function apozhAfterRender(site) {
+  const rec = site.querySelector('#apozhRecording');
+  if (rec && S.audio[rec.dataset.id].rec) every(() => { const s = S.audio[rec.dataset.id]; rec.textContent = apozhTime(Math.floor((Date.now() - s.recStarted) / 1000)); }, 250);
+  site.querySelectorAll('.apozh-player').forEach(el => {
+    const s = S.audio[el.dataset.audioId]; const p = s.players[el.dataset.audioKey];
+    if (!p.playing) return;
+    let last = Date.now();
+    every(() => { const now = Date.now(); p.time = Math.min(8, p.time + (now - last) / 1000); last = now;
+      el.querySelector('progress').value = p.time;
+      el.querySelector('.apozh-audio-time').textContent = apozhTime(Math.floor(p.time)) + ' / 0:08';
+      if (p.time >= 8) { p.playing = false; render(); }
+    }, 200);
+  });
+}
 
-/* ---------- тела активностей по типам механик ---------- */
 const BODY = {
   system: a => `<div class="panel center"><h3>${isComplete(a) ? 'Готово ✓' : 'Начисляется автоматически'}</h3><p class="muted">${esc(a.desc)}</p></div>`,
   tbd: a => `<div class="panel center"><h3>Механика в работе</h3><p class="muted">${esc(a.desc)}</p><p><span class="chip pl">резерв: ${esc(plLabel(a))}</span></p></div>`,
@@ -1754,22 +1898,18 @@ const BODY = {
   },
 
   audio(a, st) {
-    const role = S.apozhRole; const other = role === 'sing' ? 'guess' : 'sing';
-    const roleT = r => r === 'sing' ? '«Спеть»' : '«Отгадать»';
+    const s = apozhState(a); const role = S.apozhRole; const other = role === 'sing' ? 'guess' : 'sing';
     if (isComplete(a)) {
-      const t = a.mode === 'top' ? 'Разгон пройден ✓' : a.mode === 'role' ? `Роль ${roleT(role)} выполнена ✓` : `Роль ${roleT(other)} выполнена ✓`;
-      const next = a.mode === 'top' ? `<button class="btn red" data-go="act/apozh_r1">Выбрать роль</button>` : a.mode === 'role' ? `<p class="muted">${dm(A.apozh_r2.from)} — смена роли: попробуешь ${roleT(other)}.</p>` : '';
-      return `<div class="panel center"><h3>${t}</h3><p class="muted">+1 удовольствие и ${a.pts.v} баллов.</p>${next}</div>`;
+      const next = a.mode === 'top' ? A.apozh_r1 : a.mode === 'role' ? A.apozh_r2 : null;
+      return `<div class="apozh-scene apozh-complete"><div class="apozh-success" aria-hidden="true">✓</div><h2>Задание выполнено!</h2><p>Спасибо, что сыграл вместе с нами.</p><div class="apozh-reward"><b>+1 удовольствие</b><b>+${S.apts[a.id] || a.pts.v} баллов</b></div>${next && canDo(next) ? apozhButton(next, 'К следующему заданию', 'apozhEnter') : next ? `<p class="muted">Следующее задание откроется ${dm(next.from)}.</p><button class="btn red apozh-primary" data-act="apozhAll">Ко всем заданиям</button>` : '<button class="btn red apozh-primary" data-act="apozhAll">Ко всем заданиям</button>'}</div>`;
     }
     if (ro(st)) return bodyStub(a);
     if (a.mode === 'top') return guessRun(a, 'top');
     const r = a.mode === 'swap' ? other : role;
-    if (!r) return `<div class="panel"><h3>Выбери роль</h3><p class="muted">Роль даёт одно удовольствие и ${a.pts.v} баллов. ${dm(A.apozh_r2.from)} роль можно будет сменить.</p>
-      <div class="agrid" style="margin-top:10px"><div class="acard" data-act="apozhRole" data-v="sing"><div class="t">Спеть</div><div class="d">Выбери один из 10 треков, тебе откроются 2–4 строчки — запиши их. Коллеги будут угадывать твою запись задом наперёд.</div></div>
-      <div class="acard" data-act="apozhRole" data-v="guess"><div class="t">Отгадать</div><div class="d">Угадай три песни, которые спели коллеги: послушай перевёрнутый трек, повтори его и выбери песню из 10 вариантов.</div></div></div></div>`;
-    if (a.mode === 'swap') return `<div class="note">Третье обновление: роль меняется — теперь ${roleT(r)}.</div>` + (r === 'sing' ? singFlow(a) : guessRun(a, 'colleague'));
+    if (!r) return `<div class="apozh-scene"><h2>Теперь выбирай: спеть или отгадать?</h2><p>За любую роль — одно удовольствие и 20 баллов. Позже попробуешь другую.</p><div class="apozh-roles"><div class="apozh-role"><div class="apozh-role-icon" aria-hidden="true">♫</div><h3>Спеть</h3><p>Выбери песню, запиши несколько строчек, а коллеги попробуют её угадать.</p>${apozhButton(a, 'Хочу спеть', 'apozhRole', 'data-v="sing"')}</div><div class="apozh-role"><div class="apozh-role-icon" aria-hidden="true">?</div><h3>Отгадать</h3><p>Слушай перевёрнутые записи коллег и угадывай песни.</p>${apozhButton(a, 'Хочу отгадать', 'apozhRole', 'data-v="guess"')}</div></div></div>`;
+    if (a.mode === 'swap' && !s.swapStarted) return `<div class="apozh-scene"><h2>Попробуй себя в другой роли!</h2><p>${r === 'sing' ? 'Раньше ты отгадывал. Теперь спой несколько строчек — коллеги попробуют угадать твою песню.' : 'Раньше ты пел. Теперь угадай три песни, которые записали коллеги.'}</p>${apozhButton(a, r === 'sing' ? 'Попробовать спеть' : 'Начать угадывать', 'apozhSwapStart')}</div>`;
     if (r === 'sing') return singFlow(a);
-    if (S.date < APOZH_GUESS_FROM) return `<div class="panel center"><h3>Возвращайся через три дня</h3><p class="muted">Пока копятся записи коллег. Отгадывание откроется ${dm(APOZH_GUESS_FROM)}.</p>${demoBtn('setDate', 'перейти на ' + dm(APOZH_GUESS_FROM), `data-v="${APOZH_GUESS_FROM}"`)}</div>`;
+    if (S.date < APOZH_GUESS_FROM) return `<div class="apozh-scene"><h2>Песни коллег появятся 31 октября</h2><p>Пока собираем записи. Возвращайся после открытия — тебе предстоит угадать три песни.</p><button class="btn red apozh-primary" data-act="apozhAll">Ко всем заданиям</button></div>`;
     return guessRun(a, 'colleague');
   },
 
@@ -1826,23 +1966,24 @@ const BODY = {
 };
 const APOZH_GUESS_FROM = '2026-10-31';
 function guessRun(a, src) {
-  const s = S.audio[a.id] = S.audio[a.id] || { i: 0, step: 0 }; const total = 3; const right = (s.i * 3 + (src === 'top' ? 2 : 5)) % 10;
-  const labels = ['Послушай перевёртыш', 'Повтори', 'Послушай себя', 'Угадай'];
-  const steps = `<div class="steps">${labels.map((l, i) => `<span class="${s.step > i ? 'done' : i === s.step ? 'on' : ''}">${i + 1}. ${l}</span>`).join('')}</div>`;
-  const head = `<div class="qhead"><b>Песня ${s.i + 1} из ${total}</b><span class="chip">${src === 'top' ? 'поёт топ-менеджер' : 'поёт коллега — выдаём ту, что угадывали реже всего'}</span></div>`;
-  if (s.res) return `<div class="panel">${head}${steps}<h3>${s.res.ok ? 'Угадал!' : 'Не угадал — но засчитано'}</h3><p>Это была «${esc(SONGS[right])}». ${src === 'top' ? 'Пел топ-менеджер — имя и должность покажем здесь.' : 'Пела ' + esc(PEOPLE[3]) + '.'}</p>${player(src === 'top' ? 'Оригинал без переворота — если топ-менеджер согласен' : 'Оригинал без переворота')}<div style="margin-top:12px"><button class="btn red" data-act="apozhNext" data-id="${a.id}">${s.i + 1 < total ? 'Следующая песня' : 'Завершить'}</button></div></div>`;
-  if (s.step === 0) return `<div class="panel">${head}${steps}<h3>Это песня задом наперёд</h3><p class="muted">Послушай внимательно и постарайся повторить эти странные звуки.</p>${player('Перевёрнутый трек')}<div style="margin-top:12px"><button class="btn red" data-act="apozhStep" data-id="${a.id}" data-v="1">Готов повторить</button></div></div>`;
-  if (s.step === 1) return `<div class="panel center">${head}${steps}<h3>${s.rec ? 'Идёт запись…' : 'Повтори, что услышал'}</h3><p class="muted">Чтобы записать, разреши доступ к микрофону — нажми «Разрешить», когда браузер спросит.</p><button class="rec ${s.rec ? 'on' : ''}" data-act="apozhRec" data-id="${a.id}">${s.rec ? `<span class="timer" id="rect" data-id="${a.id}" data-next="2">0:03</span>` : '● REC'}</button><p class="small"><span class="link" data-act="toast" data-v="Подсказка: как разрешить доступ к микрофону в браузере">Нет доступа к микрофону?</span></p></div>`;
-  if (s.step === 2) return `<div class="panel">${head}${steps}<h3>Мы развернули твою запись</h3><p class="muted">Послушай, что получилось, когда звук снова идёт в правильную сторону.</p>${player('Твоя запись, развёрнутая обратно')}<div style="margin-top:12px"><button class="btn red" data-act="apozhStep" data-id="${a.id}" data-v="3">Угадать песню</button> <button class="btn ghost" data-act="apozhStep" data-id="${a.id}" data-v="1">Перезаписать</button></div></div>`;
-  return `<div class="panel">${head}${steps}<h3>Что это за песня?</h3><p class="muted">Один ответ. Баллы не зависят от того, угадал ли ты: ${a.pts.v} — за все три песни.</p><div class="opts">${SONGS.map((o, i) => `<button class="opt" data-act="apozhGuess" data-id="${a.id}" data-v="${i}" data-r="${right}">${esc(o)}</button>`).join('')}</div></div>`;
+  const s = apozhState(a); if (s.i === undefined) s.i = 0; if (s.step === undefined) s.step = 0;
+  const right = (s.i * 3 + (src === 'top' ? 2 : 5)) % 10;
+  if (!s.started) return `<div class="apozh-scene"><div class="apozh-intro-icon" aria-hidden="true">♫ ↺</div><h2>Угадай песню задом наперёд!</h2><p>Мы включим песню задом наперёд. Послушай её, повтори странные звуки голосом, а потом попробуй угадать оригинал.</p><p class="muted">Впереди три песни ${src === 'top' ? 'руководителей' : 'коллег'}. За прохождение — одно удовольствие и 20 баллов, даже если не угадаешь.</p>${apozhButton(a, 'Начать игру', 'apozhStart')}</div>`;
+  if (s.res) return `<div class="apozh-scene"><div class="apozh-result-mark" aria-hidden="true">${s.res.ok ? '✓' : '♫'}</div><h2>${s.res.ok ? 'Ты угадал!' : 'Хорошая попытка!'}</h2><p>${s.res.ok ? 'Да, это' : 'Это была'} «${esc(SONGS[right])}».</p><p class="muted">${src === 'top' ? 'Пел руководитель. Имя и оригинал покажем, если он разрешит.' : 'Поёт ' + esc(PEOPLE[3]) + '.'} Правильность ответа не влияет на баллы.</p>${src === 'colleague' ? apozhPlayer(a, 'original', 'Оригинальная запись коллеги') : ''}${apozhButton(a, s.i + 1 < 3 ? 'Следующая песня' : 'Завершить задание', 'apozhNext')}</div>`;
+  if (s.step === 0) {
+    const heard = s.players && s.players.backward && s.players.backward.heard;
+    return `<div class="apozh-scene"><h2>Узнаешь эту мелодию?</h2><p>Послушай песню задом наперёд. Потом попробуй повторить эти звуки.</p>${apozhPlayer(a, 'backward', src === 'top' ? 'Перевёрнутая песня руководителя' : 'Перевёрнутая песня коллеги')}${apozhButton(a, 'Я послушал, дальше', 'apozhStep', 'data-v="1"', !heard)}${!heard ? '<p class="small muted">Сначала включи запись.</p>' : ''}</div>`;
+  }
+  if (s.step === 1) return apozhRecord(a, false);
+  if (s.step === 2) return `<div class="apozh-scene"><h2>Послушай, что получилось!</h2><p>Мы перевернули твою запись обратно. Может быть, теперь песню легче узнать?</p>${apozhPlayer(a, 'self', 'Твоя запись — перевёрнутая обратно')}<div class="apozh-actions">${apozhButton(a, 'Угадать песню', 'apozhStep', 'data-v="3"')}<button class="apozh-link" data-act="apozhRedo" data-id="${a.id}">Перезаписать</button></div></div>`;
+  return `<div class="apozh-scene"><h2>Что это была за песня?</h2><p>Выбери один ответ. Потом нажми «Ответить».</p>${apozhPlayer(a, 'self', 'Твоя запись — перевёрнутая обратно')}<div class="apozh-answers" role="group" aria-label="Варианты песни">${SONGS.map((o, i) => `<button class="apozh-option ${s.answer === i ? 'selected' : ''}" aria-pressed="${s.answer === i}" data-act="apozhSelect" data-id="${a.id}" data-v="${i}">${esc(o)}</button>`).join('')}</div>${apozhButton(a, 'Ответить', 'apozhGuess', `data-v="${s.answer}" data-r="${right}"`, s.answer === undefined)}</div>`;
 }
 function singFlow(a) {
-  const s = S.audio[a.id] = S.audio[a.id] || { step: 'pick' };
-  if (s.step === 'sent') return `<div class="panel center"><h3>Запись на проверке</h3><p class="muted">Организаторы послушают: чётко ли слышно, нет ли шумов, спето ли то, что просили. После одобрения запись попадёт в угадывание, а тебе — удовольствие и ${a.pts.v} баллов.</p>${demoBtn('apozhApprove', 'одобрить', `data-id="${a.id}"`)}</div>`;
-  if (s.step === 'pick') return `<div class="panel"><h3>Выбери трек</h3><p class="muted">Тебе откроются 2–4 строчки — больше не нужно, коллеги угадывают по созвучиям.</p><div class="opts">${SONGS.map((o, i) => `<button class="opt" data-act="apozhPick" data-id="${a.id}" data-v="${i}">${esc(o)}</button>`).join('')}</div></div>`;
-  const lines = `<div class="expl"><b>Твои строчки из «${esc(SONGS[s.track])}»:</b><br>Строчка песни 1<br>Строчка песни 2<br>Строчка песни 3</div>`;
-  if (s.step === 'lines') return `<div class="panel center"><h3>${s.rec ? 'Идёт запись…' : 'Спой эти строчки'}</h3>${lines}<p class="muted">Без музыки, просто голосом. Разреши доступ к микрофону, когда браузер спросит.</p><button class="rec ${s.rec ? 'on' : ''}" data-act="apozhRec" data-id="${a.id}">${s.rec ? `<span class="timer" id="rect" data-id="${a.id}" data-next="listen">0:03</span>` : '● REC'}</button></div>`;
-  return `<div class="panel"><h3>Послушай свою запись</h3>${player('Твоя запись')}<div style="margin-top:12px"><button class="btn red" data-act="apozhSend" data-id="${a.id}">Отправить на проверку</button> <button class="btn ghost" data-act="apozhRedo" data-id="${a.id}">Перезаписать</button></div></div>`;
+  const s = apozhState(a); if (s.step === undefined) s.step = 'pick';
+  if (s.step === 'sent') return `<div class="apozh-scene"><div class="apozh-intro-icon" aria-hidden="true">✓</div><h2>Запись отправлена на проверку</h2><p>Организаторы послушают запись. После одобрения коллеги смогут её угадывать, а ты получишь одно удовольствие и 20 баллов.</p><p class="muted">Статус появится здесь и в твоих материалах в личном кабинете.</p><button class="btn red apozh-primary" data-act="apozhAll">Ко всем заданиям</button><div class="apozh-demo-control">${demoBtn('apozhApprove', 'одобрить запись', `data-id="${a.id}"`)}</div></div>`;
+  if (s.step === 'pick') return `<div class="apozh-scene"><h2>Какую песню споёшь?</h2><p>Выбери трек. Затем покажем несколько строчек для записи.</p><div class="apozh-answers" role="group" aria-label="Песни для записи">${SONGS.map((o, i) => `<button class="apozh-option ${s.pick === i ? 'selected' : ''}" aria-pressed="${s.pick === i}" data-act="apozhTrackSelect" data-id="${a.id}" data-v="${i}">${esc(o)}</button>`).join('')}</div>${apozhButton(a, 'К строчкам песни', 'apozhPick', `data-v="${s.pick}"`, s.pick === undefined)}</div>`;
+  if (s.step === 'lines') return apozhRecord(a, true);
+  return `<div class="apozh-scene"><h2>Послушай свою запись</h2><p>Если всё нравится, отправь её организаторам. Коллеги услышат песню после проверки.</p>${apozhPlayer(a, 'raw', 'Твоя запись — без переворота')}<div class="apozh-actions">${apozhButton(a, 'Отправить на проверку', 'apozhSend')}<button class="apozh-link" data-act="apozhRedo" data-id="${a.id}">Перезаписать</button></div></div>`;
 }
 function quizRun(a, st) {
   const n = +a.id.slice(-1); const q = S.quiz[a.id] || { phase: 'intro', i: 0, ans: [] }; const qs = quizQs(n);
@@ -2122,10 +2263,8 @@ function afterRender(site) {
     if (!v.started || v.ready || !document.getElementById('vt')) return;
     every(() => { v.left--; const el = document.getElementById('vt'); if (el) el.textContent = v.left; if (v.left <= 0) { v.ready = true; render(); } }, 1000);
   });
-  // запись АПОЖ
-  const rec = document.getElementById('rect');
-  if (rec) { let t = 3; every(() => { t--; rec.textContent = '0:0' + t; if (t <= 0) { const s = S.audio[rec.dataset.id]; const nx = rec.dataset.next; s.rec = false; s.step = isNaN(+nx) ? nx : +nx; render(); } }, 1000); }
-  // игра
+  // Плееры и демонстрационная запись АПОЖ.
+  apozhAfterRender(site);
   Object.entries(S.game).forEach(([id, g]) => {
     if (g.phase !== 'play' || !document.querySelector('.runner')) return;
     later(() => { const r = 1 + Math.floor(Math.random() * 4); const a = A[id]; const first = !isComplete(a); const gain = Math.max(0, r - (g.best || 0)) * a.pts.v;
@@ -2146,7 +2285,7 @@ function afterRender(site) {
 }
 
 /* ---------- действия ---------- */
-function go(route) { if (route === 'progress') S.ui.lk = 'progress'; S.route = route; S.menu = false; render(); document.getElementById('scroll').scrollTop = 0; setHash('proto/' + route); }
+function go(route, apozhGame = false) { if (!apozhGame) delete S.ui.apozhGame; if (route === 'progress') S.ui.lk = 'progress'; S.route = route; S.menu = false; render(); document.getElementById('scroll').scrollTop = 0; setHash('proto/' + route); }
 const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
 const ACTIONS = {
   menu() { S.menu = !S.menu; render(); },
@@ -2190,19 +2329,54 @@ const ACTIONS = {
     const nx = A['quiz' + (+id.slice(-1) + 1)];
     if (S.ui.quizView === 'single' && nx && canDo(nx)) setTimeout(() => modal(`<h3>Тебя ждёт выпуск ${id.slice(-1) * 1 + 1}</h3><p>Новые 10 вопросов о МТС уже открыты.</p><button class="btn red" data-act="modalGo" data-v="act/${nx.id}">Пройти сейчас</button> <button class="btn ghost" data-act="closeModal">Позже</button>`), 900);
   },
-  apozhStep(el) { const s = S.audio[el.dataset.id]; s.step = +el.dataset.v; s.rec = false; render(); },
-  apozhRec(el) { const s = S.audio[el.dataset.id]; s.rec = !s.rec; render(); },
-  apozhGuess(el) { const s = S.audio[el.dataset.id]; s.res = { ok: +el.dataset.v === +el.dataset.r }; render(); },
-  apozhNext(el) {
-    const id = el.dataset.id; const s = S.audio[id];
-    if (s.i + 1 < 3) { s.i++; s.step = 0; s.res = null; render(); return; }
-    S.audio[id] = { i: 0, step: 0 }; award(id, A[id].pts.v); render();
+  apozhEnter(el) { const a = A[el.dataset.id]; S.ui.apozhGame = a.id; go('act/' + a.id, true); },
+  apozhAll() { const s = S.audio[S.ui.apozhGame]; if (s) { if (s.players) Object.values(s.players).forEach(p => p.playing = false); if (s.rec) { s.rec = false; s.recDone = true; s.recSeconds = Math.max(1, Math.floor((Date.now() - s.recStarted) / 1000)); } } delete S.ui.apozhGame; render(); document.getElementById('scroll').scrollTop = 0; },
+  apozhHelp() {
+    const a = A[S.ui.apozhGame]; const singing = a && a.mode !== 'top' && (a.mode === 'swap' ? S.apozhRole !== 'sing' : S.apozhRole === 'sing');
+    modal(`<h3>Как играть?</h3><p>${singing ? 'Выбери песню и запиши несколько строчек без музыки. Послушай результат и отправь одну итоговую запись на проверку.' : 'Послушай перевёрнутую песню, повтори звуки голосом и послушай свою запись в обратную сторону. Выбери песню и подтверди ответ.'}</p><p>${singing ? 'Одно удовольствие и 20 баллов начислят после одобрения записи.' : 'Впереди три песни. Правильность ответов не влияет на баллы.'}</p><button class="btn red" data-act="closeModal">Понятно</button>`);
   },
-  apozhRole(el) { S.apozhRole = el.dataset.v; render(); },
-  apozhPick(el) { const s = S.audio[el.dataset.id]; s.track = +el.dataset.v; s.step = 'lines'; render(); },
-  apozhRedo(el) { S.audio[el.dataset.id].step = 'lines'; render(); },
-  apozhSend(el) { S.audio[el.dataset.id].step = 'sent'; toast('Запись отправлена на проверку'); render(); },
-  apozhApprove(el) { const id = el.dataset.id; S.audio[id] = { step: 'pick' }; award(id, A[id].pts.v); render(); },
+  apozhStart(el) { const a = A[el.dataset.id]; if (!canDo(a)) return; apozhState(a).started = true; apozhRender(); },
+  apozhSwapStart(el) { const a = A[el.dataset.id]; if (!canDo(a)) return; const s = apozhState(a); s.swapStarted = true; s.started = true; apozhRender(); },
+  apozhPlay(el) {
+    const s = apozhState(A[el.dataset.id]); const p = s.players[el.dataset.key];
+    const resume = !p.playing;
+    Object.values(s.players).forEach(x => x.playing = false);
+    p.playing = resume; p.heard = true; if (p.time >= 8) p.time = 0;
+    render();
+  },
+  apozhStep(el) {
+    const a = A[el.dataset.id]; if (!canDo(a)) return; const s = apozhState(a); const next = el.dataset.v === 'listen' ? 'listen' : +el.dataset.v;
+    if (next === 1 && !(s.players && s.players.backward && s.players.backward.heard)) return;
+    if ((next === 2 || next === 'listen') && !s.recDone) return;
+    if (s.players) Object.values(s.players).forEach(p => p.playing = false);
+    s.step = next; s.rec = false; apozhRender();
+  },
+  apozhRec(el) {
+    const a = A[el.dataset.id]; if (!canDo(a)) return; const s = apozhState(a);
+    if (s.rec) { s.rec = false; s.recDone = true; s.recSeconds = Math.max(1, Math.floor((Date.now() - s.recStarted) / 1000)); }
+    else { s.rec = true; s.recDone = false; s.recStarted = Date.now(); s.recSeconds = 0; s.players = {}; }
+    render();
+  },
+  apozhPreview(el) { const s = apozhState(A[el.dataset.id]); s.preview = !s.preview; render(); },
+  apozhMicHelp(el) { apozhState(A[el.dataset.id]).micHelp = true; apozhRender(); },
+  apozhMicBack(el) { apozhState(A[el.dataset.id]).micHelp = false; apozhRender(); },
+  apozhSelect(el) { const a = A[el.dataset.id]; if (!canDo(a)) return; apozhState(a).answer = +el.dataset.v; render(); },
+  apozhGuess(el) {
+    const a = A[el.dataset.id]; if (!canDo(a)) return; const s = apozhState(a); if (s.answer === undefined || s.res) return;
+    const src = a.mode === 'top' ? 'top' : 'colleague'; const right = (s.i * 3 + (src === 'top' ? 2 : 5)) % 10;
+    s.res = { ok: s.answer === right }; if (s.players) Object.values(s.players).forEach(p => p.playing = false); apozhRender();
+  },
+  apozhNext(el) {
+    const id = el.dataset.id; const a = A[id]; if (!canDo(a)) return; const s = S.audio[id]; if (!s.res) return;
+    if (s.i + 1 < 3) { S.audio[id] = { i: s.i + 1, step: 0, started: true, swapStarted: s.swapStarted }; apozhRender(); return; }
+    S.audio[id] = { i: 0, step: 0, started: true }; award(id, a.pts.v); apozhRender();
+  },
+  apozhRole(el) { if (!canDo(A.apozh_r1)) return; S.apozhRole = el.dataset.v; const s = apozhState(A.apozh_r1); s.started = false; apozhRender(); },
+  apozhTrackSelect(el) { const a = A[el.dataset.id]; if (!canDo(a)) return; apozhState(a).pick = +el.dataset.v; render(); },
+  apozhPick(el) { const a = A[el.dataset.id]; if (!canDo(a)) return; const s = apozhState(a); if (s.pick === undefined) return; s.track = s.pick; s.step = 'lines'; apozhRender(); },
+  apozhRedo(el) { const a = A[el.dataset.id]; if (!canDo(a)) return; const s = apozhState(a); if (s.step === 'sent') return; s.step = s.track !== undefined ? 'lines' : 1; s.rec = false; s.recDone = false; s.preview = false; s.players = {}; apozhRender(); },
+  apozhSend(el) { const a = A[el.dataset.id]; if (!canDo(a)) return; const s = apozhState(a); if (s.step !== 'listen' || !s.recDone) return; s.step = 'sent'; apozhRender(); },
+  apozhApprove(el) { const id = el.dataset.id; if (!canDo(A[id]) || apozhState(A[id]).step !== 'sent') return; S.audio[id] = { step: 'pick' }; award(id, A[id].pts.v); apozhRender(); },
   vidPlay(el) { const id = el.dataset.id; const v = S.vid[id] = S.vid[id] || {}; if (!v.started && !isComplete(A[id]) && !ended()) { v.started = true; v.left = 5; render(); } else toast('Воспроизведение'); },
   vidDone(el) { award(el.dataset.id, A[el.dataset.id].pts.v); render(); },
   gamePlay(el) { const id = el.dataset.id; S.game[id] = Object.assign(S.game[id] || { best: 0 }, { phase: 'play' }); render(); },
