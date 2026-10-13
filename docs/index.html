@@ -619,6 +619,13 @@ h1,h2,h3{line-height:1.15;margin:0}
 .qplate.on{border-color:var(--red);box-shadow:0 0 0 1px var(--red)}
 .qplate.dim{opacity:.55}
 @container (max-width:520px){ .qplates{grid-template-columns:1fr} }
+.srules{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.srule{display:flex;gap:10px;align-items:center;border:1px solid var(--line2);border-radius:12px;padding:10px 12px}
+.srule>b{flex:none;width:22px;text-align:center;color:var(--muted)}
+.srule.ok>b{color:#1a8f3c}
+.srule .chip{flex:none}
+.srule .grow{flex:1;min-width:0}
+@container (max-width:520px){ .srule{flex-wrap:wrap} }
 .bsw{display:grid;grid-template-columns:1fr 2fr 1fr;gap:12px;align-items:stretch;margin-top:12px;user-select:none}
 .blet{border:2px dashed var(--line);border-radius:14px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 8px;cursor:pointer;font:inherit;color:var(--ink)}
 .blet b{font-size:34px;line-height:1}
@@ -807,7 +814,7 @@ ul.pll li{margin:3px 0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.40',
+  version: '0.41',
   updated: '13.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
@@ -861,7 +868,7 @@ const GROUPS = [
   { id: 'recipe', block: 'work',  title: 'Уютный архив', kind: 'истории с фото',          desc: 'Расскажи историю о своей работе в МТС — истории коллег собираются в общую ленту.', acts: ['recipe'] },
   { id: 'quiz',   block: 'work',  title: 'Азарт открытий', kind: 'квиз',         desc: 'Квиз о МТС с объяснением после каждого ответа. Три выпуска по 10 вопросов — раз в неделю.', acts: ['quiz1', 'quiz2', 'quiz3'] },
   { id: 'brain',  block: 'work',  title: 'Когда всё сходится', kind: 'BRAIN: смахни карточку к букве на время', desc: 'Стратегия МТС BRAIN в карточках: смахни каждую к нужной букве, пока идёт таймер. Пять раундов — новый раз в четыре дня.', acts: ['brain1', 'brain2', 'brain3', 'brain4', 'brain5'] },
-  { id: 'shine',  block: 'sport', title: 'Перезагрузка',                     kind: 'видео-разминки', desc: 'Видео-разминки с амбассадорами спорта: пять роликов, выходят по мере готовности, смотреть можно в любом порядке.', acts: ['shine'] },
+  { id: 'shine',  block: 'sport', title: 'Перезагрузка', kind: 'видео-разминки', desc: 'Видео-разминки с амбассадорами спорта. Заходи — и удовольствие твоё. Новые ролики выходят раз в несколько дней: за первый просмотр каждого — ещё удовольствие, а разминка раз в день приносит баллы.', acts: ['shine_open', 'shine'] },
   { id: 'run',    block: 'sport', title: 'Праздничный забег', kind: 'мини-игра',         desc: 'Мини-игра: беги, собирай и перепрыгивай препятствия. Две версии.', acts: ['run1', 'run2'] },
   { id: 'talent', block: 'art',   title: 'Сиять', kind: 'талант-шоу: номера коллег и выбор лучшего',          desc: 'Покажи, чем горишь вне работы, и выбирай лучшие номера коллег.', acts: ['talent', 'talent_like', 'talent_mc'] },
   { id: 'apozh',  block: 'good',  title: 'На одной волне', kind: 'АПОЖ: угадай песню задом наперёд',  desc: 'Разгон: угадай три песни топ-менеджеров задом наперёд. Потом выбери роль — спеть или отгадать песни коллег. В третьем обновлении роль можно сменить.', acts: ['apozh_top', 'apozh_r1', 'apozh_r2'] },
@@ -918,16 +925,19 @@ const ACTS = [
   { id: 'brain5', block: 'work', title: 'Когда всё сходится. Раунд 5', sub: 'BRAIN', type: 'swipe', round: 4, from: '2026-11-06', max: 1, pl: 1, pts: { kind: 'score', v: 20 }, status: 'client',
     desc: 'Буквы R (R&D) и B (бизнес).', notes: [] },
   // ---------- Держать темп (бывш. «Спорт») ----------
-  { id: 'shine', block: 'sport', title: 'Перезагрузка', sub: 'Видео-разминки', type: 'video_view', mode: 'series', from: '2026-10-21', max: 5, pl: 1, pts: { kind: 'fixed', v: 10 }, status: 'client',
-    videos: [{ n: 1, from: '2026-10-21' }, { n: 2, from: '2026-10-21' }, { n: 3, from: '2026-10-28' }, { n: 4, from: '2026-10-28' }, { n: 5, from: '2026-11-04' }],
-    desc: 'Посмотреть ролик-разминку и отметить «Я тоже размялся!». Ролики выходят по мере готовности, смотреть можно в любом порядке.',
-    notes: ['Пять роликов, по одному удовольствию за ролик — всего 5 (по презентации). Если роликов будет больше, пересоберём; за ролики сверх пяти — только баллы.', 'Ролики снимают амбассадоры спорта по нашему техническому ТЗ, 10–15 минут. Выкладываем по мере готовности — в идеале по одному в неделю, если роликов больше — по два. Смотреть можно в любом порядке. Даты в прототипе — пример.', 'Кнопка «Я тоже размялся!» появляется по таймеру после первого запуска; сколько идёт таймер — решаем (рабочий вариант — 5 минут).', 'Простые упражнения, которые можно сделать прямо в офисе: размять спину и шею.'] },
+  { id: 'shine_open', block: 'sport', title: 'Перезагрузка: первый заход', sub: 'Видео-разминки', type: 'system', from: '2026-10-21', max: 1, pl: 1, pts: { kind: 'fixed', v: 0 }, status: 'ok',
+    desc: 'Удовольствие сразу, как только участник впервые открыл «Перезагрузку».',
+    notes: ['Решено 13.10: первый заход в активность — +1 удовольствие, без баллов. Начисляется автоматически, ничего делать не нужно.'] },
+  { id: 'shine', block: 'sport', title: 'Перезагрузка', sub: 'Видео-разминки', type: 'video_view', mode: 'series', from: '2026-10-21', max: 5, pl: 1, pts: { kind: 'daily', v: 5 }, status: 'client',
+    videos: [{ n: 1, from: '2026-10-21' }, { n: 2, from: '2026-10-24' }, { n: 3, from: '2026-10-28' }, { n: 4, from: '2026-11-01' }, { n: 5, from: '2026-11-05' }],
+    desc: 'Посмотреть ролик-разминку и нажать «Я тоже размялся!». Первый просмотр каждого ролика — удовольствие, разминка раз в день — баллы.',
+    notes: ['Решено 13.10. Удовольствия: +1 за первый заход в активность и +1 за первый просмотр каждого ролика — всего шесть (заход + пять роликов).', 'Баллы — 5 за разминку, не чаще раза в день: засчитываем первую досмотренную разминку за день, любой ролик — новый или уже просмотренный. Повторные разминки в тот же день — без баллов, участник видит «Баллы за сегодня уже есть — приходи завтра».', 'Новые ролики выходят раз в несколько дней — с обновлением контента: 21.10, 24.10, 28.10, 01.11, 05.11 (даты — пример). Вышедшие ролики остаются, смотреть можно в любом порядке.', 'Ролики снимают амбассадоры спорта по нашему техническому ТЗ, 10–15 минут. Простые упражнения, которые можно сделать прямо в офисе: размять спину и шею.', 'Кнопка «Я тоже размялся!» появляется по таймеру после первого запуска; сколько идёт таймер — решаем (рабочий вариант — 5 минут).', 'На экране сверху — памятка «Как получить удовольствия и баллы» с отметками, что уже получено: заход, ролики «N из 5», баллы за сегодня.'] },
   { id: 'run1', block: 'sport', title: 'Праздничный забег: тортики и подарки', sub: 'Игра-сайдскроллер', type: 'game', from: '2026-10-21', max: 1, pl: 1, pts: { kind: 'result', v: 20 }, status: 'draft',
     desc: 'Казуальная мини-игра: герой бежит, собирает тортики и подарки и перепрыгивает препятствия.',
     notes: ['Версия «до эфира». Удовольствие — за первую завершённую игру (допущение). 20 баллов за рубеж — из презентации.', 'Героя можно срисовать с амбассадоров спорта или с главной легкоатлетки компании — если она согласится (предложение МТС на встрече 01.10).'] },
-  { id: 'run2', block: 'sport', title: 'Праздничный забег: после праздника', sub: 'Игра-сайдскроллер', type: 'game', from: '2026-10-28', max: 1, pl: 1, pts: { kind: 'result', v: 20 }, status: 'draft',
+  { id: 'run2', block: 'sport', title: 'Праздничный забег: после праздника', sub: 'Игра-сайдскроллер', type: 'game', from: '2026-10-28', max: 1, pl: 0, pts: { kind: 'result', v: 20 }, status: 'draft',
     desc: 'Та же игра с новыми картинками: после торта собираем грязные тарелки.',
-    notes: ['Отличаются только картинки. Первая версия после эфира не закрывается.'] },
+    notes: ['Отличаются только картинки. Первая версия после эфира не закрывается.', 'Только баллы: с 13.10 у забега одно удовольствие — за первую игру в версии 1 (так «Держать темп» остаётся с семью удовольствиями).'] },
 
   // ---------- Вдохновлять (бывш. «Творчество») ----------
   { id: 'talent', block: 'art', title: 'Сиять: мой номер', sub: 'Талант-шоу', type: 'ugc_video', from: '2026-10-21', max: 2, pl: 1, pts: { kind: 'fixed', v: 30 }, status: 'ok',
@@ -998,9 +1008,9 @@ const PL_FOR = {
   apozh_top: 'разгон: угадать три песни топ-менеджеров — даже если не угадал',
   apozh_r1: 'первая роль: спеть (после одобрения записи) или отгадать три песни коллег',
   apozh_r2: 'вторая роль после смены — с 04.11',
-  shine: 'по одному за каждый ролик — пять роликов, в любом порядке',
-  run1: 'первая завершённая игра',
-  run2: 'первая завершённая игра',
+  shine_open: 'сразу при первом заходе в «Перезагрузку»',
+  shine: 'по одному за первый просмотр каждого ролика — пять роликов, выходят раз в несколько дней',
+  run1: 'первая завершённая игра — одно удовольствие на обе версии забега',
   talent: 'по одному за номер, до двух номеров',
   talent_like: 'первый раунд «Выбери лучший»',
   talent_mc: 'посмотреть мастер-класс',
@@ -1160,7 +1170,8 @@ const MECH = {
   ]},
   video_view: { short: 'Просмотр видео', title: 'Просмотр видео с таймером', sections: [
     ['Пользователь', ['Видео во встроенном плеере. Таймер стартует после первого «Play», пауза его не сбрасывает (как на МТС 30).', 'Когда таймер истёк — кнопка «Я тоже размялся!» → начисление и подсказка «баллы начислены».']],
-    ['Разминки «Перезагрузка»', ['Пять роликов по 10–15 минут выходят по мере готовности — в идеале по одному в неделю. Смотреть можно в любом порядке.', 'Удовольствие и 10 баллов — за каждый ролик, всего 5 удовольствий. Если роликов будет больше, пересоберём.', 'Сколько идёт таймер до кнопки при длинном ролике — решаем; рабочий вариант — 5 минут.']],
+    ['Разминки «Перезагрузка»: что за что', ['Первый заход в активность — +1 удовольствие сразу, без баллов.', 'Новые ролики выходят раз в несколько дней — с обновлением контента. Первый просмотр каждого ролика — +1 удовольствие. Роликов пять, вместе с заходом — шесть удовольствий.', 'Баллы — 5 за разминку раз в день: засчитываем первую досмотренную разминку за день, любой ролик — новый или уже просмотренный. Повторная разминка в тот же день — без баллов: «Баллы за сегодня уже есть — приходи завтра».']],
+    ['Разминки «Перезагрузка»: экран', ['Сверху — памятка «Как получить удовольствия и баллы» из трёх пунктов с отметкой, что уже получено: «Зашёл — +1 удовольствие ✓», «Первый просмотр ролика — +1 удовольствие · N из 5», «Разминка раз в день — +5 баллов · сегодня: начислено / ещё нет».', 'Ниже — сетка роликов. У каждого: что даст просмотр сейчас («+1 удовольствие и +5 баллов», «+5 баллов», «только для себя — баллы за сегодня уже есть»), у невышедших — «Выйдет ДД.ММ».', 'После «Я тоже размялся!» — всплывашка с начислением и подсказка, когда приходить за следующими баллами.', 'Сколько идёт таймер до кнопки при длинном ролике — решаем; рабочий вариант — 5 минут.']],
   ]},
   game: { short: 'Мини-игра', title: 'Мини-игра (сайдскроллер)', sections: [
     ['Пользователь', ['Экран старта (правила, лучший результат) → игра → экран результата (рубежи, баллы, рекорд, «Сыграть ещё»).', 'Сайдскроллер: герой бежит, собирает предметы в воздухе, перепрыгивает препятствия.', 'До эфира собираем тортики и подарки, после — грязные тарелки. Отличаются только картинки.']],
@@ -1294,7 +1305,7 @@ const QUESTIONS = [
   { to: 'team', text: 'Забег: число рубежей и потолок баллов; в рейтинг лучший результат или сумма.', ref: 'mech-game' },
   { to: 'team', text: 'Рейтинг: правило при равенстве баллов; как часто обновляется.', ref: 'rating' },
   { to: 'team', text: 'Квиз: как показывать выпуски — плашки выпусков или один вход и выпуски по очереди во всплывающем окне.', ref: 'mech-quiz' },
-  { to: 'team', text: 'Разминки: сколько идёт таймер до кнопки «Я тоже размялся!» при ролике 10–15 минут (сейчас 5 минут). Если роликов будет больше пяти — пересобираем удовольствия.', ref: 'act-shine' },
+  { to: 'team', text: 'Разминки: сколько идёт таймер до кнопки «Я тоже размялся!» при ролике 10–15 минут (сейчас 5 минут). Если роликов будет больше пяти — за ролики сверх пяти только баллы раз в день.', ref: 'act-shine' },
   { to: 'team', text: 'Капча «Я не робот»: даём ли баллы и с какого дня показываем (сейчас — с 03.11).', ref: 'act-captcha' },
   { to: 'team', text: 'Итоговая таблица 33 удовольствий и баллов по активностям. Сейчас в реестре черновое распределение.', ref: 'registry' },
 ];
@@ -1423,7 +1434,7 @@ const TIMING = {
         { id: 'design', t: 'Дизайн: сетка роликов и плеер с таймером', who: 'team', from: '2026-10-08', to: '2026-10-14' },
         { id: 'content', t: 'Контент: пять роликов от амбассадоров', who: 'team', segs: [['2026-10-09', '2026-10-16'], ['2026-10-19', '2026-10-30']], note: 'Амбассадоры снимают сами по нашему техническому ТЗ, ролики по 10–15 минут. Выкладываем по мере готовности — в идеале по одному в неделю.' },
         { id: 'front', t: 'Вёрстка', who: 'team', from: '2026-10-16', to: '2026-10-19' },
-        { id: 'dev', t: 'Разработка: таймер, удовольствие за каждый ролик', who: 'team', from: '2026-10-12', to: '2026-10-16' },
+        { id: 'dev', t: 'Разработка: удовольствие за заход и за первый просмотр ролика, баллы раз в день', who: 'team', from: '2026-10-12', to: '2026-10-16' },
         { id: 'live', t: 'Открыто: ролики по мере готовности', who: 'live', from: '2026-10-21', to: '2026-11-11' },
       ],
       asks: [
@@ -1558,7 +1569,7 @@ const TIMING = {
     shine: {
       design:  { st: 'need', who: 'team', due: '2026-10-14', t: 'Сетка роликов и плеер с таймером' },
       content: { st: 'need', who: 'team', due: '2026-10-16', t: 'Пять роликов по 10–15 минут от амбассадоров — по мере готовности, первые — к 16.10' },
-      dev:     { st: 'need', who: 'team', due: '2026-10-19', t: 'Просмотр с таймером, удовольствие за каждый ролик' },
+      dev:     { st: 'need', who: 'team', due: '2026-10-19', t: 'Удовольствие за первый заход и за первый просмотр каждого ролика, 5 баллов раз в день, таймер' },
       mts:     { st: 'wait', who: 'client', due: '2026-10-07', t: 'Контакты амбассадоров спорта' } },
     run: {
       design:  { st: 'need', who: 'team', due: '2026-10-14', t: 'Самый большой объём дизайна: герой, фоны, предметы. Версия 1 (тортики и подарки) — к 14.10, версия 2 (после праздника) — к 21.10' },
@@ -1604,6 +1615,11 @@ const TIMING = {
 };
 
 const CHANGELOG = [
+  { v: '0.41', date: '13.10.2026', items: [
+    '«Перезагрузка»: +1 удовольствие сразу за первый заход и +1 за первый просмотр каждого из пяти роликов — всего шесть. Новые ролики выходят раз в несколько дней.',
+    'Баллы за разминку — 5, раз в день: за первую досмотренную разминку за день, любой ролик. Повторно в тот же день — без баллов.',
+    'На экране — памятка «Как получить удовольствия и баллы» с отметками, что уже получено; у каждого ролика подписано, что он даст сейчас. Чтобы осталось 33, у «Праздничного забега» одно удовольствие на обе версии.',
+  ] },
   { v: '0.40', date: '13.10.2026', items: [
     'Разделов четыре: «Работать вместе» (было «Быть вместе»), «Держать темп», «Вдохновлять», «Дарить тепло». Раздела «Работаем вместе» больше нет.',
     'Общая история «Тайна пропавшего торта» — вне разделов: отдельная карточка прямо на главной, ведёт к текущей главе, после развязки — к «Вся история». Удовольствие и баллы — как раньше.',
@@ -1751,11 +1767,11 @@ const S = {
   date: DEMO_DATES[0].v, auth: false, view: 'desktop', hh: false, candle: false, candleFound: false, candlePos: null,
   route: 'landing', menu: false,
   done: {}, apts: {}, sub: {}, quiz: {}, audio: {}, vid: {}, game: {}, votes: {}, guess: null, vote: { cur: null, opened: [], seen: [], day: {}, paid: 0, rounds: 0 }, log: [], brain: {},
-  code: null,  ui: { batch: 0, quizView: 'cards' }, shine: new Set(), captcha: null, apozhRole: null,
+  code: null,  ui: { batch: 0, quizView: 'cards' }, shine: new Set(), shineDays: new Set(), captcha: null, apozhRole: null,
   regErr: false, loginErr: false, recovered: false,
 };
 function resetProgress() {
-  Object.assign(S, { done: {}, apts: {}, sub: {}, quiz: {}, audio: {}, vid: {}, game: {}, votes: {}, guess: null, vote: { cur: null, opened: [], seen: [], day: {}, paid: 0, rounds: 0 }, log: [], brain: {}, code: null, candleFound: false,  ui: { batch: 0, quizView: S.ui.quizView || 'cards' }, shine: new Set(), captcha: null, apozhRole: null });
+  Object.assign(S, { done: {}, apts: {}, sub: {}, quiz: {}, audio: {}, vid: {}, game: {}, votes: {}, guess: null, vote: { cur: null, opened: [], seen: [], day: {}, paid: 0, rounds: 0 }, log: [], brain: {}, code: null, candleFound: false,  ui: { batch: 0, quizView: S.ui.quizView || 'cards' }, shine: new Set(), shineDays: new Set(), captcha: null, apozhRole: null });
 }
 
 /* ---------- логика доступности и начислений (описана в ТЗ, раздел «Доступность и начисления») ---------- */
@@ -1813,6 +1829,7 @@ function ptsLabel(a) {
   if (p.kind === 'result') return `${p.v} баллов за рубеж`;
   if (p.kind === 'bonus') return 'бонус-сюрприз';
   if (p.kind === 'tries') return `до ${p.v} баллов`;
+  if (p.kind === 'daily') return `${p.v} ${wPts(p.v)} раз в день`;
   return '';
 }
 function plLabel(a) { const t = plMax(a); if (!t) return ''; return ((a.max || 1) > 1 ? 'до ' : '') + t + ' ' + wPl(t); }
@@ -1992,11 +2009,12 @@ function vBlock(id) {
 
 /* ---------- активность: каркас ---------- */
 function vAct(id) {
+  if (id === 'shine_open') id = 'shine';
   const a = A[id]; if (!a) return v404();
   const b = B[a.block]; const st = actState(a);
   if (groupOf(a)?.id === 'apozh') return apozhPage(a, st);
-  const g = groupOf(a); const multi = g && g.acts.length > 1; const plates = g && g.id === 'quiz';
-  const chips = `<div class="chips">${plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span>${stateChip(a)}</div>`;
+  const g = groupOf(a); const multi = g && g.acts.length > 1 && g.id !== 'shine'; const plates = g && g.id === 'quiz';
+  const chips = `<div class="chips">${g && g.id === 'shine' ? `<span class="chip pl">${gActs(g).reduce((n, x) => n + plMax(x), 0)} ${wPl(6)}</span>` : plChip(a)}<span class="chip">${esc(ptsLabel(a))}</span><span class="chip">${dateLabel(a)}</span>${stateChip(a)}</div>`;
   const crumbs = `<div class="crumbs"><a data-go="home">Главная</a> / ${b.solo ? esc(g.title) : (a.block === 'stream' ? '<a data-go="stream">Эфир</a>' : a.block === 'common' ? esc(b.name) : `<a data-go="block/${b.id}">${esc(b.name)}</a>`) + (multi ? ' / ' + esc(g.title) : '')}</div>`;
   const tabs = multi ? `<div class="gtabs">${gActs(g).map(x => { const s = actState(x); const m = s === 'done' ? '✓' : s === 'soon' ? dm(x.from) : s === 'locked' ? '🔒' : s === 'closed' ? 'закрыто' : s === 'partial' ? cnt(x) + '/' + x.max : '';
     return `<a data-go="act/${x.id}" class="${x.id === a.id ? 'on' : ''} ${['soon', 'locked', 'closed'].includes(s) && x.id !== a.id ? 'dim' : ''}">${esc(tabT(x))}${m ? `<span class="m">${m}</span>` : ''}</a>`; }).join('')}</div>` : '';
@@ -2425,20 +2443,27 @@ function quizRun(a, st) {
   </div>`;
 }
 function shineBody(a) {
-  const got = Math.min(S.shine.size, a.max); const active = Object.entries(S.vid).find(([k, v]) => k.startsWith('shine_') && v.started && !v.ready);
+  const o = A.shine_open, opened = isComplete(o), got = Math.min(S.shine.size, a.max), today = S.shineDays.has(S.date), pv = a.pts.v;
+  const active = Object.entries(S.vid).find(([k, v]) => k.startsWith('shine_') && v.started && !v.ready);
+  const out = A.shine.videos.filter(v => S.date >= v.from).length; const next = a.videos.find(v => S.date < v.from);
+  const rule = (ok, t, d, st) => `<div class="srule ${ok ? 'ok' : ''}"><b>${ok ? '✓' : '○'}</b><div class="grow"><div><b>${t}</b></div><div class="small muted">${d}</div></div><span class="chip ${ok ? 'st-done' : ''}">${st}</span></div>`;
+  const rules = `<div class="panel"><h3>Как получить удовольствия и баллы</h3><div class="srules">
+    ${rule(opened, '+1 удовольствие — за первый заход', 'Уже начислено, как только ты открыл «Перезагрузку».', opened ? 'получено' : 'начислится сейчас')}
+    ${rule(got >= a.max, '+1 удовольствие — за первый просмотр каждого ролика', `Новые ролики выходят раз в несколько дней. Сейчас вышло ${out} из ${a.videos.length}${next ? ', следующий — ' + dm(next.from) : ''}.`, `${got} из ${a.max}`)}
+    ${rule(today, `+${pv} баллов — за разминку раз в день`, 'Любой ролик, новый или уже просмотренный. Повторно в тот же день — без баллов.', today ? 'сегодня начислено' : 'сегодня ещё нет')}
+  </div><p class="small muted" style="margin:10px 0 0">Всего в «Перезагрузке» ${plMax(o) + plMax(a)} ${wPl(plMax(o) + plMax(a))}: ${plGot(o) + plGot(a)} уже твои.</p></div>`;
   const cards = a.videos.map(v => {
     const k = 'shine_' + v.n, st = S.vid[k] || {}, seen = S.shine.has(v.n), soon = S.date < v.from;
+    const gain = soon ? '' : [seen ? '' : '+1 удовольствие', today ? '' : `+${pv} баллов`].filter(Boolean).join(' и ') || 'для себя — баллы за сегодня уже есть';
     let ctl;
     if (soon) ctl = `<span class="chip st-soon">Выйдет ${dm(v.from)}</span>`;
-    else if (seen) ctl = `<span class="chip st-done">Размялся ✓</span>`;
-    else if (ended()) ctl = '';
+    else if (ended()) ctl = seen ? '<span class="chip st-done">Просмотрен ✓</span>' : '';
     else if (st.ready) ctl = `<button class="btn sm red" data-act="shineDone" data-v="${v.n}">Я тоже размялся!</button>`;
     else if (st.started) ctl = `<span class="small muted">Кнопка через <b class="timer" id="vt">${st.left}</b> с</span>`;
-    else ctl = `<span class="small muted">Нажми «Play»</span>`;
-    return `<div class="gcard ${soon ? 'dim' : ''}"><div class="ph video sm"><span>Разминка ${v.n} · 12 мин</span>${soon ? '' : `<button class="play" data-act="shinePlay" data-v="${v.n}" aria-label="Play">▶</button>`}</div><div class="b"><b>Разминка ${v.n}</b><div class="small muted">Амбассадор спорта · город</div><div style="margin-top:6px">${ctl}</div></div></div>`;
+    else ctl = `<span class="small muted">${seen ? 'Просмотрен ✓ · можно ещё раз' : 'Нажми «Play»'}</span>`;
+    return `<div class="gcard ${soon ? 'dim' : ''}"><div class="ph video sm"><span>Разминка ${v.n} · 12 мин</span>${soon ? '' : `<button class="play" data-act="shinePlay" data-v="${v.n}" aria-label="Play">▶</button>`}</div><div class="b"><b>Разминка ${v.n}</b><div class="small muted">Амбассадор спорта · город</div>${gain && !ended() ? `<div class="small" style="margin-top:4px;${gain.startsWith('+') ? 'color:var(--red);font-weight:600' : 'color:var(--muted)'}">${gain.startsWith('+') ? 'Сейчас даст: ' : ''}${gain}</div>` : ''}<div style="margin-top:6px">${ctl}</div></div></div>`;
   }).join('');
-  return `<div class="banner info"><b>${got} из ${a.max} ${wPl(a.max)}</b><span class="grow">Удовольствие — за каждый из первых трёх роликов, любых. Баллы — за каждый ролик: ${a.pts.v}. Ролики выходят по мере готовности, смотреть можно в любом порядке.</span></div>
-    <p class="small muted">Таймер стартует после первого «Play», пауза его не сбрасывает. <span class="sbadge draft">демо: 5 с вместо 5 минут</span>${active ? ' Сейчас идёт таймер — досмотри ролик.' : ''}</p>
+  return rules + `<p class="small muted">Таймер стартует после первого «Play», пауза его не сбрасывает. <span class="sbadge draft">демо: 5 с вместо 5 минут</span>${active ? ' Сейчас идёт таймер — досмотри ролик.' : ''}</p>
     <div class="gal">${cards}</div>`;
 }
 function plFor(a) { return PL_FOR[a.id] || ((a.max || 1) > 1 ? `по ${a.pl} за каждое выполнение, до ${a.max} раз` : 'за выполнение'); }
@@ -2559,11 +2584,12 @@ function myMaterials() {
   const items = ACTS.filter(a => (S.sub[a.id] || []).length).flatMap(a => S.sub[a.id].map((x, i) => `<div class="myitem" data-go="act/${a.id}" style="cursor:pointer"><div class="grow"><b>${esc(shortT(a))}</b> · ${i + 1}${x.nom ? ' · ' + esc(x.nom) : ''}${x.to ? ' · ' + esc(x.to) : ''}<div class="small muted">${esc(x.text || '')}</div></div><span class="chip ${lab[x.st][0]}">${lab[x.st][1]}</span></div>`));
   return `<div class="panel"><h3>Мои материалы</h3><p class="small muted">Истории, номера и песни. Уведомлений нет — результат проверки виден здесь и на странице задания.</p>${items.length ? `<div class="mylist">${items.join('')}</div>` : '<p class="muted">Пока ничего не отправлено.</p>'}</div>`;
 }
-const lkName = a => { const g = groupOf(a); return g && g.acts.length > 1 ? `${g.title}: ${tabT(a)}` : a.title; };
+const lkName = a => { const g = groupOf(a); if (a.id === 'shine') return 'Перезагрузка: ролики'; return g && g.acts.length > 1 && g.id !== 'shine' ? `${g.title}: ${tabT(a)}` : a.title; };
 function ptsCap(a) {
   const p = a.pts, n = a.id === 'talent_like' ? VOTE.total : (a.max || 1);
   if (p.kind === 'fixed' || p.kind === 'score') return p.v * n;
   if (p.kind === 'bonus') return p.v;
+  if (p.kind === 'daily') return p.v * (dayDiff(a.from, PROJECT.end) + 1);
   return null; // игра: баллы за рубежи без потолка
 }
 function lkSummary() {
@@ -2683,6 +2709,8 @@ function afterRender(site) {
     if (!v.started || v.ready || !document.getElementById('vt')) return;
     every(() => { v.left--; const el = document.getElementById('vt'); if (el) el.textContent = v.left; if (v.left <= 0) { v.ready = true; render(); } }, 1000);
   });
+  // «Перезагрузка»: удовольствие за первый заход
+  if (S.auth && ['act/shine', 'act/shine_open'].includes(S.route) && canDo(A.shine_open) && !isComplete(A.shine_open)) later(() => { if (!isComplete(A.shine_open)) { award('shine_open', 0); render(); } }, 400);
   // «Когда всё сходится»: таймер раунда и смахивание карточки
   const bt = document.getElementById('bt');
   if (bt) {
@@ -2843,11 +2871,16 @@ const ACTIONS = {
   modalGo(el) { closeModal(); go(el.dataset.v); },
   shinePlay(el) {
     const k = 'shine_' + el.dataset.v; const v = S.vid[k] = S.vid[k] || {};
-    if (S.shine.has(+el.dataset.v) || v.started || ended()) { toast('Воспроизведение'); return; }
+    if (v.started || ended()) { toast('Воспроизведение'); return; }
     if (Object.entries(S.vid).some(([x, y]) => x.startsWith('shine_') && y.started && !y.ready)) { toast('Сначала досмотри начатую разминку'); return; }
     v.started = true; v.left = 5; render();
   },
-  shineDone(el) { const n = +el.dataset.v; S.shine.add(n); const a = A.shine; if (cnt(a) < a.max) award('shine', a.pts.v); else award('shine', a.pts.v, { pointsOnly: true }); render(); },
+  shineDone(el) {
+    const n = +el.dataset.v; const a = A.shine; const first = !S.shine.has(n); const pts = S.shineDays.has(S.date) ? 0 : a.pts.v;
+    S.shine.add(n); delete S.vid['shine_' + n]; if (pts) S.shineDays.add(S.date);
+    if (first) award('shine', pts); else if (pts) award('shine', pts, { pointsOnly: true }); else toast('Баллы за сегодня уже есть — приходи завтра за новыми');
+    render();
+  },
   captchaShow() {
     if (!S.auth) { toast('Капча показывается участникам — переключись на «Участник»'); return; }
     if (isComplete(A.captcha)) { toast('Капчу показываем один раз — она уже пройдена. «Сбросить» — чтобы показать снова'); return; }
@@ -2883,7 +2916,7 @@ function demoFill() {
     const n = a.max > 1 ? 1 + Math.floor(Math.random() * a.max) : 1; S.done[a.id] = n;
     const p = a.pts; S.apts[a.id] = p.kind === 'fixed' ? p.v * n : p.kind === 'score' ? Math.round(p.v * .75) : p.kind === 'result' ? p.v * 2 : p.kind === 'tries' ? p.v * n : 0;
     S.log.push({ date: a.from > S.date ? S.date : a.from, id: a.id, pl: (a.pl || 0) * n, pts: S.apts[a.id], hh: false });
-    if (a.id === 'shine') for (let i = 1; i <= n; i++) S.shine.add(i);
+    if (a.id === 'shine') { for (let i = 1; i <= n; i++) S.shine.add(i); S.apts.shine = a.pts.v * n; S.log[S.log.length - 1].pts = S.apts.shine; }
     if (['ugc_photo', 'ugc_video'].includes(a.type)) S.sub[a.id] = Array.from({ length: n }, () => ({ st: 'ok', text: 'Демо' }));
     if (a.type === 'quiz') S.quiz[a.id] = { phase: 'result', ans: [1, 0, 0, 1, 0, 2, 1, 0, 0, 2], i: 9 };
     if (a.type === 'swipe') S.brain[a.id] = { phase: 'result', ans: BRAIN.rounds[a.round].cards.map((c, i) => i === 5 ? undefined : i === 2 ? BRAIN.rounds[a.round].pair.find(k => k !== c[1]) : c[1]) };
@@ -2907,6 +2940,7 @@ const sb = s => `<span class="sbadge ${s}">${STATUS[s].label}</span>`;
 function ptsText(a) {
   const p = a.pts;
   if (p.kind === 'fixed') return p.v ? `${p.v} за выполнение` : 'нет';
+  if (p.kind === 'daily') return `${p.v} раз в день — за первую разминку за день, любой ролик`;
   if (p.kind === 'score') return `до ${p.v} за выпуск, пропорционально верным ответам`;
   if (p.kind === 'result') return `${p.v} за каждый рубеж; в рейтинг — лучший результат`;
   if (p.kind === 'bonus') return `бонус ${p.v} — только первым N нашедшим; размер участник узнаёт после находки`;
@@ -2941,6 +2975,7 @@ function ptsShort(a) {
   if (p.kind === 'result') return `${p.v} / рубеж`;
   if (p.kind === 'bonus') return `бонус ${p.v}`;
   if (p.kind === 'tries') return `${p.v} / ${p.v2}`;
+  if (p.kind === 'daily') return `${p.v} / день`;
   return '—';
 }
 function registry() {
@@ -3048,7 +3083,7 @@ const TZ = [
       ['Выбирает раздел и активность', 'В разделе — карточки активностей. Внутри активности — её задания: например, «Работать вместе» → «Азарт открытий» → выпуски. Открывается первое невыполненное. Общая история — не в разделе: её карточка сразу на главной.', 'block/work'],
       ['Выполняет задания', 'Рассказывает историю, загружает номер, проходит квиз, делает разминку, играет, голосует в истории. Удовольствия и баллы — сразу; за истории, номера и записанные песни — после проверки организаторами.', 'act/recipe'],
       ['Следит за прогрессом и материалами', 'В личном кабинете — сколько собрано и где ещё заработать, история начислений и «Мои материалы»: на проверке, опубликовано или отклонено. Писем и пушей нет — всё видно на платформе.', 'progress'],
-      ['Возвращается', 'Раз в неделю — новый выпуск квиза, раз в три дня — новая глава истории, разминки — по мере готовности. Счастливый час, спрятанная свечка, капча «Я не робот». Пропущенное остаётся доступным.', 'home'],
+      ['Возвращается', 'Раз в неделю — новый выпуск квиза, раз в три дня — новая глава истории, раз в несколько дней — новая разминка; за разминку раз в день — баллы. Счастливый час, спрятанная свечка, капча «Я не робот». Пропущенное остаётся доступным.', 'home'],
       ['Смотрит эфир 28.10', 'Ток-шоу «Без галстука»: со страницы эфира переходит к трансляции на платформе провайдера, там же квизы и опросы. Баллы за эфир — если МТС передаст выгрузку зрителей. Запись — после эфира.', 'stream'],
       ['Две недели после эфира', 'Основные задания и новые выпуски. По клику на прогресс в шапке — личный кабинет: что собрано, где ещё заработать, история начислений и переход сразу к непройденному.', 'progress'],
       ['Собирает все 33 и следит за турнирной таблицей', 'Топ-10 получают призы; среди набравших порог разыгрываем 50 призов, среди всех участников — 100.', 'rating'],
@@ -3064,7 +3099,7 @@ const TZ = [
       '<b>Все 33 — для всех.</b> Любой участник может собрать все удовольствия до конца праздника, даже если пришёл в последний день.',
       '<b>Задания открываются постепенно,</b> пропущенные не закрываются. Выпуски квиза проходятся по порядку, разминки — в любом. Исключение — голосования по главам истории: у каждого своё окно.',
       '<b>Материалы участников</b> (истории, номера, записанные песни) засчитываются после проверки организаторами. Штрафов за мусор не вводим. Отклонённый материал не засчитывается и не занимает лимит — можно отправить новый.',
-      '<b>Баллы зависят от задания:</b> 10, 20, 30 или 50. Одни только удовольствия не выявят победителей — собрать все 33 может каждый, поэтому нужен рейтинг по баллам.',
+      '<b>Баллы зависят от задания:</b> 5 (разминка раз в день), 10, 20, 30 или 50. Одни только удовольствия не выявят победителей — собрать все 33 может каждый, поэтому нужен рейтинг по баллам.',
       '<b>Баллы — за первое прохождение</b> (как правило; встреча 01.10). Переиграть ради баллов нельзя. Исключение на решении — игра, где сейчас в рейтинг идёт лучший результат.',
       '<b>Счастливый час</b> — у каждого свой, раз в неделю: ×2 баллов за любые задания. Удовольствия не умножаются.',
       '<b>Бонусов за заходы на платформу нет</b> — ни ежедневных, ни еженедельных. Множителя за серию дней подряд из презентации тоже нет (решено).',
@@ -3152,7 +3187,7 @@ const TZ = [
 
   { id: 'rating', title: 'Баллы, турнирная таблица, призы', html: () => `
     <h3>Шкала баллов (из презентации)</h3>
-    ${tbl(['Баллы', 'Уровень', 'Примеры'], [['10', 'простые', 'просмотр видео-разминки, голос в истории'], ['20', 'средние', 'выпуск квиза, раунд «Когда всё сходится», рубеж в игре, этап АПОЖ (разгон или роль)'], ['30', 'сложные и творческие', 'талант-шоу, «Уютный архив»'], ['50', 'особые', 'бонус за находку свечки']])}
+    ${tbl(['Баллы', 'Уровень', 'Примеры'], [['5', 'ежедневные', 'разминка «Перезагрузка» — раз в день'], ['10', 'простые', 'голос в истории, мастер-класс'], ['20', 'средние', 'выпуск квиза, раунд «Когда всё сходится», рубеж в игре, этап АПОЖ (разгон или роль)'], ['30', 'сложные и творческие', 'талант-шоу, «Уютный архив»'], ['50', 'особые', 'бонус за находку свечки']])}
     <p>Баллы по каждому заданию — в <a data-tz="registry">реестре</a>.</p>
     <h3>Турнирная таблица</h3>${ul(['<b>Только общая турнирная таблица</b> за весь праздник — еженедельных рейтингов нет.', 'Сумма баллов. При равенстве выше тот, кто набрал раньше (рабочий вариант).', 'На главной — топ-10 и строка «Ты» с местом. Отдельный экран «Турнирная таблица» — топ участников, строка «Ты» и таблица «За что начисляются баллы».'])}
     <h3>Призы и розыгрыши ${sb('client')}</h3>${ul([
