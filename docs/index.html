@@ -413,6 +413,53 @@ h1,h2,h3{line-height:1.15;margin:0}
 .rtable th{font-size:12px;color:var(--muted);font-weight:600}
 .rtable tr.me td{background:var(--red-soft);font-weight:700}
 .acc{border:1px solid var(--line);border-radius:12px;margin-top:8px}
+/* главная по макету */
+.mwrap{background:#f2f3f7;padding-bottom:30px}
+.mhero{background:linear-gradient(135deg,#8b86d6,#c3b4e6 60%,#f1c9d9);color:#fff;border-radius:0 0 28px 28px}
+.mhero-in{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:center;padding-top:34px;padding-bottom:34px}
+.mhero h1{font-size:46px;line-height:1.02;text-transform:uppercase;margin:14px 0 12px;letter-spacing:-.01em}
+.mhero p{margin:0 0 18px;max-width:480px;font-size:17px}
+.mhero .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.mhero .btn:not(.red){color:var(--ink);background:#fff;border-color:#fff}
+.mlive .btn:not(.red){color:var(--ink);background:#fff;border-color:#fff}
+.mdates{display:inline-block;border:1px solid rgba(255,255,255,.8);border-radius:999px;padding:4px 14px;font-size:13px;font-weight:600}
+.mkv{height:300px;background-color:rgba(255,255,255,.25);color:#fff;border-color:rgba(255,255,255,.6)}
+.msec{margin-top:30px}
+.mtag{display:table;margin:0 auto 6px;background:#e6e7ee;border-radius:8px;padding:2px 8px;font-size:12px}
+.mh2{text-align:center;font-size:30px;margin:0 0 16px}
+.mhow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mhowc{background:#fff;border-radius:20px;padding:18px}
+.mhowc h3{margin:10px 0 6px}.mhowc p{margin:0;color:var(--ink2);font-size:14px}
+.mic{display:inline-flex;width:30px;height:30px;border-radius:8px;background:var(--red);color:#fff;align-items:center;justify-content:center;font-weight:700}
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.bcell{background:#fff;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:12px;cursor:pointer;min-height:200px}
+.bcell h3{font-size:24px;margin:0 0 6px}.bcell p{margin:0;color:var(--ink2)}
+.bcell .bimg{flex:1;min-height:70px;border-radius:14px}
+.bcell .btn{align-self:flex-start}
+.bcell:hover{box-shadow:0 6px 20px rgba(0,0,0,.08)}
+.bento .b0{grid-row:span 2}
+.bento .b3{grid-column:2 / 4}
+.mstory{background:linear-gradient(110deg,#ff1f4b,#ff7d95);color:#fff;border-radius:24px;padding:26px;display:grid;grid-template-columns:1.4fr 1fr;gap:20px;cursor:pointer}
+.mstory h2{font-size:30px;margin:0 0 8px}.mstory p{margin:0 0 12px;font-size:16px}
+.mstory .btn{background:#fff;color:var(--ink);border-color:#fff}
+.mnote{display:block;margin:0 0 12px;font-size:13px;opacity:.9}
+.mstory-img{min-height:120px;background-color:rgba(255,255,255,.2);color:#fff;font-size:44px;border-color:rgba(255,255,255,.6)}
+.mprizes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:8px}
+.mprize{background:linear-gradient(180deg,#fff 45%,#ece9ff);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.mprize h3{margin:0;font-size:22px}.mprize p{margin:0;font-size:14px;color:var(--ink2)}
+.mprize .ph{height:110px;border-radius:14px}
+.mlive{background:linear-gradient(110deg,#a9b4f7,#d8c8f5);color:#fff;border-radius:24px;padding:24px;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.mlive h2{font-size:30px;margin:0 0 6px}.mlive p{margin:0 0 12px}
+.mlive .link{color:#fff}
+.mfaq{background:#fff;border-radius:28px;padding:24px 18px}
+.mfaq .acc{background:#f2f3f7;border:0}
+@container (max-width:760px){
+  .mhero-in,.mstory{grid-template-columns:1fr}
+  .mhero h1{font-size:32px}
+  .mhow,.bento,.mprizes{grid-template-columns:1fr}
+  .bento .b0{grid-row:auto}.bento .b3{grid-column:auto}
+  .mkv{height:180px}
+}
 .acc summary{padding:12px 14px;cursor:pointer;font-weight:600}
 .acc div{padding:0 14px 12px;color:var(--ink2);font-size:14px}
 .authbox{max-width:460px;margin:30px auto 0;border:1px solid var(--line);border-radius:16px;padding:22px}
@@ -814,7 +861,7 @@ ul.pll li{margin:3px 0}
 const PROJECT = {
   title: 'МТС · 33 удовольствия',
   doc: 'Онлайн-платформа к 33-летию МТС',
-  version: '0.41',
+  version: '0.42',
   updated: '13.10.2026',
   start: '2026-10-21',
   end: '2026-11-11',
@@ -843,13 +890,13 @@ const STATES = {
 };
 
 const BLOCKS = [
-  { id: 'work',   name: 'Работать вместе', tagline: 'Удовольствие от новых открытий',
+  { id: 'work',   name: 'Работать вместе', short: 'Тёплые истории, неожиданные факты и радость открытий', tagline: 'Удовольствие от новых открытий',
     desc: 'Поделиться опытом, узнавать компанию в нестандартных форматах, получать заряд от забавных игр.' },
-  { id: 'sport',  name: 'Держать темп',      tagline: 'Удовольствие от движения',
+  { id: 'sport',  name: 'Держать темп',      short: 'Разминки, игра и удовольствие от движения', tagline: 'Удовольствие от движения',
     desc: 'Лёгкость после разминки, заряд от игровой активности, ментальный отдых.' },
-  { id: 'art',    name: 'Вдохновлять',       tagline: 'Удовольствие от самовыражения',
+  { id: 'art',    name: 'Вдохновлять',       short: 'Таланты коллег и радость творчества', tagline: 'Удовольствие от самовыражения',
     desc: 'Поделиться талантами, получить поддержку коллег, почерпнуть новое.' },
-  { id: 'good',   name: 'Дарить тепло',      tagline: 'Удовольствие от добрых дел',
+  { id: 'good',   name: 'Дарить тепло',      short: 'Музыка, добрые дела и новые открытия', tagline: 'Удовольствие от добрых дел',
     desc: 'Спеть вместе с коллегами и узнать, как МТС заботится о людях и мире вокруг.' },
   { id: 'team',   name: 'Общая история',     tagline: 'Удовольствие от совместного времяпрепровождения', solo: true,
     desc: 'Общая история, которую пишут все участники, — с помощью ИИ. Вне разделов: карточка сразу на главной.' },
@@ -1211,7 +1258,7 @@ const MECH = {
 const SCREENS = [
   { id: 'landing', route: 'landing', title: 'Лендинг (гость)',
     purpose: 'Первое, что видит сотрудник по ссылке: суть праздника и вход в регистрацию.',
-    elements: ['Шапка: логотип МТС, «О проекте», «Правила акции», кнопки «Войти» и «Регистрация».', 'Первый экран: «33 года — все 33 удовольствия!», даты, KV праздника (в работе), кнопки «Зарегистрироваться» и «Войти».', '«Как это работает» — 3 шага.', 'Разделы — название, смысл, описание (пять разделов; задания-сюрпризы отдельного раздела не имеют).', 'Анонс эфира 28.10.', 'Призы — статичные картинки: топ-10, 50 призов среди набравших порог, 100 призов среди всех.', 'Подвал: «Правила акции», почта для вопросов, политика обработки персональных данных.'],
+    elements: ['Шапка: логотип МТС, меню «Активности», «Правила», «Рейтинг», кнопки «Зарегистрироваться» и «Войти».', 'Порядок блоков — по макету главной: первый экран → «Как собрать все 33 удовольствия» → «Разделы» → общая история → «Призы» → эфир «Без галстука» → «Вопросы и ответы» → подвал.', 'Первый экран: даты «с 21.10 по 11.11», «МТС — все 33 удовольствия!», подзаголовок «МТС исполняется 33 года! Собирай маленькие радости в больших делах: общайся, узнавай, твори.», кнопка «Зарегистрироваться», KV — подарок-куб с удовольствиями.', '«Как собрать все 33 удовольствия» — три карточки: «Выполняй задания», «Баллы отдельно», «Четыре раздела и общая история».', 'Разделы — плиткой: «Работать вместе» (высокая карточка слева), «Держать темп», «Вдохновлять», «Дарить тепло» (широкая снизу). В карточке — название, короткая подпись, картинка, кнопка «Участвовать». У гостя кнопки ведут в регистрацию.', 'Общая история — широкий красный баннер с кнопкой «К разгадке».', 'Призы — статичные картинки: топ-10, 50 призов среди набравших порог, 100 призов среди всех.', 'Эфир «Без галстука» — баннер с датой; до эфира кнопка неактивна: «Будет доступно 28.10».', '«Вопросы и ответы» — раскрывающийся список и почта для вопросов.', 'Подвал: «Правила акции», почта для вопросов, политика обработки персональных данных.'],
     states: ['Кампания идёт — регистрация открыта.', 'Кампания завершена — регистрация закрыта, плашка «Праздник завершён».'] },
   { id: 'register', route: 'register', title: 'Регистрация',
     purpose: 'Создание аккаунта по корпоративной почте.',
@@ -1226,8 +1273,8 @@ const SCREENS = [
     elements: ['Поле почты → «Прислать новый пароль» → экран «Письмо отправлено» → вход с новым паролем. Сменить его на свой можно в личном кабинете.'],
     states: ['Почта не найдена — показываем тот же экран «Если аккаунт с такой почтой существует, мы отправили новый пароль».'] },
   { id: 'home', route: 'home', title: 'Главная (участник)',
-    purpose: 'Выбор раздела, общая история и призы. Турнирной таблицы на главной нет — она в меню.',
-    elements: ['Шапка: меню «Главная», «Эфир», «Турнирная таблица», «Правила акции». Отдельной страницы «Призы» нет. Справа, возле аватара, — прогресс «N / 33 · баллы» (ведёт в личный кабинет). Больше прогресс нигде на главной не показываем.', 'Баннер счастливого часа с обратным отсчётом (если активен).', 'Баннер эфира: до эфира — отсчёт, в день эфира — «Смотреть эфир».', 'Разделы — четыре карточки: название, смысл, число активностей. Клик → страница раздела. Задания-сюрпризы отдельной карточки не имеют — они появляются сами.', 'Общая история «Тайна пропавшего торта» — вне разделов, одна карточка: какая глава сейчас и до какого числа голосование, после развязки — «Вся история». Клик → текущая глава.', 'Турнирной таблицы на главной нет — только пункт меню «Турнирная таблица».', 'Призы — статичные картинки с подписями: топ-10, 50 призов среди набравших порог, 100 призов среди всех участников. После завершения — итоги.'],
+    purpose: 'Та же страница, что лендинг, но для участника: разделы ведут в активности, общая история — к текущей главе. Турнирной таблицы на главной нет — она в меню «Рейтинг».',
+    elements: ['Шапка: меню «Активности» (главная), «Правила», «Рейтинг». Отдельных пунктов «Эфир» и «Призы» нет — эфир и призы на главной. Справа, возле аватара, — прогресс «N / 33 · баллы» (ведёт в личный кабинет).', 'Порядок блоков — по макету главной: первый экран → «Как собрать все 33 удовольствия» → «Разделы» → общая история → «Призы» → эфир «Без галстука» → «Вопросы и ответы» → подвал.', 'Первый экран — как на лендинге, вместо регистрации — кнопка «Мой прогресс · N из 33».', 'Баннер счастливого часа с обратным отсчётом (если активен) — над первым экраном.', 'Разделы — плиткой, как на лендинге: четыре карточки с кнопкой «Участвовать» → страница раздела. Задания-сюрпризы отдельной карточки не имеют.', 'Общая история «Тайна пропавшего торта» — вне разделов, широкий баннер: какая глава сейчас и до какого числа голосование, после развязки — «Вся история». «К разгадке» → текущая глава.', 'Призы — статичные картинки: топ-10, 50 призов среди набравших порог, 100 призов среди всех. После завершения — итоги.', 'Эфир «Без галстука»: до эфира — «Будет доступно 28.10», в день эфира — «Смотреть эфир», после — «Смотреть запись».', '«Вопросы и ответы» — те же вопросы, что на странице «Правила акции», и почта.', 'Турнирной таблицы на главной нет — только пункт меню «Рейтинг».'],
     states: ['Новичок (0 из 33).', 'Все 33 собраны — поздравление.', 'Платформа завершена — см. «Финальное состояние».'] },
   { id: 'block', route: 'block/sport', title: 'Страница раздела',
     purpose: 'Выбор активности внутри раздела.',
@@ -1615,6 +1662,10 @@ const TIMING = {
 };
 
 const CHANGELOG = [
+  { v: '0.42', date: '13.10.2026', items: [
+    'Главная и лендинг — по макету главной: первый экран «МТС — все 33 удовольствия!», «Как собрать все 33 удовольствия», разделы плиткой с кнопкой «Участвовать», баннер общей истории «К разгадке», призы, эфир «Без галстука», «Вопросы и ответы».',
+    'Меню: «Активности», «Правила», «Рейтинг». Отдельного пункта «Эфир» нет — эфир на главной. Рейтинг открыт и гостям.',
+  ] },
   { v: '0.41', date: '13.10.2026', items: [
     '«Перезагрузка»: +1 удовольствие сразу за первый заход и +1 за первый просмотр каждого из пяти роликов — всего шесть. Новые ролики выходят раз в несколько дней.',
     'Баллы за разминку — 5, раз в день: за первую досмотренную разминку за день, любой ролик. Повторно в тот же день — без баллов.',
@@ -1867,12 +1918,12 @@ const demoBtn = (act, label, extra = '') => `<button class="demoact" data-act="$
 const skipBtn = (style = 'margin:0 0 14px') => `<div style="${style}">${demoBtn('skipReg', 'пропустить регистрацию →', 'title="Техническая кнопка прототипа: сразу войти участником"')}</div>`;
 
 /* ---------- каркас сайта ---------- */
-const PUBLIC = ['landing', 'register', 'login', 'recover', 'rules'];
+const PUBLIC = ['landing', 'register', 'login', 'recover', 'rules', 'rating'];
 function header() {
   const base = S.route.split('/')[0];
   const nav = S.auth
-    ? [['home', 'Главная'], ['stream', 'Эфир'], ['rating', 'Турнирная таблица'], ['rules', 'Правила акции']]
-    : [['landing', 'О проекте'], ['rules', 'Правила акции']];
+    ? [['home', 'Активности'], ['rules', 'Правила'], ['rating', 'Рейтинг']]
+    : [['landing', 'Активности'], ['rules', 'Правила'], ['rating', 'Рейтинг']];
   const on = r => base === r || (r === 'home' && ['block', 'act'].includes(base));
   const links = nav.map(([r, t]) => `<a data-go="${r}" class="${on(r) ? 'on' : ''}">${t}</a>`).join('');
   const pct = Math.round(totalPl() / PL_MAX * 100);
@@ -1945,47 +1996,47 @@ function pointsTable() {
     <table class="rtable"><thead><tr><th>Активность</th><th>Баллы</th><th class="hm">Сколько раз</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
 }
 
-function vLanding() {
-  const off = ended();
-  return `<div class="wrap">
-  ${off ? '<div class="banner info"><b>Праздник завершён.</b><span class="grow">Регистрация закрыта. Спасибо всем, кто собирал удовольствия!</span></div>' : ''}
-  <section class="hero"><div>
-    <div class="kicker"><span class="chip">${dm(PROJECT.start)}–${dm(PROJECT.end)}</span><span class="chip">Онлайн-праздник для сотрудников</span></div>
-    <h1>33 года — все 33 удовольствия!</h1>
-    <p>С ${dm(PROJECT.start)} по ${dm(PROJECT.end)} — задания, чтобы собрать все 33 удовольствия и отметить день рождения МТС. Работа, спорт, творчество, добро и общая история, а ${dm(PROJECT.stream)} — большой онлайн-эфир.</p>
-    <div class="ctas"><button class="btn red" data-go="register" ${off ? 'disabled' : ''}>Зарегистрироваться</button><button class="btn" data-go="login">Войти</button></div>
-    ${skipBtn('margin-top:12px')}
-  </div><div class="heroside"><div class="ph kv">KV праздника — в работе</div></div></section>
-  <section class="sec"><h2>Как это работает</h2><div class="agrid">
-    ${[['1', 'Зарегистрируйся', 'По корпоративной почте МТС или дочерней компании.'], ['2', 'Собирай удовольствия', 'Выбирай раздел и активность, выполняй задания и лови сюрпризы. Новые открываются постепенно, пропущенные остаются доступными.'], ['3', 'Смотри эфир и участвуй в розыгрыше', `${dm(PROJECT.stream)} — ток-шоу «Без галстука». Баллы идут в турнирную таблицу — лидеры и самые активные получат призы.`]]
-      .map(([n, t, d]) => `<div class="acard" style="cursor:default"><div class="top"><div class="ph ico round">${n}</div><div><div class="t">${t}</div></div></div><div class="d">${d}</div></div>`).join('')}
-  </div></section>
-  <section class="sec"><h2>Разделы</h2>${blockTiles().replace(/data-go="block\/[a-z]+"/g, 'data-go="register"')}</section>
-  <section class="sec"><div class="agrid">
-    <div class="acard" data-go="login"><div class="t">Онлайн-эфир ${dm(PROJECT.stream)}</div><div class="d">Ток-шоу «Без галстука» — то самое 34-е удовольствие, которое нельзя получить на платформе.</div><div class="ph" style="height:120px">KV эфира</div></div>
-  </div></section>
-  ${prizesBlock()}</div>`;
-}
+function vLanding() { return vMain(true); }
 
 function vHome() {
   if (ended()) return vFinal();
-  return `<div class="wrap">${hhBanner()}${streamBanner()}
-  <div class="pg-h"><h1>33 года — все 33 удовольствия</h1><div class="muted">${dm(PROJECT.start)}–${dm(PROJECT.end)} · выбирай раздел и собирай удовольствия. Новые задания открываются постепенно, пропущенные остаются доступными.</div></div>
-  <section class="sec"><h2>Разделы</h2>${blockTiles()}</section>
-  ${storyCard()}
-  ${prizesBlock()}
-  </div>`;
+  return vMain(false);
 }
-// Общая история — вне разделов: одна карточка на главной, ведёт к текущей главе
-function storyCard() {
+// Главная по макету: первый экран, «Как собрать», разделы, общая история, призы, эфир, вопросы. Гостю — то же, кнопки ведут в регистрацию
+function vMain(guest) {
+  const off = ended(); const reg = guest ? 'register' : null;
   const g = G.ai; const ch = gActs(g).filter(x => x.mode === 'vote');
-  const cur = ch.find(c => S.date >= c.from && S.date <= c.to); const next = ch.find(c => S.date < c.from);
-  const fin = S.date >= A.ai_read.from;
-  const target = fin ? A.ai_read : cur || next || A.ai_read;
-  const st = fin ? (isComplete(A.ai_read) ? 'История прочитана ✓' : 'Развязка вышла — прочитай историю целиком')
-    : cur ? `${tabT(cur)} — голосуй до ${dm(cur.to)}${S.votes[cur.id] != null ? ' · твой голос учтён ✓' : ''}` : next ? `${tabT(next)} — ${dm(next.from)}` : 'Скоро развязка — ' + dm(A.ai_read.from);
-  return `<section class="sec"><h2>Общая история</h2><div class="acard" data-go="act/${target.id}"><div class="top"><div class="ph ico">ИИ</div><div><div class="t">${esc(g.title)}</div><div class="s">${esc(g.desc)}</div></div></div>
-    <div class="bot"><span class="chip">${esc(st)}</span>${plChip(A.ai_read)}<span class="chip">баллы за каждый голос</span></div></div></section>`;
+  const cur = ch.find(c => S.date >= c.from && S.date <= c.to); const fin = S.date >= A.ai_read.from;
+  const storyGo = reg || 'act/' + (fin ? A.ai_read : cur || ch.find(c => S.date < c.from) || A.ai_read).id;
+  const storyNote = guest ? '' : fin ? (isComplete(A.ai_read) ? 'История прочитана ✓' : 'Развязка вышла — прочитай историю целиком') : cur ? `${tabT(cur)} — голосуй до ${dm(cur.to)}${S.votes[cur.id] != null ? ' · твой голос учтён ✓' : ''}` : 'Первая глава — ' + dm(ch[0].from);
+  const sd = PROJECT.stream; const live = S.date === sd, after = S.date > sd;
+  const tiles = BLOCKS.filter(b => !['stream', 'common'].includes(b.id) && !b.solo);
+  return `<div class="mwrap">
+  ${off && guest ? '<div class="wrap"><div class="banner info"><b>Праздник завершён.</b><span class="grow">Регистрация закрыта. Спасибо всем, кто собирал удовольствия!</span></div></div>' : ''}
+  ${guest ? '' : `<div class="wrap">${hhBanner()}</div>`}
+  <section class="mhero"><div class="wrap mhero-in"><div>
+    <span class="mdates">с ${dm(PROJECT.start)} по ${dm(PROJECT.end)}</span>
+    <h1>МТС — все 33 удовольствия!</h1>
+    <p>МТС исполняется 33 года! Собирай маленькие радости в больших делах: общайся, узнавай, твори.</p>
+    ${guest ? `<div class="ctas"><button class="btn red" data-go="register" ${off ? 'disabled' : ''}>Зарегистрироваться</button><button class="btn" data-go="login">Войти</button></div>${skipBtn('margin-top:12px')}` : `<div class="ctas"><button class="btn" data-go="progress">Мой прогресс · ${totalPl()} из ${PL_MAX}</button></div>`}
+  </div><div class="ph kv mkv">KV праздника: подарок-куб с удовольствиями</div></div></section>
+  <section class="wrap msec"><span class="mtag">О проекте</span><h2 class="mh2">Как собрать все 33 удовольствия</h2><div class="mhow">
+    ${[['☰', 'Выполняй задания', `И собирай ${PL_MAX} удовольствия — отметки о выполнении. Каждое удовольствие приближает тебя к собранному подарку.`], ['1', 'Баллы отдельно', 'Удовольствие отмечает выполнение задания, а баллы начисляются с учётом сложности задания и твоего результата. Баллы определяют место в рейтинге.'], ['4', 'Четыре раздела и общая история', `${tiles.map(b => '«' + esc(b.name) + '»').join(', ')} и общая история «${esc(g.title)}». Задания-сюрпризы появляются сами и тоже входят в общие ${PL_MAX}.`]]
+      .map(([i, t, d]) => `<div class="mhowc"><span class="mic">${i}</span><h3>${t}</h3><p>${d}</p></div>`).join('')}
+  </div></section>
+  <section class="wrap msec" id="sections"><h2 class="mh2">Разделы</h2><div class="bento">
+    ${tiles.map((b, i) => `<div class="bcell b${i}" data-go="${reg || 'block/' + b.id}"><div><h3>${esc(b.name)}</h3><p>${esc(b.short || b.tagline)}</p></div><div class="ph bimg">картинка раздела</div><button class="btn red sm">Участвовать ›</button></div>`).join('')}
+  </div></section>
+  <section class="wrap msec"><div class="mstory" data-go="${storyGo}"><div><h2>${esc(g.title)}</h2><p>${esc(g.desc)}</p>${storyNote ? `<span class="mnote">${esc(storyNote)}</span>` : ''}<button class="btn sm">К разгадке ›</button></div><div class="ph mstory-img">?</div></div></section>
+  <section class="wrap msec"><h2 class="mh2">Призы</h2>${off ? '<div class="banner info"><b>Итоги подведены</b><span class="grow">Здесь — списки победителей розыгрышей.</span></div>' : ''}<div class="mprizes">
+    ${PRIZE_CATS.map(([t, d]) => `<div class="mprize"><h3>${t}</h3><p>${d}</p><div class="ph">картинка приза</div></div>`).join('')}
+  </div><p class="small muted">Призы даёт МТС: мерч, сертификаты маркетплейса. Список и схема — на согласовании.</p></section>
+  <section class="wrap msec"><div class="mlive"><div><h2>Без галстука</h2><p>Праздничный прямой эфир с разговорами, гостями и сюрпризами · ${dm(sd)}</p>
+    ${live ? `<button class="btn red sm" data-go="${reg || 'stream'}">Смотреть эфир ›</button>` : after ? `<button class="btn sm" data-go="${reg || 'stream'}">Смотреть запись ›</button>` : `<button class="btn sm" disabled>Будет доступно ${dm(sd)}</button> <span class="link small" data-go="${reg || 'stream'}">Подробнее</span>`}</div><span class="mtsbox">МТС</span></div></section>
+  <section class="wrap msec mfaq"><span class="mtag">FAQ</span><h2 class="mh2">Вопросы и ответы</h2>
+    ${faqList().map(([q, a]) => `<details class="acc"><summary>${q}</summary><div>${a}</div></details>`).join('')}
+    <p class="center" style="margin-top:16px">Не нашёл ответ? Напиши нам — <span class="link" data-act="toast" data-v="Откроется почтовая программа: ${esc(PROJECT.email)}">${esc(PROJECT.email)}</span></p></section>
+  </div>`;
 }
 function vFinal() {
   return `<div class="wrap"><div class="pg-h">
@@ -2557,7 +2608,7 @@ function vStream() {
 
 /* ---------- прочие экраны ---------- */
 function vRating() {
-  return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="home">Главная</a> / Турнирная таблица</div><h1>Турнирная таблица</h1><div class="muted">По сумме баллов. При равенстве выше тот, кто набрал раньше.</div></div>
+  return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="${S.auth ? 'home' : 'landing'}">Главная</a> / Турнирная таблица</div><h1>Турнирная таблица</h1><div class="muted">По сумме баллов. При равенстве выше тот, кто набрал раньше.</div></div>
     ${ratingTable(10)}${pointsTable()}</div>`;
 }
 const PRIZE_CATS = [['Топ-10', 'Крутые призы для первых десяти в турнирной таблице.'], ['50 призов', 'Розыгрыш среди всех, кто набрал порог — условно 500 баллов.'], ['100 призов', 'Розыгрыш среди всех участников праздника.']];
@@ -2567,9 +2618,10 @@ function prizesBlock() {
   <div class="agrid">${PRIZE_CATS.map(([t, d]) => `<div class="acard" style="cursor:default"><div class="ph" style="height:140px">Картинка: ${t}</div><div class="t">${t}</div><div class="d">${d}</div></div>`).join('')}</div>
   <p class="small muted">Призы даёт МТС: мерч, сертификаты маркетплейса. Список и схема — на согласовании.</p></section>`;
 }
+const faqList = () => [['Что такое удовольствия?', `Отметки о выполнении заданий. Всего ${PL_MAX} — собрать их может каждый. Прогресс виден в шапке, возле аватара.`], ['Чем баллы отличаются от удовольствий?', 'Баллы — для турнирной таблицы: их количество зависит от сложности задания и результата. Удовольствия — просто факт выполнения.'], ['Я пришёл позже. Успею?', 'Да. Пропущенные задания остаются доступными, их можно пройти по порядку. Исключение — голосования по главам истории: у них есть срок.'], ['Когда эфир?', `${dm(PROJECT.stream)}. Если не успеешь в прямом эфире, будет запись.`], ['Почему мою историю не видно?', 'Материалы проходят проверку. Удовольствие и баллы начислим после одобрения.']];
 function vRules() {
   const acts = BLOCKS.filter(b => !['stream', 'common'].includes(b.id) && !b.solo).map(b => `<li><b>${esc(b.name)}</b> — ${GROUPS.filter(g => g.block === b.id).map(g => '«' + esc(g.title) + '»').join(', ')}.</li>`).join('');
-  const qa = [['Что такое удовольствия?', `Отметки о выполнении заданий. Всего ${PL_MAX} — собрать их может каждый. Прогресс виден в шапке, возле аватара.`], ['Чем баллы отличаются от удовольствий?', 'Баллы — для турнирной таблицы: их количество зависит от сложности задания и результата. Удовольствия — просто факт выполнения.'], ['Я пришёл позже. Успею?', 'Да. Пропущенные задания остаются доступными, их можно пройти по порядку. Исключение — голосования по главам истории: у них есть срок.'], ['Когда эфир?', `${dm(PROJECT.stream)}. Если не успеешь в прямом эфире, будет запись.`], ['Почему мою историю не видно?', 'Материалы проходят проверку. Удовольствие и баллы начислим после одобрения.']];
+  const qa = faqList();
   return `<div class="wrap apage"><div class="pg-h"><div class="crumbs"><a data-go="${S.auth ? 'home' : 'landing'}">Главная</a> / Правила акции</div><h1>Правила акции</h1><div class="muted">Коротко о главном. Финальные тексты — от МТС.</div></div>
   <div class="panel"><h3>Как участвовать</h3><p>С ${dm(PROJECT.start)} по ${dm(PROJECT.end)} сотрудники МТС и дочерних компаний регистрируются по корпоративной почте и выполняют задания в разделах:</p><ul>${acts}</ul>
     <p>Отдельно, прямо на главной, — общая история «${esc(G.ai.title)}»: новая глава раз в три дня, участники голосуют, что будет дальше. Плюс задания-сюрпризы — они появляются неожиданно. За задания начисляются удовольствия (всего ${PL_MAX}) и баллы — они идут в турнирную таблицу. ${dm(PROJECT.stream)} — онлайн-эфир.</p></div>
@@ -3079,7 +3131,7 @@ const TZ = [
     const steps = [
       ['Узнаёт о празднике', 'Переходит по ссылке из внутренних коммуникаций МТС на лендинг: суть праздника, разделы, эфир, призы.', 'landing'],
       ['Регистрируется', 'По корпоративной почте МТС или дочерней компании, без подтверждения кодом. Сразу получает первое удовольствие — «Регистрация».', 'register'],
-      ['Попадает на главную', 'Видит разделы, карточку общей истории и призы. Турнирная таблица — отдельной страницей в меню. Свой прогресс «N из 33» и баллы — в шапке, возле аватара.', 'home'],
+      ['Попадает на главную', 'Видит разделы плиткой, баннер общей истории, призы, эфир и вопросы — по макету главной. Турнирная таблица — пункт меню «Рейтинг». Свой прогресс «N из 33» и баллы — в шапке, возле аватара.', 'home'],
       ['Выбирает раздел и активность', 'В разделе — карточки активностей. Внутри активности — её задания: например, «Работать вместе» → «Азарт открытий» → выпуски. Открывается первое невыполненное. Общая история — не в разделе: её карточка сразу на главной.', 'block/work'],
       ['Выполняет задания', 'Рассказывает историю, загружает номер, проходит квиз, делает разминку, играет, голосует в истории. Удовольствия и баллы — сразу; за истории, номера и записанные песни — после проверки организаторами.', 'act/recipe'],
       ['Следит за прогрессом и материалами', 'В личном кабинете — сколько собрано и где ещё заработать, история начислений и «Мои материалы»: на проверке, опубликовано или отклонено. Писем и пушей нет — всё видно на платформе.', 'progress'],
